@@ -9,17 +9,14 @@ import {
   Paper,
   Alert,
 } from "@mui/material";
-import { useState } from "react";
-import SuccessDialog from "./SuccessDialog";
 
 interface SetPasswordProps {
   password: string;
   confirmPassword: string;
   setPassword: (value: string) => void;
   setConfirmPassword: (value: string) => void;
-  handleSetPassword: (onSuccess: () => void) => void;
+  handleSetPassword: () => void;
   error?: string;
-  handleSuccessClose: () => void;
 }
 
 const SetPassword = ({
@@ -29,32 +26,18 @@ const SetPassword = ({
   setConfirmPassword,
   handleSetPassword,
   error,
-  handleSuccessClose,
 }: SetPasswordProps) => {
-  const [showSuccess, setShowSuccess] = useState(false);
-
-  const handleDialogClose = () => {
-    setShowSuccess(false);
-    handleSuccessClose();
-  };
-
-  const handleSetPasswordClick = () => {
-    handleSetPassword(() => {
-      setShowSuccess(true);
-    });
-  };
-
   return (
     <Container maxWidth="sm">
       <Paper elevation={3} sx={{ padding: 4, marginTop: 8 }}>
         <Typography variant="h4" align="center" gutterBottom>
-          Set Initial Password
+          パスワード初期設定
         </Typography>
 
         <Box component="form" noValidate autoComplete="off">
           <TextField
             fullWidth
-            label="New Password"
+            label="新規パスワード"
             variant="outlined"
             margin="normal"
             type="password"
@@ -63,7 +46,7 @@ const SetPassword = ({
           />
           <TextField
             fullWidth
-            label="Confirm Password"
+            label="新規パスワード（再入力）"
             variant="outlined"
             margin="normal"
             type="password"
@@ -77,15 +60,12 @@ const SetPassword = ({
             fullWidth
             variant="contained"
             color="primary"
-            onClick={handleSetPasswordClick}
+            onClick={handleSetPassword}
             sx={{ marginTop: 2 }}
           >
-            Set Password
+            完了
           </Button>
         </Box>
-
-        {/* Success Dialog */}
-        <SuccessDialog open={showSuccess} onClose={handleDialogClose} />
       </Paper>
     </Container>
   );

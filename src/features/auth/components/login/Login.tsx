@@ -31,13 +31,13 @@ const Login = ({
     <Container maxWidth="sm">
       <Paper elevation={3} sx={{ padding: 4, marginTop: 8 }}>
         <Typography variant="h4" align="center" gutterBottom>
-          Login
+          全曲報告サービス
         </Typography>
 
         <Box component="form" noValidate autoComplete="off">
           <TextField
             fullWidth
-            label="Username"
+            label="ID"
             variant="outlined"
             margin="normal"
             value={username}
@@ -45,7 +45,7 @@ const Login = ({
           />
           <TextField
             fullWidth
-            label="Password"
+            label="パスワード"
             variant="outlined"
             margin="normal"
             type="password"
@@ -62,7 +62,7 @@ const Login = ({
             onClick={handleLogin}
             sx={{ marginTop: 2 }}
           >
-            Login
+            ログイン
           </Button>
         </Box>
       </Paper>
