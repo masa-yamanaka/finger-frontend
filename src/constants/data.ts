@@ -1,11 +1,10 @@
-// src/constants.ts
 export const dashboardSections = [
   {
     title: "各種設定",
     description:
       "メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜",
     items: [
-      { title: "メールアドレス設定", href: "/settings" },
+      { title: "メールアドレス設定", href: "/email-settings" },
       { title: "アカウント管理", href: "/settings" },
     ],
   },

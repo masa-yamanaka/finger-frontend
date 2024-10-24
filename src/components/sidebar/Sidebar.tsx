@@ -55,7 +55,7 @@ const Sidebar: React.FC = () => {
             <List className={styles.sectionList}>
               <ListItemButton
                 component={Link}
-                href="/settings"
+                href="/email-settings"
                 className={styles.sectionListItem}
               >
                 <ListItemText primary="メールアドレス設定" />
