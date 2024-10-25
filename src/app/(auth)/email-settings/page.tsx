@@ -12,6 +12,7 @@ import SendIcon from "@mui/icons-material/Send";
 import Switch from "@mui/material/Switch";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import SearchIcon from "@mui/icons-material/Search";
 import {
   GridRowsProp,
   GridRowModesModel,
@@ -27,7 +28,10 @@ import {
 } from "@mui/x-data-grid";
 import { jaJP } from "@mui/x-data-grid/locales";
 import { mockEmails, mockTVStations } from "@/constants/emails";
-import { TextField } from "@mui/material";
+import { InputAdornment, TextField, Typography } from "@mui/material";
+import ConfirmDialog from "@/components/modals/Delete/ConfirmDialog";
+import CustomSnackbar from "@/components/snackbar/Snackbar";
+import { v4 as uuidv4 } from "uuid";
 
 interface ToolbarProps {
   setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
@@ -51,10 +55,10 @@ function Toolbar(props: ToolbarProps) {
   } = props;
 
   const handleAddClick = () => {
-    const id = Math.floor(Math.random() * 1000);
-    setRows((oldRows) => [
-      ...oldRows,
-      {
+    const id = uuidv4(); // Use UUID for the new record
+
+    setRows((oldRows) => {
+      const newRow = {
         id,
         type: "to",
         email: "",
@@ -63,8 +67,10 @@ function Toolbar(props: ToolbarProps) {
         option3: false,
         tvStation: selectedStation,
         isNew: true,
-      },
-    ]);
+      };
+      return [...oldRows, newRow];
+    });
+
     setRowModesModel((oldModel) => ({
       ...oldModel,
       [id]: { mode: GridRowModes.Edit, fieldToFocus: "email" },
@@ -80,7 +86,7 @@ function Toolbar(props: ToolbarProps) {
         sx={{ width: 300, mb: 2 }}
       >
         <MenuItem value="">
-          <em>Select a TV Station</em>
+          <Typography sx={{ fontStyle: "italic" }}>放送局選択</Typography>
         </MenuItem>
         {mockTVStations.map((station) => (
           <MenuItem key={station.id} value={station.name}>
@@ -90,12 +96,21 @@ function Toolbar(props: ToolbarProps) {
       </Select>
       <Box sx={{ display: "flex", gap: 2, mb: 2, alignItems: "center" }}>
         <TextField
-          label="Search Email"
+          // label="Search Email"
           variant="outlined"
           size="small"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           sx={{ width: 400 }}
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            },
+          }}
         />
         <Button
           color="primary"
@@ -104,7 +119,7 @@ function Toolbar(props: ToolbarProps) {
           onClick={handleAddClick}
           disabled={!selectedStation}
         >
-          Add Email
+          新規追加
         </Button>
       </Box>
     </Box>
@@ -124,6 +139,29 @@ export default function EmailGrid() {
   );
   const [selectedStation, setSelectedStation] = React.useState("");
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
+
+  const openDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
+
+  const confirmDelete = () => {
+    setRows((oldRows) =>
+      oldRows.filter((row) => !selectedRows.includes(row.id))
+    );
+    setSelectedRows([]);
+    closeDeleteModal();
+  };
+
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [snackbarMessage, setSnackbarMessage] = React.useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = React.useState<
+    "success" | "error" | "warning" | "info"
+  >("success");
 
   // Filter rows based on selected station
   const filteredRows = rows.filter((row) => {
@@ -159,13 +197,20 @@ export default function EmailGrid() {
     const newEditRowData = { ...editRowData };
     delete newEditRowData[id];
     setEditRowData(newEditRowData);
-  };
 
-  const handleDeleteClick = () => {
-    setRows((oldRows) =>
-      oldRows.filter((row) => !selectedRows.includes(row.id))
-    );
-    setSelectedRows([]);
+    const row = rows.find((r) => r.id === id);
+    if (row) {
+      if (row.isNew) {
+        // Snackbar for New row
+        setSnackbarMessage("新規追加しました!");
+        setSnackbarSeverity("success");
+      } else {
+        // Snackbar for Edits
+        setSnackbarMessage("更新しました!");
+        setSnackbarSeverity("success");
+      }
+      setOpenSnackbar(true);
+    }
   };
 
   const logSelectedRows = () => {
@@ -173,7 +218,7 @@ export default function EmailGrid() {
 
     // Add logic here to send test email
     console.log("Selected Rows:", selectedData); // logging the data to send
-    console.log("All filtered row data: ", filteredRows);
+    // console.log("All Rows:", filteredRows); // test
   };
 
   const handleCancelClick = (id: GridRowId) => () => {
@@ -379,15 +424,22 @@ export default function EmailGrid() {
         }}
         localeText={jaJP.components.MuiDataGrid.defaultProps.localeText}
       />
-      <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          gap: 2,
+          mt: 2,
+        }}
+      >
         <Button
           color="error"
           variant="contained"
           startIcon={<DeleteIcon />}
-          onClick={handleDeleteClick}
+          onClick={openDeleteModal}
           disabled={selectedRows.length === 0}
         >
-          Delete Selected
+          削除
         </Button>
         <Button
           variant="contained"
@@ -395,9 +447,24 @@ export default function EmailGrid() {
           onClick={logSelectedRows}
           disabled={selectedRows.length === 0}
         >
-          Test Send
+          テスト通知
         </Button>
       </Box>
+      <ConfirmDialog
+        open={isDeleteModalOpen}
+        title="削除の確認"
+        description="選択した行を削除してもよろしいですか？この操作は元に戻せません。"
+        onClose={closeDeleteModal}
+        onConfirm={confirmDelete}
+        confirmButtonText="OK"
+        cancelButtonText="キャンセル"
+      />
+      <CustomSnackbar
+        open={openSnackbar}
+        onClose={() => setOpenSnackbar(false)}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+      />
     </Box>
   );
 }
