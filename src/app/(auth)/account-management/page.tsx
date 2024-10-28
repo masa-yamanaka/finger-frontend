@@ -19,56 +19,32 @@ import {
   GridRowEditStopReasons,
 } from "@mui/x-data-grid";
 import { jaJP } from "@mui/x-data-grid/locales";
-
-const handleAddClick = () => {
-  console.info("added");
-};
-
-const initialRows: GridRowsProp = [
-  {
-    id: 1,
-    name: "John Doe",
-    age: 25,
-    joinDate: new Date("2021-06-15"),
-    role: "Manager",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    age: 36,
-    joinDate: new Date("2020-03-22"),
-    role: "Trader",
-  },
-  {
-    id: 3,
-    name: "Michael Johnson",
-    age: 19,
-    joinDate: new Date("2023-01-10"),
-    role: "Analyst",
-  },
-  {
-    id: 4,
-    name: "Emily Davis",
-    age: 28,
-    joinDate: new Date("2019-11-05"),
-    role: "Clerk",
-  },
-  {
-    id: 5,
-    name: "Daniel Brown",
-    age: 23,
-    joinDate: new Date("2022-07-30"),
-    role: "Intern",
-  },
-];
+// import { v4 as uuidv4 } from "uuid";
+import { mockAccounts } from "@/constants/accounts";
+import { useRouter } from "next/navigation";
 
 const AccountManagement = () => {
   const [selectedStation, setSelectedStation] = React.useState("");
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [rows, setRows] = React.useState(initialRows);
+  const [rows, setRows] = React.useState(mockAccounts);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
+  const router = useRouter();
+
+  // Add logic here for add
+  const handleAddClick = () => {
+    // const id = uuidv4(); // Use UUID for the new record
+    // setRows((oldRows) => [
+    //   ...oldRows,
+    //   { id, name: "", age: "", role: "", isNew: true },
+    // ]);
+    // setRowModesModel((oldModel) => ({
+    //   ...oldModel,
+    //   [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
+    // }));
+    router.push("/account-management/add");
+  };
 
   const handleRowEditStop: GridEventListener<"rowEditStop"> = (
     params,
@@ -114,30 +90,19 @@ const AccountManagement = () => {
   };
 
   const columns: GridColDef[] = [
-    { field: "name", headerName: "Name", width: 180, editable: true },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      width: 80,
-      align: "left",
-      headerAlign: "left",
-      editable: true,
-    },
-    {
-      field: "joinDate",
-      headerName: "Join date",
-      type: "date",
-      width: 180,
-      editable: true,
-    },
+    { field: "name", headerName: "事業者名", width: 180, editable: false },
+
     {
       field: "role",
-      headerName: "Department",
+      headerName: "権限",
       width: 220,
-      editable: true,
-      type: "singleSelect",
-      valueOptions: ["Market", "Finance", "Development"],
+      editable: false,
+    },
+    {
+      field: "loginId",
+      headerName: "ログインID",
+      width: 180,
+      editable: false,
     },
     {
       field: "actions",
@@ -205,7 +170,7 @@ const AccountManagement = () => {
         onStationChange={setSelectedStation}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
-        disableAddButton={!selectedStation}
+        disableAddButton={false}
       />
       <DataGrid
         rows={rows}

@@ -11,15 +11,18 @@ export default function LoginPage() {
   const router = useRouter();
 
   const handleLogin = () => {
-    // Add logic here for login
-
     // Mock validation for testing
-    if (username === "admin" && password === "password") {
-      setError("");
-      router.push("/dashboard");
-    } else {
-      setError("Invalid username or password");
-    }
+    // if (username === "admin" && password === "password") {
+    //   setError("");
+    //   router.push("/dashboard");
+    // } else {
+    //   setError("Invalid username or password");
+    // }
+
+    // Add logic here for login
+    console.log("Username:", username);
+    console.log("Password:", password);
+    router.push("/dashboard");
   };
 
   return (
