@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import styles from "./Sidebar.module.scss";
+import { dashboardSections } from "@/constants/dashboard";
 
 const drawerWidth = 240;
 
@@ -43,117 +44,33 @@ const Sidebar: React.FC = () => {
           </Box>
           <Divider />
 
-          {/* Settings Section */}
-          <Box sx={{ p: 2 }}>
-            <Typography
-              variant="subtitle1"
-              gutterBottom
-              className={styles.sectionTitle}
-            >
-              各種設定
-            </Typography>
-            <List className={styles.sectionList}>
-              <ListItemButton
-                component={Link}
-                href="/email-settings"
-                className={styles.sectionListItem}
-              >
-                <ListItemText primary="メールアドレス設定" />
-              </ListItemButton>
-              <ListItemButton
-                component={Link}
-                href="/account-management"
-                className={styles.sectionListItem}
-              >
-                <ListItemText primary="アカウント管理" />
-              </ListItemButton>
-            </List>
-          </Box>
-          <Divider />
-
-          {/* Programs Section */}
-          <Box sx={{ p: 2 }}>
-            <Typography
-              variant="subtitle1"
-              gutterBottom
-              className={styles.sectionTitle}
-            >
-              番組連携
-            </Typography>
-            <List className={styles.sectionList}>
-              <ListItemButton
-                component={Link}
-                href="/"
-                className={styles.sectionListItem}
-              >
-                <ListItemText primary="番組情報連携" />
-              </ListItemButton>
-              <ListItemButton
-                component={Link}
-                href="/"
-                className={styles.sectionListItem}
-              >
-                <ListItemText primary="番組確認一覧連携" />
-              </ListItemButton>
-            </List>
-          </Box>
-          <Divider />
-
-          {/* List Section */}
-          <Box sx={{ p: 2 }}>
-            <Typography
-              variant="subtitle1"
-              gutterBottom
-              className={styles.sectionTitle}
-            >
-              報告リスト管理
-            </Typography>
-            <List className={styles.sectionList}>
-              <ListItemButton
-                component={Link}
-                href="/"
-                className={styles.sectionListItem}
-              >
-                <ListItemText primary="納品ファイル連携" />
-              </ListItemButton>
-              <ListItemButton
-                component={Link}
-                href="/"
-                className={styles.sectionListItem}
-              >
-                <ListItemText primary="番組枠選択" />
-              </ListItemButton>
-            </List>
-          </Box>
-          <Divider />
-
-          {/* Music Section */}
-          <Box sx={{ p: 2 }}>
-            <Typography
-              variant="subtitle1"
-              gutterBottom
-              className={styles.sectionTitle}
-            >
-              楽曲連携
-            </Typography>
-            <List className={styles.sectionList}>
-              <ListItemButton
-                component={Link}
-                href="/"
-                className={styles.sectionListItem}
-              >
-                <ListItemText primary="個別楽曲連携" />
-              </ListItemButton>
-              <ListItemButton
-                component={Link}
-                href="/"
-                className={styles.sectionListItem}
-              >
-                <ListItemText primary="ライブラリ楽曲連携" />
-              </ListItemButton>
-            </List>
-          </Box>
-          <Divider />
+          {/* Sections Loop */}
+          {dashboardSections.map((section, index) => (
+            <React.Fragment key={index}>
+              <Box sx={{ p: 2 }}>
+                <Typography
+                  variant="subtitle1"
+                  gutterBottom
+                  className={styles.sectionTitle}
+                >
+                  {section.title}
+                </Typography>
+                <List className={styles.sectionList}>
+                  {section.items.map((item, itemIndex) => (
+                    <ListItemButton
+                      key={itemIndex}
+                      component={Link}
+                      href={item.href}
+                      className={styles.sectionListItem}
+                    >
+                      <ListItemText primary={item.title} />
+                    </ListItemButton>
+                  ))}
+                </List>
+              </Box>
+              <Divider />
+            </React.Fragment>
+          ))}
         </List>
       </Box>
 
