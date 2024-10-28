@@ -2,7 +2,7 @@
 
 import { Container, Typography, Box, Paper } from "@mui/material";
 import Link from "next/link";
-import { dashboardSections } from "@/constants/data";
+import { dashboardSections } from "@/constants/dashboard";
 
 export default function DashboardPage() {
   return (

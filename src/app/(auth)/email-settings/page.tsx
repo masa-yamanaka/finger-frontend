@@ -32,99 +32,7 @@ import { InputAdornment, TextField, Typography } from "@mui/material";
 import ConfirmDialog from "@/components/modals/Delete/ConfirmDialog";
 import CustomSnackbar from "@/components/snackbar/Snackbar";
 import { v4 as uuidv4 } from "uuid";
-
-interface ToolbarProps {
-  setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
-  setRowModesModel: (
-    newModel: (oldModel: GridRowModesModel) => GridRowModesModel
-  ) => void;
-  selectedStation: string;
-  setSelectedStation: (station: string) => void;
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-}
-
-function Toolbar(props: ToolbarProps) {
-  const {
-    setRows,
-    setRowModesModel,
-    selectedStation,
-    setSelectedStation,
-    searchQuery,
-    setSearchQuery,
-  } = props;
-
-  const handleAddClick = () => {
-    const id = uuidv4(); // Use UUID for the new record
-
-    setRows((oldRows) => {
-      const newRow = {
-        id,
-        type: "to",
-        email: "",
-        option1: false,
-        option2: false,
-        option3: false,
-        tvStation: selectedStation,
-        isNew: true,
-      };
-      return [...oldRows, newRow];
-    });
-
-    setRowModesModel((oldModel) => ({
-      ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: "email" },
-    }));
-  };
-
-  return (
-    <Box>
-      <Select
-        value={selectedStation}
-        onChange={(e) => setSelectedStation(e.target.value)}
-        displayEmpty
-        sx={{ width: 300, mb: 2 }}
-      >
-        <MenuItem value="">
-          <Typography sx={{ fontStyle: "italic" }}>放送局選択</Typography>
-        </MenuItem>
-        {mockTVStations.map((station) => (
-          <MenuItem key={station.id} value={station.name}>
-            {station.name}
-          </MenuItem>
-        ))}
-      </Select>
-      <Box sx={{ display: "flex", gap: 2, mb: 2, alignItems: "center" }}>
-        <TextField
-          // label="Search Email"
-          variant="outlined"
-          size="small"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          sx={{ width: 400 }}
-          slotProps={{
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            },
-          }}
-        />
-        <Button
-          color="primary"
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={handleAddClick}
-          disabled={!selectedStation}
-        >
-          新規追加
-        </Button>
-      </Box>
-    </Box>
-  );
-}
+import DataGridToolbar from "@/components/dataGridToolbar/DataGridToolbar";
 
 export default function EmailGrid() {
   const [rows, setRows] = React.useState<GridRowsProp>(mockEmails);
@@ -155,6 +63,29 @@ export default function EmailGrid() {
     );
     setSelectedRows([]);
     closeDeleteModal();
+  };
+
+  const handleAddClick = () => {
+    const id = uuidv4(); // Use UUID for the new record
+
+    setRows((oldRows) => {
+      const newRow = {
+        id,
+        type: "to",
+        email: "",
+        option1: false,
+        option2: false,
+        option3: false,
+        tvStation: selectedStation,
+        isNew: true,
+      };
+      return [...oldRows, newRow];
+    });
+
+    setRowModesModel((oldModel) => ({
+      ...oldModel,
+      [id]: { mode: GridRowModes.Edit, fieldToFocus: "email" },
+    }));
   };
 
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
@@ -266,6 +197,7 @@ export default function EmailGrid() {
     );
   };
 
+  // Grid column definitions
   const columns: GridColDef[] = [
     {
       field: "type",
@@ -391,13 +323,16 @@ export default function EmailGrid() {
         height: "80vh",
       }}
     >
-      <Toolbar
-        setRows={setRows}
-        setRowModesModel={setRowModesModel}
+      <Typography variant="h4" sx={{ mb: 4 }} gutterBottom>
+        メールアドレス設定画面
+      </Typography>
+      <DataGridToolbar
+        onAddClick={handleAddClick}
         selectedStation={selectedStation}
-        setSelectedStation={setSelectedStation}
+        onStationChange={setSelectedStation}
         searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
+        onSearchChange={setSearchQuery}
+        disableAddButton={!selectedStation}
       />
       <DataGrid
         rows={filteredRows}

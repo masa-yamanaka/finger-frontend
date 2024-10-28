@@ -5,7 +5,7 @@ export const dashboardSections = [
       "メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜",
     items: [
       { title: "メールアドレス設定", href: "/email-settings" },
-      { title: "アカウント管理", href: "/settings" },
+      { title: "アカウント管理", href: "/account-mangement" },
     ],
   },
   {

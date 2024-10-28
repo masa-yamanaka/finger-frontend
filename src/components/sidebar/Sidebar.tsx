@@ -62,7 +62,7 @@ const Sidebar: React.FC = () => {
               </ListItemButton>
               <ListItemButton
                 component={Link}
-                href="/settings"
+                href="/account-management"
                 className={styles.sectionListItem}
               >
                 <ListItemText primary="アカウント管理" />
