@@ -29,7 +29,7 @@ import {
 import { jaJP } from "@mui/x-data-grid/locales";
 import { mockEmails, mockTVStations } from "@/constants/emails";
 import { InputAdornment, TextField, Typography } from "@mui/material";
-import ConfirmDialog from "@/components/modals/Delete/ConfirmDialog";
+import ConfirmDialog from "@/components/modals/Confirm/ConfirmDialog";
 import CustomSnackbar from "@/components/snackbar/Snackbar";
 import { v4 as uuidv4 } from "uuid";
 import DataGridToolbar from "@/components/dataGridToolbar/DataGridToolbar";
@@ -63,6 +63,9 @@ export default function EmailGrid() {
     );
     setSelectedRows([]);
     closeDeleteModal();
+
+    // Add API call here?
+    console.log("Deleted row ids: ", selectedRows);
   };
 
   const handleAddClick = () => {
@@ -79,6 +82,8 @@ export default function EmailGrid() {
         tvStation: selectedStation,
         isNew: true,
       };
+      console.log("Adding new row: ", newRow);
+
       return [...oldRows, newRow];
     });
 
@@ -124,7 +129,14 @@ export default function EmailGrid() {
   };
 
   const handleSaveClick = (id: GridRowId) => () => {
+    // Add API here for update
+    // state not working correctly - masa
+    const updatedData = editRowData[id];
+    console.log("Saved data: ", updatedData);
+
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+
+    // Remove the edited row data from editRowData
     const newEditRowData = { ...editRowData };
     delete newEditRowData[id];
     setEditRowData(newEditRowData);

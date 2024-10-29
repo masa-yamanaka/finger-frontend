@@ -1,15 +1,12 @@
 import React from "react";
 import AddAccountForm from "@/features/account-management/AddAccountForm";
-import { Container, Typography } from "@mui/material";
+import AccountManagementAddLayout from "./layout";
 
 const AccountManagementAdd = () => {
   return (
-    <Container>
-      <Typography variant="h4" sx={{ my: 6, textAlign: "center" }}>
-        アカウント新規登録画面
-      </Typography>
+    <AccountManagementAddLayout title="アカウント新規登録画面">
       <AddAccountForm />
-    </Container>
+    </AccountManagementAddLayout>
   );
 };
 

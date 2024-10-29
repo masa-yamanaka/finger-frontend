@@ -203,7 +203,7 @@ const RegistrationForm = () => {
       </TableContainer>
 
       {/* Submit Button */}
-      <Box sx={{ display: "flex", justifyContent: "center", my: 6 }}>
+      <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
         <Button type="submit" variant="contained" color="primary" size="large">
           入力完了
         </Button>

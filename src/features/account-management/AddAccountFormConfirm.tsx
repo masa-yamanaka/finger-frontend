@@ -39,6 +39,12 @@ const ConfirmPage = () => {
     router.back(); // Navigate to the previous page
   };
 
+  const handleConfirm = () => {
+    // Add API call here
+    console.log("Confirm account data: ", accountData);
+    router.push("/account-management");
+  };
+
   return (
     <>
       <TableContainer
@@ -53,7 +59,6 @@ const ConfirmPage = () => {
                 <Typography>事業者種類</Typography>
               </StyledTableCell>
               <InputTableCell>
-                {/* <Typography>{accountData.type}</Typography> */}
                 <Select fullWidth name="type" value={accountData.type} disabled>
                   <MenuItem key={accountData.type} value={accountData.type}>
                     {accountData.type}
@@ -68,7 +73,6 @@ const ConfirmPage = () => {
                 <Typography>事業者名</Typography>
               </StyledTableCell>
               <InputTableCell>
-                {/* <Typography>{accountData.name}</Typography> */}
                 <Select fullWidth name="type" value={accountData.name} disabled>
                   <MenuItem key={accountData.name} value={accountData.name}>
                     {accountData.name}
@@ -83,7 +87,6 @@ const ConfirmPage = () => {
                 <Typography>管理権限</Typography>
               </StyledTableCell>
               <InputTableCell>
-                {/* <Typography>{accountData.role}</Typography> */}
                 <Select fullWidth name="type" value={accountData.role} disabled>
                   <MenuItem key={accountData.role} value={accountData.role}>
                     {accountData.role}
@@ -98,7 +101,6 @@ const ConfirmPage = () => {
                 <Typography>ログインID</Typography>
               </StyledTableCell>
               <InputTableCell>
-                {/* <Typography>{accountData.loginId}</Typography> */}
                 <TextField
                   fullWidth
                   name="loginId"
@@ -114,7 +116,6 @@ const ConfirmPage = () => {
                 <Typography>メールアドレス</Typography>
               </StyledTableCell>
               <InputTableCell>
-                {/* <Typography>{accountData.email}</Typography> */}
                 <TextField
                   fullWidth
                   name="email"
@@ -128,12 +129,7 @@ const ConfirmPage = () => {
       </TableContainer>
 
       {/* Confirm Button */}
-      <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
-        <Button variant="contained" color="primary" size="large">
-          確認完了
-        </Button>
-      </Box>
-      <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>
+      <Box sx={{ display: "flex", justifyContent: "center", gap: 4, my: 4 }}>
         <Button
           variant="outlined"
           color="secondary"
@@ -141,6 +137,14 @@ const ConfirmPage = () => {
           onClick={handleBack}
         >
           戻る
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          onClick={handleConfirm}
+        >
+          確認完了
         </Button>
       </Box>
     </>

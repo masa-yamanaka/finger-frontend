@@ -22,6 +22,7 @@ import { jaJP } from "@mui/x-data-grid/locales";
 // import { v4 as uuidv4 } from "uuid";
 import { mockAccounts } from "@/constants/accounts";
 import { useRouter } from "next/navigation";
+import { useAccountContext } from "@/context/AccountContext";
 
 const AccountManagement = () => {
   const [selectedStation, setSelectedStation] = React.useState("");
@@ -31,18 +32,11 @@ const AccountManagement = () => {
     {}
   );
   const router = useRouter();
+  const { setAccountData } = useAccountContext();
 
-  // Add logic here for add
   const handleAddClick = () => {
-    // const id = uuidv4(); // Use UUID for the new record
-    // setRows((oldRows) => [
-    //   ...oldRows,
-    //   { id, name: "", age: "", role: "", isNew: true },
-    // ]);
-    // setRowModesModel((oldModel) => ({
-    //   ...oldModel,
-    //   [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
-    // }));
+    // Reset accountData
+    setAccountData({});
     router.push("/account-management/add");
   };
 
@@ -95,13 +89,13 @@ const AccountManagement = () => {
     {
       field: "role",
       headerName: "権限",
-      width: 220,
+      width: 180,
       editable: false,
     },
     {
       field: "loginId",
       headerName: "ログインID",
-      width: 180,
+      width: 240,
       editable: false,
     },
     {
