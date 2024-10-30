@@ -2,15 +2,12 @@
 import { Container, Typography } from "@mui/material";
 import React, { ReactNode } from "react";
 
-interface AccountManagementAddLayoutProps {
+interface AccountFormLayoutProps {
   children: ReactNode;
   title: string;
 }
 
-const AccountManagementAddLayout = ({
-  children,
-  title,
-}: AccountManagementAddLayoutProps) => {
+const AccountFormLayout = ({ children, title }: AccountFormLayoutProps) => {
   return (
     <Container>
       <Typography variant="h4" sx={{ my: 4, textAlign: "center" }}>
@@ -21,4 +18,4 @@ const AccountManagementAddLayout = ({
   );
 };
 
-export default AccountManagementAddLayout;
+export default AccountFormLayout;

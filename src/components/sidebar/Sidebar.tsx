@@ -13,7 +13,7 @@ import Link from "next/link";
 import styles from "./Sidebar.module.scss";
 import { dashboardSections } from "@/constants/dashboard";
 
-const drawerWidth = 240;
+const drawerWidth = "240px";
 
 const Sidebar: React.FC = () => {
   return (

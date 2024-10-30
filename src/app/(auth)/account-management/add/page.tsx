@@ -1,12 +1,12 @@
 import React from "react";
 import AddAccountForm from "@/features/account-management/AddAccountForm";
-import AccountManagementAddLayout from "./layout";
+import AccountFormLayout from "@/components/layouts/AccountFormLayout";
 
 const AccountManagementAdd = () => {
   return (
-    <AccountManagementAddLayout title="アカウント新規登録画面">
+    <AccountFormLayout title="アカウント新規登録画面">
       <AddAccountForm />
-    </AccountManagementAddLayout>
+    </AccountFormLayout>
   );
 };
 

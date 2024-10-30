@@ -17,11 +17,11 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import {
-  mockAccountBusinessNames,
+  mockAccounts,
   mockAccountBusinessTypes,
+  mockAccountBusinessNames,
   mockAccountRoles,
 } from "@/constants/accounts";
-import { useAccountContext } from "@/context/AccountContext";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[100],
@@ -35,27 +35,13 @@ const InputTableCell = styled(TableCell)({
   padding: "16px",
 });
 
-const AddAccountForm = () => {
+const EditAccountForm = () => {
   const router = useRouter();
-  const { accountData, setAccountData } = useAccountContext();
-  const [formData, setFormData] = React.useState({
-    businessType: accountData?.businessType || "",
-    businessName: accountData?.businessName || "",
-    role: accountData?.role || "",
-    loginId: accountData?.loginId || "",
-    email: accountData?.email || "",
-  });
 
-  React.useEffect(() => {
-    // Update formData if accountData changes
-    setFormData({
-      businessType: accountData?.businessType || "",
-      businessName: accountData?.businessName || "",
-      role: accountData?.role || "",
-      loginId: accountData?.loginId || "",
-      email: accountData?.email || "",
-    });
-  }, [accountData]);
+  // Add API here to fetch the data
+  // Using the first item from mock for testing
+  //   const [formData, setFormData] = React.useState(mockAccounts[0]);
+  const [formData, setFormData] = React.useState({});
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -63,19 +49,13 @@ const AddAccountForm = () => {
       ...prevState,
       [name]: value,
     }));
-    setAccountData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Store form data in context
-    setAccountData(formData);
-    console.log("Add account data: ", accountData);
-    router.push("/account-management/add/confirm");
+    console.log("Confirm edit data: ", formData);
+    router.push("/account-management/");
   };
 
   return (
@@ -86,7 +66,67 @@ const AddAccountForm = () => {
       >
         <Table>
           <TableBody>
-            {/* Type */}
+            {/* Name */}
+            <TableRow>
+              <StyledTableCell>
+                <Typography>名前</Typography>
+              </StyledTableCell>
+              <InputTableCell>
+                <TextField
+                  fullWidth
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                />
+              </InputTableCell>
+            </TableRow>
+
+            {/* Kana */}
+            <TableRow>
+              <StyledTableCell>
+                <Typography>カナちゃん</Typography>
+              </StyledTableCell>
+              <InputTableCell>
+                <TextField
+                  fullWidth
+                  name="kana"
+                  value={formData.kana}
+                  onChange={handleChange}
+                />
+              </InputTableCell>
+            </TableRow>
+
+            {/* Email */}
+            <TableRow>
+              <StyledTableCell>
+                <Typography>メールアドレス</Typography>
+              </StyledTableCell>
+              <InputTableCell>
+                <TextField
+                  fullWidth
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+              </InputTableCell>
+            </TableRow>
+
+            {/* Login ID */}
+            <TableRow>
+              <StyledTableCell>
+                <Typography>ログインID</Typography>
+              </StyledTableCell>
+              <InputTableCell>
+                <TextField
+                  fullWidth
+                  name="loginId"
+                  value={formData.loginId}
+                  onChange={handleChange}
+                />
+              </InputTableCell>
+            </TableRow>
+
+            {/* Business Type */}
             <TableRow>
               <StyledTableCell>
                 <Typography>事業者種類</Typography>
@@ -102,16 +142,16 @@ const AddAccountForm = () => {
                   <MenuItem value="" disabled>
                     事業者種類を選択
                   </MenuItem>
-                  {mockAccountBusinessTypes.map((type) => (
-                    <MenuItem key={type} value={type}>
-                      {type}
+                  {mockAccountBusinessTypes.map((businessType) => (
+                    <MenuItem key={businessType} value={businessType}>
+                      {businessType}
                     </MenuItem>
                   ))}
                 </Select>
               </InputTableCell>
             </TableRow>
 
-            {/* Name */}
+            {/* Bussiness Name */}
             <TableRow>
               <StyledTableCell>
                 <Typography>事業者名</Typography>
@@ -123,6 +163,7 @@ const AddAccountForm = () => {
                   value={formData.businessName}
                   onChange={handleChange}
                   displayEmpty
+                  inputProps={{ "aria-label": "事業者名を選択" }}
                 >
                   <MenuItem value="" disabled>
                     事業者名を選択
@@ -160,38 +201,6 @@ const AddAccountForm = () => {
                 </Select>
               </InputTableCell>
             </TableRow>
-
-            {/* Login ID */}
-            <TableRow>
-              <StyledTableCell>
-                <Typography>ログインID</Typography>
-              </StyledTableCell>
-              <InputTableCell>
-                <TextField
-                  fullWidth
-                  name="loginId"
-                  value={formData.loginId}
-                  onChange={handleChange}
-                  placeholder="ログインIDを入力"
-                />
-              </InputTableCell>
-            </TableRow>
-
-            {/* Email */}
-            <TableRow>
-              <StyledTableCell>
-                <Typography>メールアドレス</Typography>
-              </StyledTableCell>
-              <InputTableCell>
-                <TextField
-                  fullWidth
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="メールアドレスを入力"
-                />
-              </InputTableCell>
-            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
@@ -199,11 +208,11 @@ const AddAccountForm = () => {
       {/* Submit Button */}
       <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
         <Button type="submit" variant="contained" color="primary" size="large">
-          入力完了
+          確定
         </Button>
       </Box>
     </form>
   );
 };
 
-export default AddAccountForm;
+export default EditAccountForm;

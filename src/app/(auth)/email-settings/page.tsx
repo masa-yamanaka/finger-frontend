@@ -58,14 +58,14 @@ export default function EmailGrid() {
   };
 
   const confirmDelete = () => {
+    // Add API call here?
+    console.log("Deleted row ids: ", selectedRows);
+
     setRows((oldRows) =>
       oldRows.filter((row) => !selectedRows.includes(row.id))
     );
     setSelectedRows([]);
     closeDeleteModal();
-
-    // Add API call here?
-    console.log("Deleted row ids: ", selectedRows);
   };
 
   const handleAddClick = () => {
@@ -82,6 +82,8 @@ export default function EmailGrid() {
         tvStation: selectedStation,
         isNew: true,
       };
+
+      // Add API here for adding
       console.log("Adding new row: ", newRow);
 
       return [...oldRows, newRow];

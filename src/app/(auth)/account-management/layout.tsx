@@ -1,6 +1,11 @@
 import { AccountProvider } from "@/context/AccountContext";
+import { ReactNode } from "react";
 
-const AccountManagementLayout = ({ children }) => {
+interface LayoutProps {
+  children: ReactNode;
+}
+
+const AccountManagementLayout = ({ children }: LayoutProps) => {
   return <AccountProvider>{children}</AccountProvider>;
 };
 

@@ -53,29 +53,45 @@ const ConfirmPage = () => {
       >
         <Table>
           <TableBody>
-            {/* Type */}
+            {/* Business Type */}
             <TableRow>
               <StyledTableCell>
                 <Typography>事業者種類</Typography>
               </StyledTableCell>
               <InputTableCell>
-                <Select fullWidth name="type" value={accountData.type} disabled>
-                  <MenuItem key={accountData.type} value={accountData.type}>
-                    {accountData.type}
+                <Select
+                  fullWidth
+                  name="businessType"
+                  value={accountData.businessType}
+                  disabled
+                >
+                  <MenuItem
+                    key={accountData.businessType}
+                    value={accountData.businessType}
+                  >
+                    {accountData.businessType}
                   </MenuItem>
                 </Select>
               </InputTableCell>
             </TableRow>
 
-            {/* Name */}
+            {/* Business Name */}
             <TableRow>
               <StyledTableCell>
                 <Typography>事業者名</Typography>
               </StyledTableCell>
               <InputTableCell>
-                <Select fullWidth name="type" value={accountData.name} disabled>
-                  <MenuItem key={accountData.name} value={accountData.name}>
-                    {accountData.name}
+                <Select
+                  fullWidth
+                  name="businessName"
+                  value={accountData.businessName}
+                  disabled
+                >
+                  <MenuItem
+                    key={accountData.businessName}
+                    value={accountData.businessName}
+                  >
+                    {accountData.businessName}
                   </MenuItem>
                 </Select>
               </InputTableCell>
@@ -131,8 +147,8 @@ const ConfirmPage = () => {
       {/* Confirm Button */}
       <Box sx={{ display: "flex", justifyContent: "center", gap: 4, my: 4 }}>
         <Button
-          variant="outlined"
-          color="secondary"
+          variant="contained"
+          color="error"
           size="large"
           onClick={handleBack}
         >

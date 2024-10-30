@@ -7,7 +7,6 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
 import {
-  GridRowsProp,
   GridRowModesModel,
   GridRowModes,
   DataGrid,
@@ -23,19 +22,25 @@ import { jaJP } from "@mui/x-data-grid/locales";
 import { mockAccounts } from "@/constants/accounts";
 import { useRouter } from "next/navigation";
 import { useAccountContext } from "@/context/AccountContext";
+import ConfirmDialog from "@/components/modals/Confirm/ConfirmDialog";
 
 const AccountManagement = () => {
   const [selectedStation, setSelectedStation] = React.useState("");
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [rows, setRows] = React.useState(mockAccounts);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}
   );
   const router = useRouter();
   const { setAccountData } = useAccountContext();
+  const [rowToDelete, setRowToDelete] = React.useState<GridRowId | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
+
+  // Add API here to fetch data
+  // Set to rows to empty [] and setRows with the fetched data
+  const [rows, setRows] = React.useState(mockAccounts);
 
   const handleAddClick = () => {
-    // Reset accountData
+    // Reset accountData context
     setAccountData({});
     router.push("/account-management/add");
   };
@@ -50,15 +55,31 @@ const AccountManagement = () => {
   };
 
   const handleEditClick = (id: GridRowId) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+    //  Add API here for editing id
+    console.log("Edit clicked for id: ", id);
+    router.push(`/account-management/edit/`);
   };
 
   const handleSaveClick = (id: GridRowId) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
-  const handleDeleteClick = (id: GridRowId) => () => {
-    setRows(rows.filter((row) => row.id !== id));
+  const handleDeleteClick = () => {
+    // Add API here to delete
+    console.log("Deleted row id: ", rowToDelete);
+
+    setRows(rows.filter((row) => row.id !== rowToDelete));
+    setRowToDelete(null);
+    closeDeleteModal();
+  };
+
+  const openDeleteModal = (id: GridRowId) => () => {
+    setRowToDelete(id);
+    setIsDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
   };
 
   const handleCancelClick = (id: GridRowId) => () => {
@@ -84,7 +105,12 @@ const AccountManagement = () => {
   };
 
   const columns: GridColDef[] = [
-    { field: "name", headerName: "事業者名", width: 180, editable: false },
+    {
+      field: "businessName",
+      headerName: "事業者名",
+      width: 180,
+      editable: false,
+    },
 
     {
       field: "role",
@@ -138,7 +164,7 @@ const AccountManagement = () => {
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
-            onClick={handleDeleteClick(id)}
+            onClick={openDeleteModal(id)}
             color="inherit"
           />,
         ];
@@ -185,6 +211,15 @@ const AccountManagement = () => {
           },
         }}
         localeText={jaJP.components.MuiDataGrid.defaultProps.localeText}
+      />
+      <ConfirmDialog
+        open={isDeleteModalOpen}
+        title="削除の確認"
+        description="選択した行を削除してもよろしいですか？この操作は元に戻せません。"
+        onClose={closeDeleteModal}
+        onConfirm={handleDeleteClick}
+        confirmButtonText="OK"
+        cancelButtonText="キャンセル"
       />
     </Box>
   );
