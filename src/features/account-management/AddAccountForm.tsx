@@ -21,7 +21,6 @@ import {
   mockAccountBusinessTypes,
   mockAccountRoles,
 } from "@/constants/accounts";
-import { useAccountContext } from "@/context/AccountContext";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[100],
@@ -37,25 +36,13 @@ const InputTableCell = styled(TableCell)({
 
 const AddAccountForm = () => {
   const router = useRouter();
-  const { accountData, setAccountData } = useAccountContext();
   const [formData, setFormData] = React.useState({
-    businessType: accountData?.businessType || "",
-    businessName: accountData?.businessName || "",
-    role: accountData?.role || "",
-    loginId: accountData?.loginId || "",
-    email: accountData?.email || "",
+    businessType: "",
+    businessName: "",
+    role: "",
+    loginId: "",
+    email: "",
   });
-
-  React.useEffect(() => {
-    // Update formData if accountData changes
-    setFormData({
-      businessType: accountData?.businessType || "",
-      businessName: accountData?.businessName || "",
-      role: accountData?.role || "",
-      loginId: accountData?.loginId || "",
-      email: accountData?.email || "",
-    });
-  }, [accountData]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -63,18 +50,13 @@ const AddAccountForm = () => {
       ...prevState,
       [name]: value,
     }));
-    setAccountData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Store form data in context
-    setAccountData(formData);
-    console.log("Add account data: ", accountData);
+    // Add API here for nagivating to Confirm page
+    console.log("Add account data: ", formData);
     router.push("/account-management/add/confirm");
   };
 

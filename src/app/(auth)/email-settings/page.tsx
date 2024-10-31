@@ -163,7 +163,6 @@ export default function EmailGrid() {
 
     // Add logic here to send test email
     console.log("Selected Rows:", selectedData); // logging the data to send
-    // console.log("All Rows:", filteredRows); // test
   };
 
   const handleCancelClick = (id: GridRowId) => () => {
@@ -227,13 +226,13 @@ export default function EmailGrid() {
       width: 300,
       editable: true,
     },
-    // tvStation is enabled just for testing
-    {
-      field: "tvStation",
-      headerName: "TV Station",
-      width: 150,
-      editable: false,
-    },
+    // tvStation column for testing
+    // {
+    //   field: "tvStation",
+    //   headerName: "TV Station",
+    //   width: 150,
+    //   editable: false,
+    // },
     {
       field: "option1",
       headerName: "Option 1",
@@ -349,7 +348,8 @@ export default function EmailGrid() {
         disableAddButton={!selectedStation}
       />
       <DataGrid
-        rows={filteredRows}
+        // rows={filteredRows}
+        rows={rows}
         columns={columns}
         editMode="row"
         rowModesModel={rowModesModel}

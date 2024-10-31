@@ -16,7 +16,6 @@ import {
   TextField,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useAccountContext } from "@/context/AccountContext";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[100],
@@ -32,16 +31,24 @@ const InputTableCell = styled(TableCell)({
 
 const ConfirmPage = () => {
   const router = useRouter();
-  const { accountData } = useAccountContext();
+
+  // Add API here to set formData
+  const [formData, setFormData] = React.useState({
+    businessType: "",
+    businessName: "",
+    role: "",
+    loginId: "",
+    email: "",
+  });
 
   // Back button handler
   const handleBack = () => {
-    router.back(); // Navigate to the previous page
+    router.back();
   };
 
   const handleConfirm = () => {
-    // Add API call here
-    console.log("Confirm account data: ", accountData);
+    // Add API here to handle confirm
+    console.log("Confirm data: ", formData);
     router.push("/account-management");
   };
 
@@ -62,14 +69,14 @@ const ConfirmPage = () => {
                 <Select
                   fullWidth
                   name="businessType"
-                  value={accountData.businessType}
+                  value={formData.businessType}
                   disabled
                 >
                   <MenuItem
-                    key={accountData.businessType}
-                    value={accountData.businessType}
+                    key={formData.businessType}
+                    value={formData.businessType}
                   >
-                    {accountData.businessType}
+                    {formData.businessType}
                   </MenuItem>
                 </Select>
               </InputTableCell>
@@ -84,14 +91,14 @@ const ConfirmPage = () => {
                 <Select
                   fullWidth
                   name="businessName"
-                  value={accountData.businessName}
+                  value={formData.businessName}
                   disabled
                 >
                   <MenuItem
-                    key={accountData.businessName}
-                    value={accountData.businessName}
+                    key={formData.businessName}
+                    value={formData.businessName}
                   >
-                    {accountData.businessName}
+                    {formData.businessName}
                   </MenuItem>
                 </Select>
               </InputTableCell>
@@ -103,9 +110,9 @@ const ConfirmPage = () => {
                 <Typography>管理権限</Typography>
               </StyledTableCell>
               <InputTableCell>
-                <Select fullWidth name="type" value={accountData.role} disabled>
-                  <MenuItem key={accountData.role} value={accountData.role}>
-                    {accountData.role}
+                <Select fullWidth name="type" value={formData.role} disabled>
+                  <MenuItem key={formData.role} value={formData.role}>
+                    {formData.role}
                   </MenuItem>
                 </Select>
               </InputTableCell>
@@ -120,7 +127,7 @@ const ConfirmPage = () => {
                 <TextField
                   fullWidth
                   name="loginId"
-                  value={accountData.loginId}
+                  value={formData.loginId}
                   disabled
                 />
               </InputTableCell>
@@ -135,7 +142,7 @@ const ConfirmPage = () => {
                 <TextField
                   fullWidth
                   name="email"
-                  value={accountData.email}
+                  value={formData.email}
                   disabled
                 />
               </InputTableCell>

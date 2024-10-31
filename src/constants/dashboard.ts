@@ -12,7 +12,7 @@ export const dashboardSections = [
     title: "番組連携",
     description: "メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜",
     items: [
-      { title: "番組情報連携", href: "/" },
+      { title: "番組情報連携", href: "/program-information" },
       { title: "番組確認一覧連携", href: "/" },
     ],
   },

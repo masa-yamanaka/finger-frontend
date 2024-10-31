@@ -3,6 +3,7 @@
 import { Container, Typography, Box, Paper } from "@mui/material";
 import Link from "next/link";
 import { dashboardSections } from "@/constants/dashboard";
+import MessageBox from "@/components/messageBox/MessageBox";
 
 export default function DashboardPage() {
   return (
@@ -10,12 +11,10 @@ export default function DashboardPage() {
       <Typography variant="h4" gutterBottom>
         Dashboard
       </Typography>
-      <Box>
-        <Paper elevation={2} sx={{ padding: 2, marginBottom: 4 }}>
-          <Typography variant="h6">Welcome to your dashboard!</Typography>
-          <Typography variant="body1">You can add messages here!</Typography>
-        </Paper>
-      </Box>
+      <MessageBox
+        title="Welcome to your dashboard!"
+        message="You can add messages here!"
+      />
 
       {dashboardSections.map((section, sectionIndex) => (
         <Box key={sectionIndex} sx={{ mb: 8 }}>
