@@ -10,6 +10,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { mockProgramInfo } from "@/constants/program-information";
 import ProgramInformationAccordion from "@/features/program-information/Accordion";
+import ConfirmDialog from "@/components/modals/Confirm/ConfirmDialog";
 
 const columns: GridColDef[] = [
   {
@@ -60,19 +61,31 @@ const columns: GridColDef[] = [
 ];
 
 const ProgramInformation = () => {
+  const router = useRouter();
   const [rows, setRows] = useState(mockProgramInfo);
   const [selectedRows, setSelectedRows] = React.useState<GridRowSelectionModel>(
     []
   );
-  const router = useRouter();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
 
   const handleUpload = () => {
     router.push(`/program-information/upload`);
   };
 
   const handleDeleteSelected = () => {
+    // Add API here to delete
+    console.log("Deleted row ids: ", selectedRows);
+
     setRows(rows.filter((row) => !selectedRows.includes(row.id)));
     setSelectedRows([]);
+    closeDeleteModal();
+  };
+
+  const openDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
   };
 
   return (
@@ -82,7 +95,7 @@ const ProgramInformation = () => {
       <Button
         variant="contained"
         color="primary"
-        startIcon={<UploadIcon />}
+        // startIcon={<UploadIcon />}
         onClick={handleUpload}
         sx={{ mb: 2 }}
       >
@@ -117,13 +130,22 @@ const ProgramInformation = () => {
             variant="contained"
             color="error"
             startIcon={<DeleteIcon />}
-            onClick={handleDeleteSelected}
+            onClick={openDeleteModal}
             disabled={selectedRows.length === 0}
             sx={{ mt: 2 }}
           >
             削除
           </Button>
         </Box>
+        <ConfirmDialog
+          open={isDeleteModalOpen}
+          title="削除の確認"
+          description="選択した行を削除してもよろしいですか？この操作は元に戻せません。"
+          onClose={closeDeleteModal}
+          onConfirm={handleDeleteSelected}
+          confirmButtonText="OK"
+          cancelButtonText="キャンセル"
+        />
       </Box>
     </DefaultPageLayout>
   );

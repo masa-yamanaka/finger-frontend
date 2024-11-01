@@ -1,9 +1,7 @@
 "use client";
-
 import React, { useState } from "react";
 import {
   Box,
-  TextField,
   MenuItem,
   FormControl,
   Select,
@@ -13,6 +11,7 @@ import {
   AccordionSummary,
   AccordionDetails,
   Typography,
+  Button,
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -31,6 +30,20 @@ const ProgramInformationAccordion = () => {
 
   const handleStatusChange = (event) => {
     setStatusValue(event.target.value);
+  };
+
+  const handleSearch = () => {
+    // Add logic here for search button
+    const searchParams = {
+      tvStation: selectValue,
+      broadcastPeriod: broadcastPeriod
+        ? broadcastPeriod.format("YYYY-MM-DD")
+        : null,
+      uploadDate: uploadDate ? uploadDate.format("YYYY-MM-DD") : null,
+      status: statusValue,
+    };
+
+    console.log("Search parameters:", searchParams);
   };
 
   return (
@@ -127,6 +140,17 @@ const ProgramInformationAccordion = () => {
                   </FormControl>
                 </Box>
               </Stack>
+            </Stack>
+
+            {/* Search Button */}
+            <Stack direction="row" justifyContent="flex-end">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSearch}
+              >
+                検索
+              </Button>
             </Stack>
           </Box>
         </AccordionDetails>

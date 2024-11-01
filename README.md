@@ -43,10 +43,7 @@ run
 npm run storybook
 ```
 
-## install dependencies
+## Other libraries used
 
-```
-npm install @mui/material-nextjs @emotion/cache
-npm install @mui/icons-material
-npm install --save-dev sass
-```
+MUI
+react-dropzone

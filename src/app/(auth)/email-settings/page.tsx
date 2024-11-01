@@ -58,7 +58,7 @@ export default function EmailGrid() {
   };
 
   const confirmDelete = () => {
-    // Add API call here?
+    // Add API here to delete
     console.log("Deleted row ids: ", selectedRows);
 
     setRows((oldRows) =>
