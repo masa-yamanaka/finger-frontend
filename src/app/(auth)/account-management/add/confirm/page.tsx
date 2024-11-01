@@ -1,5 +1,5 @@
 import React from "react";
-import AddAccountFormConfirm from "@/features/account-management/AddAccountFormConfirm";
+import AddAccountFormConfirm from "@/features/account-management/form/AddAccountFormConfirm";
 import AccountFormLayout from "@/components/layouts/AccountFormLayout";
 
 const AccountManagementAdd = () => {

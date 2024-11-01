@@ -1,6 +1,6 @@
 import React from "react";
 import AccountFormLayout from "@/components/layouts/AccountFormLayout";
-import EditAccountForm from "@/features/account-management/EditAccountForm";
+import EditAccountForm from "@/features/account-management/form/EditAccountForm";
 
 const AccountManagementEdit = () => {
   return (
