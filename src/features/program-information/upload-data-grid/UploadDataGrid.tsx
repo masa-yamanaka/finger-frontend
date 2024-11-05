@@ -7,16 +7,19 @@ import { Box } from "@mui/material";
 interface UploadedFile {
   id: string;
   name: string;
-  date: Date | null;
+  startDate: Date | null;
+  endDate: Date | null;
   reason: string;
-  file: File; // The actual File object
+  file: File;
 }
+
 interface UploadDataGridProps {
   uploadedFiles: UploadedFile[];
   onDeleteFile: (id: string) => void;
   onRowEdit: (updatedFile: UploadedFile) => void;
 }
 
+// Create custom Date Component with start/end validation? -masa
 const UploadDataGrid: React.FC<UploadDataGridProps> = ({
   uploadedFiles,
   onDeleteFile,
@@ -25,8 +28,15 @@ const UploadDataGrid: React.FC<UploadDataGridProps> = ({
   const columns: GridColDef[] = [
     { field: "name", headerName: "アップロードファイル", flex: 1 },
     {
-      field: "date",
-      headerName: "対象放送期間",
+      field: "startDate",
+      headerName: "開始日",
+      type: "date",
+      flex: 1,
+      editable: true,
+    },
+    {
+      field: "endDate",
+      headerName: "終了日",
       type: "date",
       flex: 1,
       editable: true,
@@ -69,7 +79,6 @@ const UploadDataGrid: React.FC<UploadDataGridProps> = ({
       <DataGrid
         rows={uploadedFiles}
         columns={columns}
-        // editMode="row"
         disableRowSelectionOnClick
         localeText={jaJP.components.MuiDataGrid.defaultProps.localeText}
         processRowUpdate={processRowUpdate}

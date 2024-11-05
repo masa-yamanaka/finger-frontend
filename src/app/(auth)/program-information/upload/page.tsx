@@ -56,7 +56,7 @@ const ProgramInformationUploadPage = () => {
         <UploadDataGrid
           uploadedFiles={uploadedFiles}
           onDeleteFile={handleDeleteFile}
-          onRowEdit={handleRowEdit} // Pass the edit handler to the DataGrid
+          onRowEdit={handleRowEdit}
         />
       </Box>
 

@@ -12,34 +12,49 @@ import {
   AccordionDetails,
   Typography,
   Button,
+  Checkbox,
+  ListItemText,
+  OutlinedInput,
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import "dayjs/locale/ja";
+import { mockStatus, mockTvStations } from "@/constants/program-information";
 
 const ProgramInformationAccordion = () => {
-  const [uploadDate, setUploadDate] = useState(null);
-  const [broadcastPeriod, setbroadcastPeriod] = useState(null);
-  const [selectValue, setSelectValue] = useState("");
-  const [statusValue, setStatusValue] = useState("");
+  const [uploadDateStart, setUploadDateStart] = useState(null);
+  const [uploadDateEnd, setUploadDateEnd] = useState(null);
+  const [broadcastPeriodStart, setbroadcastPeriodStart] = useState(null);
+  const [broadcastPeriodEnd, setbroadcastPeriodEnd] = useState(null);
+  const [tvStation, setTvStation] = useState([]);
+  const [statusValue, setStatusValue] = useState([]);
 
-  const handleSelectChange = (event) => {
-    setSelectValue(event.target.value);
+  const handleTvStationChange = (event) => {
+    setTvStation(
+      event.target.value === "string"
+        ? event.target.value.split(",")
+        : event.target.value
+    );
   };
 
   const handleStatusChange = (event) => {
-    setStatusValue(event.target.value);
+    setStatusValue(
+      event.target.value === "string"
+        ? event.target.value.split(",")
+        : event.target.value
+    );
   };
 
   const handleSearch = () => {
     // Add logic here for search button
     const searchParams = {
-      tvStation: selectValue,
-      broadcastPeriod: broadcastPeriod
-        ? broadcastPeriod.format("YYYY-MM-DD")
-        : null,
-      uploadDate: uploadDate ? uploadDate.format("YYYY-MM-DD") : null,
+      tvStation: tvStation,
+      broadcastPeriodStart: broadcastPeriodStart,
+      broadcastPeriodEnd: broadcastPeriodEnd,
+      uploadDateStart: uploadDateStart ? uploadDateStart : null,
+      uploadDateEnd: uploadDateEnd ? uploadDateEnd : null,
       status: statusValue,
     };
 
@@ -47,7 +62,7 @@ const ProgramInformationAccordion = () => {
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ja">
       <Accordion defaultExpanded>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -68,14 +83,20 @@ const ProgramInformationAccordion = () => {
                   <FormControl fullWidth variant="outlined" size="small">
                     <InputLabel id="tv-station-label">放送局を選択</InputLabel>
                     <Select
-                      labelId="tv-station-label"
-                      value={selectValue}
-                      onChange={handleSelectChange}
                       label="放送局を選択"
+                      labelId="tv-station-label"
+                      multiple
+                      value={tvStation}
+                      onChange={handleTvStationChange}
+                      input={<OutlinedInput label="Tag" />}
+                      renderValue={(selected) => selected.join(", ")}
                     >
-                      <MenuItem value={10}>Option 1</MenuItem>
-                      <MenuItem value={20}>Option 2</MenuItem>
-                      <MenuItem value={30}>Option 3</MenuItem>
+                      {mockTvStations.map((station) => (
+                        <MenuItem key={station} value={station}>
+                          <Checkbox checked={tvStation.includes(station)} />
+                          <ListItemText primary={station} />
+                        </MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 </Box>
@@ -88,14 +109,25 @@ const ProgramInformationAccordion = () => {
                 </Box>
                 <Box sx={{ width: "200px" }}>
                   <DatePicker
-                    format="YYYY/MM/DD"
                     slotProps={{
                       calendarHeader: { format: "YYYY年MM月" },
                       textField: { size: "small" },
                     }}
-                    value={broadcastPeriod}
-                    onChange={(newValue) => setbroadcastPeriod(newValue)}
-                    label="対象放送期間"
+                    value={broadcastPeriodStart}
+                    onChange={(newValue) => setbroadcastPeriodStart(newValue)}
+                    label="対象放送期間start"
+                  />
+                </Box>
+                <Typography>〜</Typography>
+                <Box sx={{ width: "200px" }}>
+                  <DatePicker
+                    slotProps={{
+                      calendarHeader: { format: "YYYY年MM月" },
+                      textField: { size: "small" },
+                    }}
+                    value={broadcastPeriodEnd}
+                    onChange={(newValue) => setbroadcastPeriodEnd(newValue)}
+                    label="対象放送期間end"
                   />
                 </Box>
               </Stack>
@@ -107,14 +139,25 @@ const ProgramInformationAccordion = () => {
                 </Box>
                 <Box sx={{ width: "200px" }}>
                   <DatePicker
-                    format="YYYY/MM/DD"
                     slotProps={{
                       calendarHeader: { format: "YYYY年MM月" },
                       textField: { size: "small" },
                     }}
-                    value={uploadDate}
-                    onChange={(newValue) => setUploadDate(newValue)}
-                    label="アップロード日"
+                    value={uploadDateStart}
+                    onChange={(newValue) => setUploadDateStart(newValue)}
+                    label="アップロード日start"
+                  />
+                </Box>
+                <Typography>〜</Typography>
+                <Box sx={{ width: "200px" }}>
+                  <DatePicker
+                    slotProps={{
+                      calendarHeader: { format: "YYYY年MM月" },
+                      textField: { size: "small" },
+                    }}
+                    value={uploadDateEnd}
+                    onChange={(newValue) => setUploadDateEnd(newValue)}
+                    label="アップロード日end"
                   />
                 </Box>
               </Stack>
@@ -128,14 +171,20 @@ const ProgramInformationAccordion = () => {
                   <FormControl fullWidth variant="outlined" size="small">
                     <InputLabel id="status-label">ステータスを選択</InputLabel>
                     <Select
+                      label="ステータスを選択"
                       labelId="status-label"
+                      multiple
                       value={statusValue}
                       onChange={handleStatusChange}
-                      label="ステータスを選択"
+                      input={<OutlinedInput label="Tag" />}
+                      renderValue={(selected) => selected.join(", ")}
                     >
-                      <MenuItem value={10}>Option 1</MenuItem>
-                      <MenuItem value={20}>Option 2</MenuItem>
-                      <MenuItem value={30}>Option 3</MenuItem>
+                      {mockStatus.map((status) => (
+                        <MenuItem key={status} value={status}>
+                          <Checkbox checked={statusValue.includes(status)} />
+                          <ListItemText primary={status} />
+                        </MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 </Box>

@@ -1,8 +1,7 @@
 "use client";
 import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
 import MessageBox from "@/components/messageBox/MessageBox";
-import { Typography, Box, Button } from "@mui/material";
-import UploadIcon from "@mui/icons-material/Upload";
+import { Typography, Box, Button, Stack, Link } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import { jaJP } from "@mui/x-data-grid/locales";
@@ -19,44 +18,68 @@ const columns: GridColDef[] = [
     width: 180,
   },
   {
-    field: "airStart",
-    headerName: "Air Start",
+    field: "broadcastPeriodStart",
+    headerName: "対象放送期間(Start)",
     type: "date",
-    // width: 100,
+    width: 150,
+    editable: true,
   },
   {
-    field: "airEnd",
-    headerName: "Air End",
+    field: "broadcastPeriodEnd",
+    headerName: "対象放送期間(End)",
     type: "date",
-    // width: 100,
+    width: 150,
+    editable: true,
   },
   {
     field: "status",
     headerName: "ステータス",
-    // width: 150,
     type: "singleSelect",
     valueOptions: ["作成完了", "確定", "差戻し"],
   },
   {
     field: "fileName",
     headerName: "ファイル名",
-    // width: 240
+    renderCell: (params) => {
+      const handleDownload = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        console.log(`Downloading file: ${params.value}`);
+      };
+
+      return (
+        <Link
+          component="button"
+          variant="body2"
+          onClick={handleDownload}
+          sx={{
+            textDecoration: "none",
+            "&:hover": {
+              textDecoration: "underline",
+              cursor: "pointer",
+            },
+          }}
+        >
+          {params.value}
+        </Link>
+      );
+    },
   },
   {
     field: "uploadDate",
     headerName: "アップロード日時",
     type: "date",
-    // width: 150,
   },
   {
     field: "message",
     headerName: "通信欄",
     width: 240,
+    editable: true,
   },
   {
     field: "reason",
     headerName: "差戻し理由",
     width: 240,
+    editable: true,
   },
 ];
 
@@ -75,10 +98,20 @@ const ProgramInformation = () => {
   const handleDeleteSelected = () => {
     // Add API here to delete
     console.log("Deleted row ids: ", selectedRows);
-
     setRows(rows.filter((row) => !selectedRows.includes(row.id)));
     setSelectedRows([]);
     closeDeleteModal();
+  };
+
+  const handleDownloadSelected = () => {
+    // Add logic here for handling Downloads
+    console.log("Downloading rows with ids: ", selectedRows);
+
+    const selectedRowsFileNames = rows
+      .filter((row) => selectedRows.includes(row.id))
+      .map((row) => row.fileName);
+
+    console.log("Downloading files: ", selectedRowsFileNames);
   };
 
   const openDeleteModal = () => {
@@ -90,12 +123,10 @@ const ProgramInformation = () => {
 
   return (
     <DefaultPageLayout title="番組情報連携">
-      {/* <MessageBox title="" message="important notice of information" /> */}
       <Typography sx={{ color: "red", mb: 4 }}>メッセージエリア</Typography>
       <Button
         variant="contained"
         color="primary"
-        // startIcon={<UploadIcon />}
         onClick={handleUpload}
         sx={{ mb: 2 }}
       >
@@ -125,18 +156,30 @@ const ProgramInformation = () => {
           }}
           localeText={jaJP.components.MuiDataGrid.defaultProps.localeText}
         />
-        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button
-            variant="contained"
-            color="error"
-            startIcon={<DeleteIcon />}
-            onClick={openDeleteModal}
-            disabled={selectedRows.length === 0}
-            sx={{ mt: 2 }}
-          >
-            削除
-          </Button>
-        </Box>
+        <Stack direction="row" justifyContent="space-between">
+          <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+            <Button
+              variant="contained"
+              onClick={handleDownloadSelected}
+              disabled={selectedRows.length === 0}
+            >
+              ダウンロード
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              startIcon={<DeleteIcon />}
+              onClick={openDeleteModal}
+              disabled={selectedRows.length === 0}
+            >
+              削除
+            </Button>
+          </Stack>
+          <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+            <Button variant="contained">確定</Button>
+            <Button variant="contained">差戻し</Button>
+          </Stack>
+        </Stack>
         <ConfirmDialog
           open={isDeleteModalOpen}
           title="削除の確認"
