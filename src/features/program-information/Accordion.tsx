@@ -88,7 +88,7 @@ const ProgramInformationAccordion = () => {
                       multiple
                       value={tvStation}
                       onChange={handleTvStationChange}
-                      input={<OutlinedInput label="Tag" />}
+                      input={<OutlinedInput label="放送局を選択" />}
                       renderValue={(selected) => selected.join(", ")}
                     >
                       {mockTvStations.map((station) => (
@@ -176,7 +176,7 @@ const ProgramInformationAccordion = () => {
                       multiple
                       value={statusValue}
                       onChange={handleStatusChange}
-                      input={<OutlinedInput label="Tag" />}
+                      input={<OutlinedInput label="ステータスを選択" />}
                       renderValue={(selected) => selected.join(", ")}
                     >
                       {mockStatus.map((status) => (

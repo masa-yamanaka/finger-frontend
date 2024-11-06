@@ -20,6 +20,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     open: true,
+    title: "Title",
+    message: "Message",
     onClose: () => {},
   },
 };

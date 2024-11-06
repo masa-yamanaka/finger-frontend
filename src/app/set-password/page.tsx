@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import SetPassword from "@/features/auth/components/set-password/SetPassword";
-import SuccessDialog from "@/features/auth/components/set-password/SuccessDialog";
+import SuccessDialog from "@/components/modals/Success/SuccessDialog";
 
 export default function SetPasswordPage() {
   const [password, setPassword] = useState("");
@@ -28,10 +28,11 @@ export default function SetPasswordPage() {
 
     // Add logic here to handle the password setting
     // If successful, show success dialog
+    console.log("Password set to: ", password);
     setShowSuccess(true);
   };
 
-  const handleSuccessClose = () => {
+  const handleCloseModal = () => {
     setShowSuccess(false);
     // Redirect to dashboard after the dialog is closed
     router.push("/dashboard");
@@ -47,7 +48,12 @@ export default function SetPasswordPage() {
         handleSetPassword={handleSetPassword}
         error={error}
       />
-      <SuccessDialog open={showSuccess} onClose={handleSuccessClose} />
+      <SuccessDialog
+        open={showSuccess}
+        onClose={handleCloseModal}
+        title="パスワードの初期設定が完了しました"
+        buttonText="OK"
+      />
     </>
   );
 }

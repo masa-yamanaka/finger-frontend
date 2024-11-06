@@ -1,38 +1,46 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Select, MenuItem, TextField, Button, Box } from "@mui/material";
+import {
+  Select,
+  MenuItem,
+  TextField,
+  Button,
+  Box,
+  Checkbox,
+} from "@mui/material";
 import {
   mockAccountBusinessTypes,
   mockAccountBusinessNames,
   mockAccountRoles,
 } from "@/constants/accounts";
 import AccountTable from "../component/AccountTable";
-
-// Define types for form data
-interface FormData {
-  name: string;
-  kana: string;
-  email: string;
-  loginId: string;
-  businessType: string;
-  businessName: string;
-  role: string;
-}
+import SuccessDialog from "@/components/modals/Success/SuccessDialog";
 
 const EditAccountForm: React.FC = () => {
   const router = useRouter();
 
-  // Add API here to fetch the data
-  const [formData, setFormData] = React.useState<FormData>({
-    name: "",
-    kana: "",
-    email: "",
-    loginId: "",
+  const [formData, setFormData] = useState({
     businessType: "",
     businessName: "",
     role: "",
+    loginId: "",
+    email: "",
   });
+
+  const [isEmailEditable, setIsEmailEditable] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleSubmit = () => {
+    // Add API here for submit
+    setIsModalOpen(true);
+    console.log("Confirm edit data: ", formData);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    router.push("/account-management/");
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -42,58 +50,11 @@ const EditAccountForm: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    console.log("Confirm edit data: ", formData);
-    router.push("/account-management/");
+  const handleCheckboxChange = (event) => {
+    setIsEmailEditable(event.target.checked);
   };
 
-  // Define rows for ReusableTable
   const rows = [
-    {
-      label: "名前",
-      input: (
-        <TextField
-          fullWidth
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-        />
-      ),
-    },
-    {
-      label: "カナちゃん",
-      input: (
-        <TextField
-          fullWidth
-          name="kana"
-          value={formData.kana}
-          onChange={handleChange}
-        />
-      ),
-    },
-    {
-      label: "メールアドレス",
-      input: (
-        <TextField
-          fullWidth
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-        />
-      ),
-    },
-    {
-      label: "ログインID",
-      input: (
-        <TextField
-          fullWidth
-          name="loginId"
-          value={formData.loginId}
-          onChange={handleChange}
-        />
-      ),
-    },
     {
       label: "事業者種類",
       input: (
@@ -158,18 +119,66 @@ const EditAccountForm: React.FC = () => {
         </Select>
       ),
     },
+    {
+      label: "ログインID",
+      input: (
+        <TextField
+          fullWidth
+          name="loginId"
+          value={formData.loginId}
+          onChange={handleChange}
+        />
+      ),
+    },
+    {
+      label: (
+        <span>
+          <Checkbox
+            checked={isEmailEditable}
+            onChange={handleCheckboxChange}
+            size="small"
+            sx={{ p: 0, mr: 1 }}
+          />
+          パスワード初期化
+        </span>
+      ),
+      input: (
+        <TextField
+          fullWidth
+          name="email"
+          placeholder="通知先メールアドレス"
+          value={formData.email}
+          onChange={handleChange}
+          disabled={!isEmailEditable}
+        />
+      ),
+    },
   ];
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <AccountTable rows={rows} />
 
-      {/* Submit Button */}
+      {/* Open Modal Button */}
       <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
-        <Button type="submit" variant="contained" color="primary" size="large">
+        <Button
+          onClick={handleSubmit}
+          variant="contained"
+          color="primary"
+          size="large"
+        >
           確定
         </Button>
       </Box>
+
+      {/* Success Modal */}
+      <SuccessDialog
+        open={isModalOpen}
+        onClose={handleCloseModal}
+        title="編集完了しました"
+        message=""
+        buttonText="OK"
+      />
     </form>
   );
 };
