@@ -25,7 +25,7 @@ import { useAccountContext } from "@/context/AccountContext";
 import ConfirmDialog from "@/components/modals/Confirm/ConfirmDialog";
 
 const AccountManagement = () => {
-  const [selectedStation, setSelectedStation] = React.useState("");
+  const [selectedStation, setSelectedStation] = React.useState<string[]>([]);
   const [searchQuery, setSearchQuery] = React.useState("");
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
     {}

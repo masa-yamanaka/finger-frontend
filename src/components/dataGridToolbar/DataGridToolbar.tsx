@@ -8,7 +8,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import {
   InputAdornment,
   TextField,
-  Typography,
   FormControl,
   InputLabel,
 } from "@mui/material";
@@ -16,8 +15,8 @@ import { mockTVStations } from "@/constants/emails";
 
 interface DataGridToolbarProps {
   onAddClick: () => void;
-  selectedStation: string;
-  onStationChange: (station: string) => void;
+  selectedStation: string[];
+  onStationChange: (stations: string[]) => void;
   searchQuery: string;
   onSearchChange: (query: string) => void;
   disableAddButton?: boolean;
@@ -40,10 +39,9 @@ export default function DataGridToolbar({
           value={selectedStation}
           onChange={(e) => onStationChange(e.target.value)}
           label="放送局選択"
+          multiple
+          renderValue={(selected) => selected.join(", ")}
         >
-          <MenuItem value="">
-            <Typography sx={{ fontStyle: "italic" }}>放送局選択</Typography>
-          </MenuItem>
           {mockTVStations.map((station) => (
             <MenuItem key={station.id} value={station.name}>
               {station.name}

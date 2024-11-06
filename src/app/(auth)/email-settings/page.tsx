@@ -45,7 +45,7 @@ export default function EmailGrid() {
   const [editRowData, setEditRowData] = React.useState<{ [key: string]: any }>(
     {}
   );
-  const [selectedStation, setSelectedStation] = React.useState("");
+  const [selectedStation, setSelectedStation] = React.useState<string[]>([]);
   const [searchQuery, setSearchQuery] = React.useState("");
   const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
 
@@ -103,15 +103,18 @@ export default function EmailGrid() {
 
   // Filter rows based on selected station
   const filteredRows = rows.filter((row) => {
-    const matchesStation = selectedStation
-      ? row.tvStation === selectedStation
-      : true;
+    const matchesStation =
+      selectedStation.length > 0
+        ? selectedStation.includes(row.tvStation) // updated for multiple selections
+        : true;
+
     const matchesSearch = row.email
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
+
     return (
       (matchesStation && matchesSearch) ||
-      (row.isNew && row.tvStation === selectedStation)
+      (row.isNew && selectedStation.includes(row.tvStation))
     );
   });
 
@@ -131,11 +134,6 @@ export default function EmailGrid() {
   };
 
   const handleSaveClick = (id: GridRowId) => () => {
-    // Add API here for update
-    // state not working correctly - masa
-    const updatedData = editRowData[id];
-    console.log("Saved data: ", updatedData);
-
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
 
     // Remove the edited row data from editRowData
@@ -187,8 +185,13 @@ export default function EmailGrid() {
   };
 
   const processRowUpdate = (newRow: GridRowModel) => {
+    // Add API here to update
     const updatedRow = { ...newRow, isNew: false };
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+
+    // Log updated data
+    console.log("Saved data: ", updatedRow);
+
     return updatedRow;
   };
 
@@ -348,8 +351,8 @@ export default function EmailGrid() {
         disableAddButton={!selectedStation}
       />
       <DataGrid
-        // rows={filteredRows}
-        rows={rows}
+        rows={filteredRows}
+        // rows={rows}
         columns={columns}
         editMode="row"
         rowModesModel={rowModesModel}

@@ -127,6 +127,7 @@ const EditAccountForm: React.FC = () => {
           name="loginId"
           value={formData.loginId}
           onChange={handleChange}
+          disabled
         />
       ),
     },
