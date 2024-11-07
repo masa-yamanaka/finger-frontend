@@ -7,7 +7,6 @@ import {
   Button,
   Typography,
 } from "@mui/material";
-import { on } from "events";
 
 interface SuccessDialogProps {
   open: boolean;

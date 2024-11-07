@@ -1,9 +1,11 @@
 "use client";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import FileUpload from "@/components/fileUpload/FileUpload";
 import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
 import { Typography, Box, Button, Alert } from "@mui/material";
 import UploadDataGrid from "@/features/program-information/upload-data-grid/UploadDataGrid";
+import SuccessDialog from "@/components/modals/Success/SuccessDialog";
 
 interface UploadedFile {
   id: string;
@@ -13,7 +15,9 @@ interface UploadedFile {
   file: File; // The actual File object
 }
 const ProgramInformationUploadPage = () => {
+  const router = useRouter();
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleUpload = (files: File[]) => {
     console.info("Uploading:", files);
@@ -40,7 +44,14 @@ const ProgramInformationUploadPage = () => {
   };
 
   const handleConfirmUpload = () => {
+    // Add API here for confirming upload
+    setIsModalOpen(true);
     console.log("Uploaded Files Data:", uploadedFiles);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    router.push("/program-information/");
   };
 
   return (
@@ -64,11 +75,17 @@ const ProgramInformationUploadPage = () => {
         <Button
           variant="contained"
           color="primary"
+          disabled={uploadedFiles.length === 0}
           onClick={handleConfirmUpload}
         >
           アップロード確定
         </Button>
       </Box>
+      <SuccessDialog
+        open={isModalOpen}
+        onClose={handleCloseModal}
+        title="アップロード完了しました"
+      />
     </DefaultPageLayout>
   );
 };

@@ -10,6 +10,7 @@ interface ConfirmDialogProps {
   open: boolean;
   title: string;
   description: string;
+  color?: "primary" | "secondary" | "error" | "success" | "info" | "warning";
   onClose: () => void;
   onConfirm: () => void;
   confirmButtonText?: string;
@@ -20,18 +21,14 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   open,
   title,
   description,
+  color = "error",
   onClose,
   onConfirm,
   confirmButtonText = "OK",
   cancelButtonText = "Cancel",
 }) => {
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      aria-labelledby="confirm-dialog-title"
-      aria-describedby="confirm-dialog-description"
-    >
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle id="confirm-dialog-title">{title}</DialogTitle>
       <DialogContent>
         <DialogContentText id="confirm-dialog-description">
@@ -42,7 +39,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
         <Button onClick={onClose} color="primary">
           {cancelButtonText}
         </Button>
-        <Button onClick={onConfirm} color="error" variant="contained">
+        <Button onClick={onConfirm} color={color} variant="contained">
           {confirmButtonText}
         </Button>
       </DialogActions>

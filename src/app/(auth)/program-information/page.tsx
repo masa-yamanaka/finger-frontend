@@ -10,10 +10,11 @@ import { useRouter } from "next/navigation";
 import { mockProgramInfo } from "@/constants/program-information";
 import ProgramInformationAccordion from "@/features/program-information/Accordion";
 import ConfirmDialog from "@/components/modals/Confirm/ConfirmDialog";
+import ReturnDialog from "@/features/program-information/return-dialog/ReturnDialog";
 
 const columns: GridColDef[] = [
   {
-    field: "name",
+    field: "tvStation",
     headerName: "放送局",
     width: 180,
   },
@@ -41,16 +42,15 @@ const columns: GridColDef[] = [
     field: "fileName",
     headerName: "ファイル名",
     renderCell: (params) => {
-      const handleDownload = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        console.log(`Downloading file: ${params.value}`);
-      };
+      // Access fileUrl from row data
+      const fileUrl = params.row.fileUrl;
 
       return (
         <Link
-          component="button"
+          href={fileUrl}
+          download
+          target="_blank"
           variant="body2"
-          onClick={handleDownload}
           sx={{
             textDecoration: "none",
             "&:hover": {
@@ -90,6 +90,8 @@ const ProgramInformation = () => {
     []
   );
   const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = React.useState(false);
+  const [isReturnModalOpen, setIsReturnModalOpen] = React.useState(false);
 
   const handleUpload = () => {
     router.push(`/program-information/upload`);
@@ -105,13 +107,37 @@ const ProgramInformation = () => {
 
   const handleDownloadSelected = () => {
     // Add logic here for handling Downloads
-    console.log("Downloading rows with ids: ", selectedRows);
 
-    const selectedRowsFileNames = rows
-      .filter((row) => selectedRows.includes(row.id))
-      .map((row) => row.fileName);
+    // Log the full data of the selected rows
+    const selectedRowData = rows.filter((row) => selectedRows.includes(row.id));
+    console.log("Downloading files: ", selectedRowData);
+  };
 
-    console.log("Downloading files: ", selectedRowsFileNames);
+  const handleStatusConfirm = () => {
+    // Add API here for 確定 status
+    const updatedRows = rows.map((row) =>
+      selectedRows.includes(row.id) ? { ...row, status: "確定" } : row
+    );
+    setRows(updatedRows);
+    closeConfirmModal();
+  };
+  const handleStatusReturn = (comment: string) => {
+    // Add API here for 差戻し status
+    // Add logic here for email notification
+
+    // Log the full data of the selected rows
+    const selectedRowData = rows.filter((row) => selectedRows.includes(row.id));
+    console.log("差戻し対象行のデータ:", selectedRowData);
+
+    // Log the comment
+    console.log("差戻しコメント:", comment);
+
+    const updatedRows = rows.map((row) =>
+      selectedRows.includes(row.id) ? { ...row, status: "差戻し" } : row
+    );
+    setRows(updatedRows);
+
+    closeReturnModal();
   };
 
   const openDeleteModal = () => {
@@ -119,6 +145,20 @@ const ProgramInformation = () => {
   };
   const closeDeleteModal = () => {
     setIsDeleteModalOpen(false);
+  };
+
+  const openConfirmModal = () => {
+    setIsConfirmModalOpen(true);
+  };
+  const closeConfirmModal = () => {
+    setIsConfirmModalOpen(false);
+  };
+
+  const openReturnModal = () => {
+    setIsReturnModalOpen(true);
+  };
+  const closeReturnModal = () => {
+    setIsReturnModalOpen(false);
   };
 
   return (
@@ -133,6 +173,7 @@ const ProgramInformation = () => {
         アップロード
       </Button>
 
+      {/* Add logic here for Accordion/filteredRows - masa */}
       <ProgramInformationAccordion />
 
       <Box sx={{ width: "100%", mt: 2 }}>
@@ -176,10 +217,24 @@ const ProgramInformation = () => {
             </Button>
           </Stack>
           <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
-            <Button variant="contained">確定</Button>
-            <Button variant="contained">差戻し</Button>
+            <Button
+              variant="contained"
+              onClick={openConfirmModal}
+              disabled={selectedRows.length === 0}
+            >
+              確定
+            </Button>
+            <Button
+              variant="contained"
+              onClick={openReturnModal}
+              disabled={selectedRows.length === 0}
+            >
+              差戻し
+            </Button>
           </Stack>
         </Stack>
+
+        {/* Modal for Delete */}
         <ConfirmDialog
           open={isDeleteModalOpen}
           title="削除の確認"
@@ -188,6 +243,25 @@ const ProgramInformation = () => {
           onConfirm={handleDeleteSelected}
           confirmButtonText="OK"
           cancelButtonText="キャンセル"
+        />
+
+        {/* Modal for Confirm Status */}
+        <ConfirmDialog
+          open={isConfirmModalOpen}
+          title="確定の確認"
+          description="Confirm status update"
+          color="primary"
+          onClose={closeConfirmModal}
+          onConfirm={handleStatusConfirm}
+          confirmButtonText="OK"
+          cancelButtonText="キャンセル"
+        />
+
+        {/* Modal for Return Status */}
+        <ReturnDialog
+          open={isReturnModalOpen}
+          onClose={closeReturnModal}
+          onConfirm={handleStatusReturn}
         />
       </Box>
     </DefaultPageLayout>
