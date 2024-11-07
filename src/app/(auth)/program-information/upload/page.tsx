@@ -10,8 +10,8 @@ import SuccessDialog from "@/components/modals/Success/SuccessDialog";
 interface UploadedFile {
   id: string;
   name: string;
-  date: Date | null;
-  reason: string;
+  date?: Date | null;
+  reason?: string;
   file: File; // The actual File object
 }
 const ProgramInformationUploadPage = () => {

@@ -1,6 +1,5 @@
 "use client";
 import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
-import MessageBox from "@/components/messageBox/MessageBox";
 import { Typography, Box, Button, Stack, Link } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
@@ -8,7 +7,7 @@ import { jaJP } from "@mui/x-data-grid/locales";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { mockProgramInfo } from "@/constants/program-information";
-import ProgramInformationAccordion from "@/features/program-information/Accordion";
+import ProgramInformationSearchAccordion from "@/features/program-information/search-accordion/SearchAccordion";
 import ConfirmDialog from "@/components/modals/Confirm/ConfirmDialog";
 import ReturnDialog from "@/features/program-information/return-dialog/ReturnDialog";
 
@@ -174,7 +173,7 @@ const ProgramInformation = () => {
       </Button>
 
       {/* Add logic here for Accordion/filteredRows - masa */}
-      <ProgramInformationAccordion />
+      <ProgramInformationSearchAccordion />
 
       <Box sx={{ width: "100%", mt: 2 }}>
         <DataGrid

@@ -23,7 +23,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import "dayjs/locale/ja";
 import { mockStatus, mockTvStations } from "@/constants/program-information";
 
-const ProgramInformationAccordion = () => {
+const ProgramInformationSearchAccordion = () => {
   const [uploadDateStart, setUploadDateStart] = useState(null);
   const [uploadDateEnd, setUploadDateEnd] = useState(null);
   const [broadcastPeriodStart, setbroadcastPeriodStart] = useState(null);
@@ -208,4 +208,4 @@ const ProgramInformationAccordion = () => {
   );
 };
 
-export default ProgramInformationAccordion;
+export default ProgramInformationSearchAccordion;

@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
 import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
-import ProgramInformationAccordion from "@/features/program-information/Accordion";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
+import ProgramListSearchAccordion from "@/features/program-list/search-accordion/SearchAccordion";
 
 const ProgramListPage = () => {
   const router = useRouter();
@@ -21,10 +21,7 @@ const ProgramListPage = () => {
       >
         アップロード
       </Button>
-      <div style={{ color: "hotpink" }}>
-        is this the same accordion as the program information page?
-      </div>
-      <ProgramInformationAccordion />
+      <ProgramListSearchAccordion />
     </DefaultPageLayout>
   );
 };
