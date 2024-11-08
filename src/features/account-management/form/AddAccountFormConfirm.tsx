@@ -2,7 +2,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Box, Button, Select, MenuItem, TextField } from "@mui/material";
-import ReusableTable from "../component/AccountTable";
+import AccountTable from "../component/AccountTable";
 
 const ConfirmPage = () => {
   const router = useRouter();
@@ -81,7 +81,7 @@ const ConfirmPage = () => {
 
   return (
     <>
-      <ReusableTable rows={rows} />
+      <AccountTable rows={rows} />
 
       <Box sx={{ display: "flex", justifyContent: "center", gap: 4, my: 4 }}>
         <Button

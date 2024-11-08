@@ -7,7 +7,7 @@ import {
   mockAccountBusinessTypes,
   mockAccountRoles,
 } from "@/constants/accounts";
-import ReusableTable from "../component/AccountTable";
+import AccountTable from "../component/AccountTable";
 
 const AddAccountForm = () => {
   const router = useRouter();
@@ -125,7 +125,7 @@ const AddAccountForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <ReusableTable rows={rows} />
+      <AccountTable rows={rows} />
 
       <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
         <Button type="submit" variant="contained" color="primary" size="large">

@@ -1,6 +1,6 @@
 "use client";
 import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
-import { Typography, Box, Button, Stack, Link } from "@mui/material";
+import { Typography, Box, Button, Stack } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import { jaJP } from "@mui/x-data-grid/locales";
@@ -12,11 +12,7 @@ import ConfirmDialog from "@/components/modals/Confirm/ConfirmDialog";
 import ReturnDialog from "@/features/program-information/return-dialog/ReturnDialog";
 
 const columns: GridColDef[] = [
-  {
-    field: "tvStation",
-    headerName: "放送局",
-    width: 180,
-  },
+  { field: "tvStation", headerName: "放送局", width: 180 },
   {
     field: "broadcastPeriodStart",
     headerName: "対象放送期間(Start)",
@@ -40,68 +36,36 @@ const columns: GridColDef[] = [
   {
     field: "fileName",
     headerName: "ファイル名",
-    renderCell: (params) => {
-      // Access fileUrl from row data
-      const fileUrl = params.row.fileUrl;
-
-      return (
-        <Link
-          href={fileUrl}
-          download
-          target="_blank"
-          variant="body2"
-          sx={{
-            textDecoration: "none",
-            "&:hover": {
-              textDecoration: "underline",
-              cursor: "pointer",
-            },
-          }}
-        >
-          {params.value}
-        </Link>
-      );
-    },
+    renderCell: (params) => (
+      <a href={params.row.fileUrl} download target="_blank">
+        {params.value}
+      </a>
+    ),
   },
-  {
-    field: "uploadDate",
-    headerName: "アップロード日時",
-    type: "date",
-  },
-  {
-    field: "message",
-    headerName: "通信欄",
-    width: 240,
-    editable: true,
-  },
-  {
-    field: "reason",
-    headerName: "差戻し理由",
-    width: 240,
-    editable: true,
-  },
+  { field: "uploadDate", headerName: "アップロード日時", type: "date" },
+  { field: "message", headerName: "通信欄", width: 240, editable: true },
+  { field: "reason", headerName: "差戻し理由", width: 240, editable: true },
 ];
 
 const ProgramInformation = () => {
   const router = useRouter();
   const [rows, setRows] = useState(mockProgramInfo);
-  const [selectedRows, setSelectedRows] = React.useState<GridRowSelectionModel>(
-    []
-  );
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = React.useState(false);
-  const [isReturnModalOpen, setIsReturnModalOpen] = React.useState(false);
+  const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
+  const [dialogProps, setDialogProps] = useState({
+    open: false,
+    title: "",
+    description: "",
+    color: "error",
+    onConfirm: () => {},
+  });
+  const [isReturnModalOpen, setIsReturnModalOpen] = useState(false);
 
-  const handleUpload = () => {
-    router.push(`/program-information/upload`);
-  };
+  const handleUpload = () => router.push(`/program-information/upload`);
 
   const handleDeleteSelected = () => {
-    // Add API here to delete
-    console.log("Deleted row ids: ", selectedRows);
     setRows(rows.filter((row) => !selectedRows.includes(row.id)));
     setSelectedRows([]);
-    closeDeleteModal();
+    closeDialog();
   };
 
   const handleDownloadSelected = () => {
@@ -118,8 +82,9 @@ const ProgramInformation = () => {
       selectedRows.includes(row.id) ? { ...row, status: "確定" } : row
     );
     setRows(updatedRows);
-    closeConfirmModal();
+    closeDialog();
   };
+
   const handleStatusReturn = (comment: string) => {
     // Add API here for 差戻し status
     // Add logic here for email notification
@@ -139,26 +104,30 @@ const ProgramInformation = () => {
     closeReturnModal();
   };
 
-  const openDeleteModal = () => {
-    setIsDeleteModalOpen(true);
-  };
-  const closeDeleteModal = () => {
-    setIsDeleteModalOpen(false);
+  const openDialog = (action: "delete" | "confirm") => {
+    const dialogConfig =
+      action === "delete"
+        ? {
+            title: "削除の確認",
+            description:
+              "選択した行を削除してもよろしいですか？この操作は元に戻せません。",
+            color: "error",
+            onConfirm: handleDeleteSelected,
+          }
+        : {
+            title: "確定の確認",
+            description: "Confirm status update",
+            color: "primary",
+            onConfirm: handleStatusConfirm,
+          };
+
+    setDialogProps({ ...dialogConfig, open: true });
   };
 
-  const openConfirmModal = () => {
-    setIsConfirmModalOpen(true);
-  };
-  const closeConfirmModal = () => {
-    setIsConfirmModalOpen(false);
-  };
-
-  const openReturnModal = () => {
-    setIsReturnModalOpen(true);
-  };
-  const closeReturnModal = () => {
-    setIsReturnModalOpen(false);
-  };
+  const closeDialog = () =>
+    setDialogProps((prev) => ({ ...prev, open: false }));
+  const openReturnModal = () => setIsReturnModalOpen(true);
+  const closeReturnModal = () => setIsReturnModalOpen(false);
 
   return (
     <DefaultPageLayout title="番組情報連携">
@@ -171,8 +140,6 @@ const ProgramInformation = () => {
       >
         アップロード
       </Button>
-
-      {/* Add logic here for Accordion/filteredRows - masa */}
       <ProgramInformationSearchAccordion />
 
       <Box sx={{ width: "100%", mt: 2 }}>
@@ -181,23 +148,20 @@ const ProgramInformation = () => {
           columns={columns}
           checkboxSelection
           disableRowSelectionOnClick
-          onRowSelectionModelChange={(newSelection) => {
-            setSelectedRows(newSelection);
-          }}
+          onRowSelectionModelChange={(newSelection) =>
+            setSelectedRows(newSelection)
+          }
           sx={{
             height: 500,
             width: "100%",
-            "& .actions": {
-              color: "text.secondary",
-            },
-            "& .textPrimary": {
-              color: "text.primary",
-            },
+            "& .actions": { color: "text.secondary" },
+            "& .textPrimary": { color: "text.primary" },
           }}
           localeText={jaJP.components.MuiDataGrid.defaultProps.localeText}
         />
-        <Stack direction="row" justifyContent="space-between">
-          <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+
+        <Stack direction="row" justifyContent="space-between" sx={{ mt: 2 }}>
+          <Stack direction="row" spacing={2}>
             <Button
               variant="contained"
               onClick={handleDownloadSelected}
@@ -209,54 +173,43 @@ const ProgramInformation = () => {
               variant="contained"
               color="error"
               startIcon={<DeleteIcon />}
-              onClick={openDeleteModal}
-              disabled={selectedRows.length === 0}
+              onClick={() => openDialog("delete")}
+              disabled={!selectedRows.length}
             >
               削除
             </Button>
           </Stack>
-          <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+          <Stack direction="row" spacing={2}>
             <Button
               variant="contained"
-              onClick={openConfirmModal}
-              disabled={selectedRows.length === 0}
+              onClick={() => openDialog("confirm")}
+              disabled={!selectedRows.length}
             >
               確定
             </Button>
             <Button
               variant="contained"
               onClick={openReturnModal}
-              disabled={selectedRows.length === 0}
+              disabled={!selectedRows.length}
             >
               差戻し
             </Button>
           </Stack>
         </Stack>
 
-        {/* Modal for Delete */}
+        {/* Dialog for 'Delete' and 'Confirm Status' */}
         <ConfirmDialog
-          open={isDeleteModalOpen}
-          title="削除の確認"
-          description="選択した行を削除してもよろしいですか？この操作は元に戻せません。"
-          onClose={closeDeleteModal}
-          onConfirm={handleDeleteSelected}
+          open={dialogProps.open}
+          title={dialogProps.title}
+          description={dialogProps.description}
+          color={dialogProps.color}
+          onClose={closeDialog}
+          onConfirm={dialogProps.onConfirm}
           confirmButtonText="OK"
           cancelButtonText="キャンセル"
         />
 
-        {/* Modal for Confirm Status */}
-        <ConfirmDialog
-          open={isConfirmModalOpen}
-          title="確定の確認"
-          description="Confirm status update"
-          color="primary"
-          onClose={closeConfirmModal}
-          onConfirm={handleStatusConfirm}
-          confirmButtonText="OK"
-          cancelButtonText="キャンセル"
-        />
-
-        {/* Modal for Return Status */}
+        {/* Return Dialog */}
         <ReturnDialog
           open={isReturnModalOpen}
           onClose={closeReturnModal}

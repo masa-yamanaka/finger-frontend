@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -9,13 +9,15 @@ import {
   TableRow,
   Paper,
   Typography,
+  TablePagination,
+  TableFooter,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { tableCellClasses } from "@mui/material/TableCell";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: theme.palette.info.dark,
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -32,10 +34,24 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const FileTable = ({ title, data }) => {
+const ProgramListDownloadTable = ({ title, data, pagination = false }) => {
+  // States for pagination
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  // Handle pagination changes
+  const handleChangePage = (event, newPage) => setPage(newPage);
+  const handleChangeRowsPerPage = (event) =>
+    setRowsPerPage(parseInt(event.target.value, 10));
+
+  // Paginated data
+  const paginatedData = pagination
+    ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+    : data;
+
   return (
     <div>
-      <Typography variant="h5" sx={{ marginTop: 4, marginBottom: 2 }}>
+      <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
         {title}
       </Typography>
       <TableContainer component={Paper}>
@@ -53,7 +69,7 @@ const FileTable = ({ title, data }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((file) => (
+            {paginatedData.map((file) => (
               <StyledTableRow key={file.id}>
                 <StyledTableCell>{file.id}</StyledTableCell>
                 <StyledTableCell>{file.userName}</StyledTableCell>
@@ -70,10 +86,25 @@ const FileTable = ({ title, data }) => {
               </StyledTableRow>
             ))}
           </TableBody>
+          <TableFooter>
+            <TableRow sx={{ borderTop: "1px solid #ccc" }}>
+              {pagination && (
+                <TablePagination
+                  count={data.length}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  rowsPerPage={rowsPerPage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                  labelRowsPerPage="行数"
+                  rowsPerPageOptions={[5, 10, 25]}
+                />
+              )}
+            </TableRow>
+          </TableFooter>
         </Table>
       </TableContainer>
     </div>
   );
 };
 
-export default FileTable;
+export default ProgramListDownloadTable;

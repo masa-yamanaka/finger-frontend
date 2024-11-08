@@ -12,8 +12,6 @@ const ProgramListUploadPage = () => {
   const router = useRouter();
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // New state for dialog type, title, and message
   const [dialogType, setDialogType] = useState<"success" | "error">("success");
   const [dialogTitle, setDialogTitle] = useState("");
   const [dialogMessage, setDialogMessage] = useState("");

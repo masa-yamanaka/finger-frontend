@@ -221,18 +221,18 @@ export default function EmailGrid() {
       valueOptions: ["to", "cc", "bcc"],
     },
     {
+      field: "tvStation",
+      headerName: "TV Station",
+      width: 150,
+      editable: false,
+    },
+    {
       field: "email",
       headerName: "Email",
       width: 300,
       editable: true,
     },
-    // tvStation column for testing
-    // {
-    //   field: "tvStation",
-    //   headerName: "TV Station",
-    //   width: 150,
-    //   editable: false,
-    // },
+
     {
       field: "option1",
       headerName: "Option 1",
