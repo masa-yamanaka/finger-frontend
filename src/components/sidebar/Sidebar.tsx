@@ -1,4 +1,3 @@
-// src/components/Sidebar.tsx
 import React from "react";
 import {
   Drawer,
@@ -10,7 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 import Link from "next/link";
-import styles from "./Sidebar.module.scss";
 import { dashboardSections } from "@/constants/dashboard";
 
 const drawerWidth = "240px";
@@ -34,11 +32,7 @@ const Sidebar: React.FC = () => {
       <Box sx={{ flexGrow: 1 }}>
         <List>
           <Box sx={{ px: 2 }}>
-            <ListItemButton
-              component={Link}
-              href="/dashboard"
-              className={styles.sectionListItem}
-            >
+            <ListItemButton component={Link} href="/dashboard">
               <ListItemText primary="ホーム" />
             </ListItemButton>
           </Box>
@@ -51,17 +45,18 @@ const Sidebar: React.FC = () => {
                 <Typography
                   variant="subtitle1"
                   gutterBottom
-                  className={styles.sectionTitle}
+                  color="info.dark"
+                  sx={{ fontWeight: "bold" }}
                 >
                   {section.title}
                 </Typography>
-                <List className={styles.sectionList}>
+                <List sx={{ p: 0 }}>
                   {section.items.map((item, itemIndex) => (
                     <ListItemButton
                       key={itemIndex}
                       component={Link}
                       href={item.href}
-                      className={styles.sectionListItem}
+                      sx={{ py: 0.5 }}
                     >
                       <ListItemText primary={item.title} />
                     </ListItemButton>
@@ -76,11 +71,7 @@ const Sidebar: React.FC = () => {
 
       {/* Logout Link at the bottom */}
       <Box sx={{ p: 2 }}>
-        <ListItemButton
-          component={Link}
-          href="/"
-          className={styles.sectionListItem}
-        >
+        <ListItemButton component={Link} href="/">
           <ListItemText primary="ログアウト" />
         </ListItemButton>
       </Box>

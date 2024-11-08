@@ -20,7 +20,7 @@ export default function DashboardPage() {
         <Box key={sectionIndex} sx={{ mb: 8 }}>
           <Typography
             variant="h6"
-            sx={{ mb: 1, fontWeight: "bold", color: "#005b96" }}
+            sx={{ mb: 1, fontWeight: "bold", color: "info.dark" }}
           >
             {section.title}
           </Typography>
