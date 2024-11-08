@@ -3,16 +3,12 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
 import SendIcon from "@mui/icons-material/Send";
 import Switch from "@mui/material/Switch";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import SearchIcon from "@mui/icons-material/Search";
 import {
   GridRowsProp,
   GridRowModesModel,
@@ -28,11 +24,11 @@ import {
 } from "@mui/x-data-grid";
 import { jaJP } from "@mui/x-data-grid/locales";
 import { mockEmails, mockTVStations } from "@/constants/emails";
-import { InputAdornment, TextField, Typography } from "@mui/material";
 import ConfirmDialog from "@/components/modals/Confirm/ConfirmDialog";
 import CustomSnackbar from "@/components/snackbar/Snackbar";
 import { v4 as uuidv4 } from "uuid";
 import DataGridToolbar from "@/components/dataGridToolbar/DataGridToolbar";
+import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
 
 export default function EmailGrid() {
   const [rows, setRows] = React.useState<GridRowsProp>(mockEmails);
@@ -69,7 +65,8 @@ export default function EmailGrid() {
   };
 
   const handleAddClick = () => {
-    const id = uuidv4(); // Use UUID for the new record
+    // Using UUID for the new record; replace with actual id
+    const id = uuidv4();
 
     setRows((oldRows) => {
       const newRow = {
@@ -331,92 +328,91 @@ export default function EmailGrid() {
   ];
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        height: "80vh",
-      }}
-    >
-      <Typography variant="h4" sx={{ mb: 4 }} gutterBottom>
-        メールアドレス設定画面
-      </Typography>
-      <DataGridToolbar
-        onAddClick={handleAddClick}
-        selectedStation={selectedStation}
-        onStationChange={setSelectedStation}
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        disableAddButton={!selectedStation}
-      />
-      <DataGrid
-        rows={filteredRows}
-        // rows={rows}
-        columns={columns}
-        editMode="row"
-        rowModesModel={rowModesModel}
-        onRowModesModelChange={handleRowModesModelChange}
-        onRowEditStop={handleRowEditStop}
-        processRowUpdate={processRowUpdate}
-        checkboxSelection
-        onRowSelectionModelChange={(newSelection) =>
-          setSelectedRows(newSelection)
-        }
-        rowSelectionModel={selectedRows}
-        sx={{
-          height: 500,
-          width: "100%",
-          "& .actions": {
-            color: "text.secondary",
-          },
-          "& .textPrimary": {
-            color: "text.primary",
-          },
-        }}
-        localeText={jaJP.components.MuiDataGrid.defaultProps.localeText}
-      />
+    <DefaultPageLayout title="メールアドレス設定画面">
       <Box
         sx={{
+          width: "100%",
           display: "flex",
-          justifyContent: "flex-end",
-          gap: 2,
-          mt: 2,
+          flexDirection: "column",
+          height: "80vh",
         }}
       >
-        <Button
-          color="error"
-          variant="contained"
-          startIcon={<DeleteIcon />}
-          onClick={openDeleteModal}
-          disabled={selectedRows.length === 0}
+        <DataGridToolbar
+          onAddClick={handleAddClick}
+          selectedStation={selectedStation}
+          onStationChange={setSelectedStation}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          disableAddButton={!selectedStation}
+        />
+        <DataGrid
+          rows={filteredRows}
+          // rows={rows}
+          columns={columns}
+          editMode="row"
+          rowModesModel={rowModesModel}
+          onRowModesModelChange={handleRowModesModelChange}
+          onRowEditStop={handleRowEditStop}
+          processRowUpdate={processRowUpdate}
+          checkboxSelection
+          onRowSelectionModelChange={(newSelection) =>
+            setSelectedRows(newSelection)
+          }
+          rowSelectionModel={selectedRows}
+          sx={{
+            height: 500,
+            width: "100%",
+            "& .actions": {
+              color: "text.secondary",
+            },
+            "& .textPrimary": {
+              color: "text.primary",
+            },
+          }}
+          localeText={jaJP.components.MuiDataGrid.defaultProps.localeText}
+        />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            gap: 2,
+            mt: 2,
+          }}
         >
-          削除
-        </Button>
-        <Button
-          variant="contained"
-          startIcon={<SendIcon />}
-          onClick={logSelectedRows}
-          disabled={selectedRows.length === 0}
-        >
-          テスト通知
-        </Button>
+          <Button
+            color="error"
+            variant="contained"
+            startIcon={<DeleteIcon />}
+            onClick={openDeleteModal}
+            disabled={selectedRows.length === 0}
+          >
+            削除
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<SendIcon />}
+            onClick={logSelectedRows}
+            disabled={selectedRows.length === 0}
+          >
+            テスト通知
+          </Button>
+        </Box>
+        <ConfirmDialog
+          open={isDeleteModalOpen}
+          title="削除の確認"
+          description="選択した行を削除してもよろしいですか？この操作は元に戻せません。"
+          onClose={closeDeleteModal}
+          onConfirm={confirmDelete}
+          confirmButtonText="OK"
+          cancelButtonText="キャンセル"
+        />
+        <CustomSnackbar
+          open={openSnackbar}
+          onClose={() => setOpenSnackbar(false)}
+          message={snackbarMessage}
+          severity={snackbarSeverity}
+        />
       </Box>
-      <ConfirmDialog
-        open={isDeleteModalOpen}
-        title="削除の確認"
-        description="選択した行を削除してもよろしいですか？この操作は元に戻せません。"
-        onClose={closeDeleteModal}
-        onConfirm={confirmDelete}
-        confirmButtonText="OK"
-        cancelButtonText="キャンセル"
-      />
-      <CustomSnackbar
-        open={openSnackbar}
-        onClose={() => setOpenSnackbar(false)}
-        message={snackbarMessage}
-        severity={snackbarSeverity}
-      />
-    </Box>
+    </DefaultPageLayout>
   );
 }

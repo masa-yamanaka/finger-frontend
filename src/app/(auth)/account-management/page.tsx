@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import DataGridToolbar from "@/components/dataGridToolbar/DataGridToolbar";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
@@ -18,11 +18,10 @@ import {
   GridRowEditStopReasons,
 } from "@mui/x-data-grid";
 import { jaJP } from "@mui/x-data-grid/locales";
-// import { v4 as uuidv4 } from "uuid";
 import { mockAccounts } from "@/constants/accounts";
 import { useRouter } from "next/navigation";
-import { useAccountContext } from "@/context/AccountContext";
 import ConfirmDialog from "@/components/modals/Confirm/ConfirmDialog";
+import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
 
 const AccountManagement = () => {
   const [selectedStation, setSelectedStation] = React.useState<string[]>([]);
@@ -31,17 +30,13 @@ const AccountManagement = () => {
     {}
   );
   const router = useRouter();
-  const { setAccountData } = useAccountContext();
   const [rowToDelete, setRowToDelete] = React.useState<GridRowId | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
 
   // Add API here to fetch data
-  // Set to rows to empty [] and setRows with the fetched data
   const [rows, setRows] = React.useState(mockAccounts);
 
   const handleAddClick = () => {
-    // Reset accountData context
-    setAccountData({});
     router.push("/account-management/add");
   };
 
@@ -55,7 +50,7 @@ const AccountManagement = () => {
   };
 
   const handleEditClick = (id: GridRowId) => () => {
-    //  Add API here for editing id
+    //  Add API here for editing
     console.log("Edit clicked for id: ", id);
     router.push(`/account-management/edit/`);
   };
@@ -173,55 +168,54 @@ const AccountManagement = () => {
   ];
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        height: "80vh",
-      }}
-    >
-      <Typography variant="h4" sx={{ mb: 4 }} gutterBottom>
-        アカウント管理画面
-      </Typography>
-      <DataGridToolbar
-        onAddClick={handleAddClick}
-        selectedStation={selectedStation}
-        onStationChange={setSelectedStation}
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        disableAddButton={false}
-      />
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        editMode="row"
-        rowModesModel={rowModesModel}
-        onRowModesModelChange={handleRowModesModelChange}
-        onRowEditStop={handleRowEditStop}
-        processRowUpdate={processRowUpdate}
+    <DefaultPageLayout title="アカウント管理画面">
+      <Box
         sx={{
-          height: 500,
           width: "100%",
-          "& .actions": {
-            color: "text.secondary",
-          },
-          "& .textPrimary": {
-            color: "text.primary",
-          },
+          display: "flex",
+          flexDirection: "column",
+          height: "80vh",
         }}
-        localeText={jaJP.components.MuiDataGrid.defaultProps.localeText}
-      />
-      <ConfirmDialog
-        open={isDeleteModalOpen}
-        title="削除の確認"
-        description="選択した行を削除してもよろしいですか？この操作は元に戻せません。"
-        onClose={closeDeleteModal}
-        onConfirm={handleDeleteClick}
-        confirmButtonText="OK"
-        cancelButtonText="キャンセル"
-      />
-    </Box>
+      >
+        <DataGridToolbar
+          onAddClick={handleAddClick}
+          selectedStation={selectedStation}
+          onStationChange={setSelectedStation}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          disableAddButton={false}
+        />
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          editMode="row"
+          rowModesModel={rowModesModel}
+          onRowModesModelChange={handleRowModesModelChange}
+          onRowEditStop={handleRowEditStop}
+          processRowUpdate={processRowUpdate}
+          sx={{
+            height: 500,
+            width: "100%",
+            "& .actions": {
+              color: "text.secondary",
+            },
+            "& .textPrimary": {
+              color: "text.primary",
+            },
+          }}
+          localeText={jaJP.components.MuiDataGrid.defaultProps.localeText}
+        />
+        <ConfirmDialog
+          open={isDeleteModalOpen}
+          title="削除の確認"
+          description="選択した行を削除してもよろしいですか？この操作は元に戻せません。"
+          onClose={closeDeleteModal}
+          onConfirm={handleDeleteClick}
+          confirmButtonText="OK"
+          cancelButtonText="キャンセル"
+        />
+      </Box>
+    </DefaultPageLayout>
   );
 };
 
