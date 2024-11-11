@@ -22,7 +22,7 @@ const ProgramListUploadPage = () => {
     const newFiles = files.map((file) => ({
       id: file.name,
       name: file.name,
-      publishedDate: null,
+      publishDate: null,
       creationDeadline: null,
       file: file, // Store the actual File object
     }));

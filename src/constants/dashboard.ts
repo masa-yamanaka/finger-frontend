@@ -20,7 +20,7 @@ export const dashboardSections = [
     title: "報告リスト管理",
     description: "メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜",
     items: [
-      { title: "納品ファイル連携", href: "/" },
+      { title: "納品ファイル連携", href: "/file-delivery" },
       { title: "番組枠選択", href: "/" },
     ],
   },

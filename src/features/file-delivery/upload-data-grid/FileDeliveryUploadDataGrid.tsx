@@ -3,22 +3,27 @@ import { DataGrid, GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
 import { jaJP } from "@mui/x-data-grid/locales";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import { Box } from "@mui/material";
+import { mockTvStations } from "@/constants/file-delivery";
 
 interface UploadedFile {
   id: string;
   name: string;
+  description: string;
+  tvStation: string;
+  deliveryType: string;
+  broadcastDate: Date | null;
   publishDate: Date | null;
-  creationDeadline: Date | null;
+  message: string;
   file: File;
 }
 
-interface ProgramListUploadDataGridProps {
+interface FileDeliveryUploadDataGridProps {
   uploadedFiles: UploadedFile[];
   onDeleteFile: (id: string) => void;
   onRowEdit: (updatedFile: UploadedFile) => void;
 }
 
-const ProgramListUploadDataGrid: React.FC<ProgramListUploadDataGridProps> = ({
+const FileDeliveryUploadDataGrid: React.FC<FileDeliveryUploadDataGridProps> = ({
   uploadedFiles,
   onDeleteFile,
   onRowEdit,
@@ -26,19 +31,43 @@ const ProgramListUploadDataGrid: React.FC<ProgramListUploadDataGridProps> = ({
   const columns: GridColDef[] = [
     { field: "name", headerName: "アップロードファイル", flex: 1 },
     {
-      field: "publishDate",
-      headerName: "公開日時",
-      type: "date",
+      field: "description",
+      headerName: "ファイル説明欄​",
       flex: 1,
+      editable: true,
+    },
+
+    {
+      field: "tvStation",
+      headerName: "放送局​",
+      width: 120,
+      editable: true,
+      type: "singleSelect",
+      valueOptions: mockTvStations,
+    },
+    {
+      field: "deliveryType",
+      headerName: "納品種別",
+      editable: true,
+      type: "singleSelect",
+      valueOptions: ["定時", "臨時"],
+    },
+
+    {
+      field: "broadcastDate",
+      headerName: "放送年月",
+      width: 120,
+      type: "date",
       editable: true,
     },
     {
-      field: "creationDeadline",
-      headerName: "作成完了期限",
-      type: "date",
-      flex: 1,
+      field: "publishDate",
+      headerName: "公開日時",
+      width: 200,
+      type: "dateTime",
       editable: true,
     },
+    { field: "message", headerName: "通信欄", flex: 1, editable: true },
     {
       field: "actions",
       type: "actions",
@@ -84,4 +113,4 @@ const ProgramListUploadDataGrid: React.FC<ProgramListUploadDataGridProps> = ({
   );
 };
 
-export default ProgramListUploadDataGrid;
+export default FileDeliveryUploadDataGrid;

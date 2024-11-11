@@ -31,7 +31,7 @@ const columns: GridColDef[] = [
     type: "singleSelect",
     valueOptions: ["未公開", "作成完了", "確定", "差戻し"],
   },
-  { field: "publishedDate", headerName: "公開日時", type: "date" },
+  { field: "publishDate", headerName: "公開日時", type: "date" },
   { field: "creationDeadline", headerName: "作成完了期限日", type: "date" },
   {
     field: "downloadUrl",

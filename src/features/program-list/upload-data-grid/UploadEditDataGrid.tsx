@@ -7,7 +7,7 @@ import { Box } from "@mui/material";
 interface UploadedFile {
   id: string;
   name: string;
-  publishedDate: Date | null;
+  publishDate: Date | null;
   creationDeadline: Date | null;
   file: File;
 }
