@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import SetPassword from "@/features/auth/components/set-password/SetPassword";
-import SuccessDialog from "@/components/modals/Success/SuccessDialog";
+import StatusDialog from "@/components/modals/Status/StatusDialog";
 
 export default function SetPasswordPage() {
   const [password, setPassword] = useState("");
@@ -48,11 +48,11 @@ export default function SetPasswordPage() {
         handleSetPassword={handleSetPassword}
         error={error}
       />
-      <SuccessDialog
+      <StatusDialog
         open={showSuccess}
         onClose={handleCloseModal}
         title="パスワードの初期設定が完了しました"
-        buttonText="OK"
+        type="success"
       />
     </>
   );

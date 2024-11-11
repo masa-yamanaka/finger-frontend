@@ -35,11 +35,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const ProgramListDownloadTable = ({ title, data, pagination = false }) => {
-  // States for pagination
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  // Handle pagination changes
   const handleChangePage = (event, newPage) => setPage(newPage);
   const handleChangeRowsPerPage = (event) =>
     setRowsPerPage(parseInt(event.target.value, 10));

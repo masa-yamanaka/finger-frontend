@@ -5,7 +5,7 @@ import FileUpload from "@/components/fileUpload/FileUpload";
 import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
 import { Typography, Box, Button, Alert } from "@mui/material";
 import UploadDataGrid from "@/features/program-information/upload-data-grid/UploadDataGrid";
-import SuccessDialog from "@/components/modals/Success/SuccessDialog";
+import StatusDialog from "@/components/modals/Status/StatusDialog";
 
 interface UploadedFile {
   id: string;
@@ -18,6 +18,9 @@ const ProgramInformationUploadPage = () => {
   const router = useRouter();
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [dialogType, setDialogType] = useState<"success" | "error">("success");
+  const [dialogTitle, setDialogTitle] = useState("");
+  const [dialogMessage, setDialogMessage] = useState("");
 
   const handleUpload = (files: File[]) => {
     console.info("Uploading:", files);
@@ -46,6 +49,9 @@ const ProgramInformationUploadPage = () => {
   const handleConfirmUpload = () => {
     // Add API here for confirming upload
     setIsModalOpen(true);
+    setDialogType("success");
+    setDialogTitle("アップロード完了しました");
+    setDialogMessage("ファイルが正常にアップロードされました。");
     console.log("Uploaded Files Data:", uploadedFiles);
   };
 
@@ -81,10 +87,12 @@ const ProgramInformationUploadPage = () => {
           アップロード確定
         </Button>
       </Box>
-      <SuccessDialog
+      <StatusDialog
         open={isModalOpen}
         onClose={handleCloseModal}
-        title="アップロード完了しました"
+        title={dialogTitle}
+        message={dialogMessage}
+        type={dialogType}
       />
     </DefaultPageLayout>
   );

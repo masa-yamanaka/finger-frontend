@@ -15,7 +15,7 @@ import {
   mockAccountRoles,
 } from "@/constants/accounts";
 import AccountTable from "../component/AccountTable";
-import SuccessDialog from "@/components/modals/Success/SuccessDialog";
+import StatusDialog from "@/components/modals/Status/StatusDialog";
 
 const EditAccountForm: React.FC = () => {
   const router = useRouter();
@@ -30,10 +30,16 @@ const EditAccountForm: React.FC = () => {
 
   const [isEmailEditable, setIsEmailEditable] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [dialogType, setDialogType] = useState<"success" | "error">("success");
+  const [dialogTitle, setDialogTitle] = useState("");
+  const [dialogMessage, setDialogMessage] = useState("");
 
   const handleSubmit = () => {
     // Add API here for submit
     setIsModalOpen(true);
+    setDialogType("success");
+    setDialogTitle("編集完了しました");
+    setDialogMessage("");
     console.log("Confirm edit data: ", formData);
   };
 
@@ -172,13 +178,13 @@ const EditAccountForm: React.FC = () => {
         </Button>
       </Box>
 
-      {/* Success Modal */}
-      <SuccessDialog
+      {/* Confirm Edit Modal */}
+      <StatusDialog
         open={isModalOpen}
         onClose={handleCloseModal}
-        title="編集完了しました"
-        message=""
-        buttonText="OK"
+        title={dialogTitle}
+        message={dialogMessage}
+        type={dialogType}
       />
     </form>
   );
