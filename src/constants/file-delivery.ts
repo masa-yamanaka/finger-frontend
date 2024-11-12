@@ -16,7 +16,43 @@ export const mockDeliveryType = [
   "Delivery Type3",
 ];
 
-export const mockDeliveryFile = [
+export const mockFileDelivery = [
+  {
+    id: 1,
+    tvStation: "ABC News",
+    broadcastDate: new Date(2024, 8, 15),
+    status: "Status1",
+    // downloadUrl: "",
+    // uploadUrl: "",
+    deliveryType: "Delivery Type1",
+    publishDate: new Date(),
+    message: "aaaaaaaaaaaa",
+  },
+  {
+    id: 2,
+    tvStation: "ABC News",
+    broadcastDate: new Date(2024, 8, 15),
+    status: "Status2",
+    // downloadUrl: "",
+    // uploadUrl: "",
+    deliveryType: "Delivery Type2",
+    publishDate: new Date(),
+    message: "aaaaaaaaaaaa",
+  },
+  {
+    id: 3,
+    tvStation: "ABC News",
+    broadcastDate: new Date(2024, 8, 15),
+    status: "Status3",
+    // downloadUrl: "",
+    // uploadUrl: "",
+    deliveryType: "Delivery Type3",
+    publishDate: new Date(),
+    message: "aaaaaaaaaaaa",
+  },
+];
+
+export const mockFileDeliveryDownload = [
   {
     id: 1,
     userName: "User1",
@@ -67,3 +103,11 @@ export const mockDeliveryFile = [
     description: "Description6",
   },
 ];
+
+export const mockUploadData = {
+  tvStation: "AB",
+  targetDate: "2024/09",
+  status: "未公開",
+  deliveryType: "定時​",
+  uploadedFileUrl: "http://example.com",
+};

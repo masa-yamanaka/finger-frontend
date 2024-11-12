@@ -19,7 +19,7 @@ const FileDeliveryUploadPage = () => {
     console.info("Uploading:", files);
 
     const newFiles = files.map((file) => ({
-      id: file.name,
+      id: file.name, // Use a unique identifier
       name: file.name,
       description: "",
       tvStation: "",
