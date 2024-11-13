@@ -25,7 +25,7 @@ export const mockFileDelivery = [
     // downloadUrl: "",
     // uploadUrl: "",
     deliveryType: "Delivery Type1",
-    publishDate: new Date(),
+    publishDateTime: new Date(),
     message: "aaaaaaaaaaaa",
   },
   {
@@ -36,7 +36,7 @@ export const mockFileDelivery = [
     // downloadUrl: "",
     // uploadUrl: "",
     deliveryType: "Delivery Type2",
-    publishDate: new Date(),
+    publishDateTime: new Date(),
     message: "aaaaaaaaaaaa",
   },
   {
@@ -47,7 +47,7 @@ export const mockFileDelivery = [
     // downloadUrl: "",
     // uploadUrl: "",
     deliveryType: "Delivery Type3",
-    publishDate: new Date(),
+    publishDateTime: new Date(),
     message: "aaaaaaaaaaaa",
   },
 ];

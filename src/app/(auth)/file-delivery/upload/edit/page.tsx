@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { mockUploadData } from "@/constants/file-delivery";
-import FileDeliveryUploadEditDataGrid from "@/features/file-delivery/upload-data-grid/FileDeliveryUploadEditDataGrid";
+import FileDeliveryUploadEditDataGrid from "@/features/file-delivery/upload/FileDeliveryUploadEditDataGrid";
 import StatusDialog from "@/components/modals/Status/StatusDialog";
 
 // Styled component for the TableCell

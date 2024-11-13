@@ -19,7 +19,6 @@ interface UploadDataGridProps {
   onRowEdit: (updatedFile: UploadedFile) => void;
 }
 
-// Create custom Date Component with start/end validation? -masa
 const UploadDataGrid: React.FC<UploadDataGridProps> = ({
   uploadedFiles,
   onDeleteFile,

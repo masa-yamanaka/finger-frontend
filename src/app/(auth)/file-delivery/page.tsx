@@ -107,8 +107,9 @@ const FileDeliveryPage = () => {
   };
 
   const confirmDelete = () => {
+    const selectedRowData = rows.filter((row) => selectedRows.includes(row.id));
     // Add API here to delete
-    console.log("Deleted row ids: ", selectedRows);
+    console.log("Deleted rows:  ", selectedRowData);
 
     setRows((oldRows) =>
       oldRows.filter((row) => !selectedRows.includes(row.id))
@@ -118,6 +119,13 @@ const FileDeliveryPage = () => {
   };
 
   const handleUpload = () => router.push(`/file-delivery/upload`);
+
+  const handleCsvDownload = () => {
+    const selectedRowData = rows.filter((row) => selectedRows.includes(row.id));
+
+    // Add logic here for CSV download
+    console.log("Selected row data:", selectedRowData);
+  };
 
   return (
     <DefaultPageLayout title="納品ファイル連携画面">
@@ -156,14 +164,18 @@ const FileDeliveryPage = () => {
 
       <Stack direction="row" justifyContent="flex-end" sx={{ mt: 2 }}>
         <Stack direction={"row"} spacing={2}>
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleCsvDownload}
+            disabled={!selectedRows.length}
+          >
             CSV出力
           </Button>
           <Button
             variant="contained"
             color="error"
             startIcon={<DeleteIcon />}
-            // onClick={() => openDialog("delete")}
             onClick={openDeleteModal}
             disabled={!selectedRows.length}
           >

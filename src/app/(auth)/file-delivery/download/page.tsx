@@ -23,10 +23,11 @@ const FileDeliveryDownloadPage = () => {
   return (
     <DefaultPageLayout title="納品ファイル連携ダウンロード画面​">
       <Typography variant="body1">ファイルが複数見つかりました​</Typography>
+
       <FileDeliveryDownloadTable
         title="納品ファイル​"
         data={mockFileDeliveryDownload}
-        onSelectFiles={setSelectedFiles} // Passing setSelectedFiles to the table
+        onSelectFiles={setSelectedFiles}
       />
 
       <Stack direction={"row"} mt={2} justifyContent={"space-between"}>
