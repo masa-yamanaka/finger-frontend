@@ -31,10 +31,13 @@ const SetPassword = ({
     <Container maxWidth="sm">
       <Paper elevation={3} sx={{ padding: 4, marginTop: 8 }}>
         <Typography variant="h4" align="center" gutterBottom>
-          パスワード初期設定
+          パスワード変更
         </Typography>
 
         <Box component="form" noValidate autoComplete="off">
+          <Typography variant="body1">
+            ID: xxxxxxxxxx@email.com
+          </Typography>
           <TextField
             fullWidth
             label="新規パスワード"
@@ -44,6 +47,9 @@ const SetPassword = ({
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <Typography variant="body2">
+            ※ パスワードのルールを表記
+          </Typography>
           <TextField
             fullWidth
             label="新規パスワード（再入力）"

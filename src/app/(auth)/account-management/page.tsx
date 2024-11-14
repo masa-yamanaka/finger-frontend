@@ -6,6 +6,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
+import Button from "@mui/material/Button";
 import {
   GridRowModesModel,
   GridRowModes,
@@ -16,6 +17,7 @@ import {
   GridRowId,
   GridRowModel,
   GridRowEditStopReasons,
+  GridRowSelectionModel,
 } from "@mui/x-data-grid";
 import { jaJP } from "@mui/x-data-grid/locales";
 import { mockAccounts } from "@/constants/accounts";
@@ -31,6 +33,9 @@ const AccountManagement = () => {
   );
   const router = useRouter();
   const [rowToDelete, setRowToDelete] = React.useState<GridRowId | null>(null);
+  const [selectedRows, setSelectedRows] = React.useState<GridRowSelectionModel>(
+    []
+  );
   const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
 
   // Add API here to fetch data
@@ -59,17 +64,16 @@ const AccountManagement = () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
-  const handleDeleteClick = () => {
-    // Add API here to delete
-    console.log("Deleted row id: ", rowToDelete);
+  // const handleDeleteClick = () => {
+  //   // Add API here to delete
+  //   console.log("Deleted row id: ", rowToDelete);
 
-    setRows(rows.filter((row) => row.id !== rowToDelete));
-    setRowToDelete(null);
-    closeDeleteModal();
-  };
+  //   setRows(rows.filter((row) => row.id !== rowToDelete));
+  //   setRowToDelete(null);
+  //   closeDeleteModal();
+  // };
 
-  const openDeleteModal = (id: GridRowId) => () => {
-    setRowToDelete(id);
+  const openDeleteModal = () => {
     setIsDeleteModalOpen(true);
   };
 
@@ -98,6 +102,34 @@ const AccountManagement = () => {
   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
     setRowModesModel(newRowModesModel);
   };
+
+  const confirmDelete = () => {
+    // Add API here to delete
+    console.log("Deleted row ids: ", selectedRows);
+
+    setRows((oldRows) =>
+      oldRows.filter((row) => !selectedRows.includes(row.id))
+    );
+    setSelectedRows([]);
+    closeDeleteModal();
+  };
+
+  // Filter rows based on selected station
+  const filteredRows = rows.filter((row) => {
+    const matchesStation =
+      selectedStation.length > 0
+        ? selectedStation.includes(row.tvStation) // updated for multiple selections
+        : true;
+
+    const matchesSearch = row.email
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+
+    return (
+      (matchesStation && matchesSearch) ||
+      (row.isNew && selectedStation.includes(row.tvStation))
+    );
+  });
 
   const columns: GridColDef[] = [
     {
@@ -156,12 +188,6 @@ const AccountManagement = () => {
             onClick={handleEditClick(id)}
             color="inherit"
           />,
-          <GridActionsCellItem
-            icon={<DeleteIcon />}
-            label="Delete"
-            onClick={openDeleteModal(id)}
-            color="inherit"
-          />,
         ];
       },
     },
@@ -186,13 +212,19 @@ const AccountManagement = () => {
           disableAddButton={false}
         />
         <DataGrid
-          rows={rows}
+          rows={filteredRows}
+          // rows={rows}
           columns={columns}
           editMode="row"
           rowModesModel={rowModesModel}
           onRowModesModelChange={handleRowModesModelChange}
           onRowEditStop={handleRowEditStop}
           processRowUpdate={processRowUpdate}
+          checkboxSelection
+          onRowSelectionModelChange={(newSelection) =>
+            setSelectedRows(newSelection)
+          }
+          rowSelectionModel={selectedRows}
           sx={{
             height: 500,
             width: "100%",
@@ -205,12 +237,30 @@ const AccountManagement = () => {
           }}
           localeText={jaJP.components.MuiDataGrid.defaultProps.localeText}
         />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            gap: 2,
+            mt: 2,
+          }}
+        >
+          <Button
+            color="error"
+            variant="contained"
+            startIcon={<DeleteIcon />}
+            onClick={openDeleteModal}
+            disabled={selectedRows.length === 0}
+          >
+            削除
+          </Button>
+        </Box>
         <ConfirmDialog
           open={isDeleteModalOpen}
           title="削除の確認"
           description="選択した行を削除してもよろしいですか？この操作は元に戻せません。"
           onClose={closeDeleteModal}
-          onConfirm={handleDeleteClick}
+          onConfirm={confirmDelete}
           confirmButtonText="OK"
           cancelButtonText="キャンセル"
         />

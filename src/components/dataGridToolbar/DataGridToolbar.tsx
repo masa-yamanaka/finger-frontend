@@ -10,6 +10,8 @@ import {
   TextField,
   FormControl,
   InputLabel,
+  Checkbox,
+  ListItemText,
 } from "@mui/material";
 import { mockTVStations } from "@/constants/emails";
 
@@ -44,7 +46,8 @@ export default function DataGridToolbar({
         >
           {mockTVStations.map((station) => (
             <MenuItem key={station.id} value={station.name}>
-              {station.name}
+              <Checkbox checked={selectedStation.includes(station.name)} />
+              <ListItemText primary={station.name} />
             </MenuItem>
           ))}
         </Select>

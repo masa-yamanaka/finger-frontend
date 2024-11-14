@@ -9,6 +9,7 @@ export const mockAccounts = [
     tvStation: "ABC News",
     businessName: "AAA TV",
     businessType: "",
+    isNew: false,
   },
   {
     id: 22222,
@@ -20,6 +21,7 @@ export const mockAccounts = [
     tvStation: "ABC News",
     businessName: "AAA TV",
     businessType: "",
+    isNew: false,
   },
   {
     id: 33333,
@@ -31,6 +33,7 @@ export const mockAccounts = [
     tvStation: "BBC",
     businessName: "AAA TV",
     businessType: "",
+    isNew: false,
   },
   {
     id: 44444,
@@ -42,6 +45,7 @@ export const mockAccounts = [
     tvStation: "BBC",
     businessName: "BBB TV",
     businessType: "",
+    isNew: false,
   },
   {
     id: 55555,
@@ -53,6 +57,7 @@ export const mockAccounts = [
     tvStation: "CNN",
     businessName: "CCC TV",
     businessType: "",
+    isNew: false,
   },
 ];
 
