@@ -24,6 +24,8 @@ const ProgramListUploadPage = () => {
       name: file.name,
       publishDate: null,
       creationDeadline: null,
+      // publishDate: new Date(),
+      // creationDeadline: new Date(),
       file: file, // Store the actual File object
     }));
 
