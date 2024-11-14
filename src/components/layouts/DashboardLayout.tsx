@@ -14,7 +14,12 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       <Sidebar />
       <Box
         component="main"
-        sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
+        sx={{
+          flexGrow: 1,
+          bgcolor: "background.default",
+          p: 3,
+          overflow: "hidden",
+        }}
       >
         {children}
       </Box>
