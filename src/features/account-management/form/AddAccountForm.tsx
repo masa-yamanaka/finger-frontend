@@ -33,6 +33,10 @@ const AddAccountForm = () => {
     router.push("/account-management/add/confirm");
   };
 
+  const handleBack = () => {
+    router.push("/account-management/");
+  };
+
   const rows = [
     {
       label: "事業者種類",
@@ -124,11 +128,19 @@ const AddAccountForm = () => {
   ];
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <AccountTable rows={rows} />
 
-      <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
-        <Button type="submit" variant="contained" color="primary" size="large">
+      <Box sx={{ display: "flex", justifyContent: "center", my: 4, gap: 2 }}>
+        <Button onClick={handleBack} variant="contained" color="secondary" size="large">
+          戻る
+        </Button>
+        <Button
+          onClick={handleSubmit}
+          variant="contained"
+          color="primary"
+          size="large"
+        >
           入力完了
         </Button>
       </Box>
