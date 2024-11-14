@@ -41,6 +41,7 @@ const FileDeliveryUploadEditPage = () => {
     const newFiles = files.map((file) => ({
       id: file.name, // Use a unique identifier
       name: file.name,
+      message: "",
       file: file,
     }));
 
@@ -49,6 +50,12 @@ const FileDeliveryUploadEditPage = () => {
 
   const handleDeleteFile = (id: string) => {
     setUploadedFile((prevFiles) => prevFiles.filter((file) => file.id !== id));
+  };
+
+  const handleRowEdit = (updatedFile) => {
+    setUploadedFile((prevFiles) =>
+      prevFiles.map((file) => (file.id === updatedFile.id ? updatedFile : file))
+    );
   };
 
   const handleConfirmUpload = async () => {
@@ -108,6 +115,7 @@ const FileDeliveryUploadEditPage = () => {
           <FileDeliveryUploadEditDataGrid
             uploadedFile={uploadedFile}
             onDeleteFile={handleDeleteFile}
+            onRowEdit={handleRowEdit}
           />
         </Stack>
       </Paper>

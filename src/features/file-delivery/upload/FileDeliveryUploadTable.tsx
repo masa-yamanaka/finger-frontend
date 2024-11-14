@@ -94,7 +94,6 @@ const FileDeliveryUploadTable = ({ onTableDataChange }) => {
                     calendarHeader: { format: "YYYY年MM月" },
                     textField: { size: "small" },
                   }}
-                  format="YYYY/MM/DD"
                   value={formData.broadcastDate}
                   onChange={(newValue) =>
                     handleChange("broadcastDate", newValue)
