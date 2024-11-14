@@ -3,13 +3,15 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import FileUpload from "@/components/fileUpload/FileUpload";
 import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
-import { Alert, Box, Button, Typography } from "@mui/material";
-import FileDeliveryUploadDataGrid from "@/features/file-delivery/upload-data-grid/FileDeliveryUploadDataGrid";
+import { Alert, Box, Button, Stack, Typography } from "@mui/material";
+import FileDeliveryUploadDataGrid from "@/features/file-delivery/upload/FileDeliveryUploadDataGrid";
 import StatusDialog from "@/components/modals/Status/StatusDialog";
+import FileDeliveryUploadTable from "@/features/file-delivery/upload/FileDeliveryUploadTable";
 
 const FileDeliveryUploadPage = () => {
   const router = useRouter();
   const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [tableData, setTableData] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dialogType, setDialogType] = useState<"success" | "error">("success");
   const [dialogTitle, setDialogTitle] = useState("");
@@ -21,12 +23,6 @@ const FileDeliveryUploadPage = () => {
     const newFiles = files.map((file) => ({
       id: file.name,
       name: file.name,
-      description: "",
-      tvStation: "",
-      deliveryType: "",
-      broadcastDate: null,
-      publishDate: null,
-      message: "",
       file: file,
     }));
 
@@ -43,13 +39,17 @@ const FileDeliveryUploadPage = () => {
     );
   };
 
+  const handleTableDataChange = (data) => {
+    setTableData(data);
+  };
+
   const handleConfirmUpload = () => {
-    // Add API here for confirming upload
     setIsModalOpen(true);
     setDialogType("success");
     setDialogTitle("アップロード完了しました");
     setDialogMessage("ファイルが正常にアップロードされました。");
     console.log("Uploaded Files Data:", uploadedFiles);
+    console.log("Table Data:", tableData);
   };
 
   const handleCloseModal = () => {
@@ -64,26 +64,28 @@ const FileDeliveryUploadPage = () => {
         ここに納品ファイルをアップロードできます。​​
       </Alert>
 
-      <FileUpload onUpload={handleUpload} />
+      <Stack direction={"column"} spacing={2}>
+        <FileUpload onUpload={handleUpload} />
 
-      <Box sx={{ mt: 2 }}>
         <FileDeliveryUploadDataGrid
           uploadedFiles={uploadedFiles}
           onDeleteFile={handleDeleteFile}
           onRowEdit={handleRowEdit}
         />
-      </Box>
 
-      <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
-        <Button
-          variant="contained"
-          color="primary"
-          disabled={uploadedFiles.length === 0}
-          onClick={handleConfirmUpload}
-        >
-          アップロード確定
-        </Button>
-      </Box>
+        <FileDeliveryUploadTable onTableDataChange={handleTableDataChange} />
+
+        <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={uploadedFiles.length === 0}
+            onClick={handleConfirmUpload}
+          >
+            アップロード確定
+          </Button>
+        </Box>
+      </Stack>
       <StatusDialog
         open={isModalOpen}
         onClose={handleCloseModal}

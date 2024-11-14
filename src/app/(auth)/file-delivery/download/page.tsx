@@ -2,13 +2,13 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
-import { mockDeliveryFile } from "@/constants/file-delivery";
+import { mockFileDeliveryDownload } from "@/constants/file-delivery";
 import FileDeliveryDownloadTable from "@/features/file-delivery/download/FileDeliveryDownloadTable";
 import { Button, Stack, Typography } from "@mui/material";
 
 const FileDeliveryDownloadPage = () => {
   const router = useRouter();
-  const [selectedFiles, setSelectedFiles] = useState<any[]>([]); // Ensure it's an array of file objects
+  const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
 
   const handleReturn = () => {
     router.push("/file-delivery/");
@@ -23,20 +23,21 @@ const FileDeliveryDownloadPage = () => {
   return (
     <DefaultPageLayout title="納品ファイル連携ダウンロード画面​">
       <Typography variant="body1">ファイルが複数見つかりました​</Typography>
+
       <FileDeliveryDownloadTable
         title="納品ファイル​"
-        data={mockDeliveryFile}
-        onSelectFiles={setSelectedFiles} // Passing setSelectedFiles to the table
+        data={mockFileDeliveryDownload}
+        onSelectFiles={setSelectedFiles}
       />
 
       <Stack direction={"row"} mt={2} justifyContent={"space-between"}>
-        <Button variant="contained" color="secondary" onClick={handleReturn}>
+        <Button variant="contained" color="error" onClick={handleReturn}>
           閉じる
         </Button>
         <Button
           variant="contained"
           onClick={handleDownloadSelectedFiles}
-          disabled={selectedFiles.length === 0} // Disable if no files are selected
+          disabled={selectedFiles.length === 0}
         >
           ダウンロード
         </Button>

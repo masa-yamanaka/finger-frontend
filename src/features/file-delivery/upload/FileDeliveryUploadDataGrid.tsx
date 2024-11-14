@@ -3,7 +3,6 @@ import { DataGrid, GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
 import { jaJP } from "@mui/x-data-grid/locales";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import { Box } from "@mui/material";
-import { mockTvStations } from "@/constants/file-delivery";
 
 interface UploadedFile {
   id: string;
@@ -33,41 +32,9 @@ const FileDeliveryUploadDataGrid: React.FC<FileDeliveryUploadDataGridProps> = ({
     {
       field: "description",
       headerName: "ファイル説明欄​",
-      flex: 1,
+      flex: 2,
       editable: true,
     },
-
-    {
-      field: "tvStation",
-      headerName: "放送局​",
-      width: 120,
-      editable: true,
-      type: "singleSelect",
-      valueOptions: mockTvStations,
-    },
-    {
-      field: "deliveryType",
-      headerName: "納品種別",
-      editable: true,
-      type: "singleSelect",
-      valueOptions: ["定時", "臨時"],
-    },
-
-    {
-      field: "broadcastDate",
-      headerName: "放送年月",
-      width: 120,
-      type: "date",
-      editable: true,
-    },
-    {
-      field: "publishDate",
-      headerName: "公開日時",
-      width: 200,
-      type: "dateTime",
-      editable: true,
-    },
-    { field: "message", headerName: "通信欄", flex: 1, editable: true },
     {
       field: "actions",
       type: "actions",

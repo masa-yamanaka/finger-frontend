@@ -7,40 +7,28 @@ import { Box } from "@mui/material";
 interface UploadedFile {
   id: string;
   name: string;
-  startDate: Date | null;
-  endDate: Date | null;
-  reason: string;
+  publishDate: Date | null;
+  creationDeadline: Date | null;
   file: File;
 }
 
-interface UploadDataGridProps {
-  uploadedFiles: UploadedFile[];
+interface FileDeliveryUploadEditDataGridProps {
+  uploadedFile: UploadedFile[];
   onDeleteFile: (id: string) => void;
   onRowEdit: (updatedFile: UploadedFile) => void;
 }
 
-const UploadDataGrid: React.FC<UploadDataGridProps> = ({
-  uploadedFiles,
-  onDeleteFile,
-  onRowEdit,
-}) => {
+const FileDeliveryUploadEditDataGrid: React.FC<
+  FileDeliveryUploadEditDataGridProps
+> = ({ uploadedFile, onDeleteFile, onRowEdit }) => {
+  const processRowUpdate = (newRow: UploadedFile) => {
+    onRowEdit(newRow);
+    return newRow;
+  };
+
   const columns: GridColDef[] = [
     { field: "name", headerName: "アップロードファイル", flex: 1 },
-    {
-      field: "startDate",
-      headerName: "開始日",
-      type: "date",
-      flex: 1,
-      editable: true,
-    },
-    {
-      field: "endDate",
-      headerName: "終了日",
-      type: "date",
-      flex: 1,
-      editable: true,
-    },
-    { field: "reason", headerName: "通信欄", flex: 1, editable: true },
+    { field: "message", headerName: "通信欄", flex: 1, editable: true },
     {
       field: "actions",
       type: "actions",
@@ -57,11 +45,6 @@ const UploadDataGrid: React.FC<UploadDataGridProps> = ({
     },
   ];
 
-  const processRowUpdate = (newRow: UploadedFile) => {
-    onRowEdit(newRow);
-    return newRow;
-  };
-
   return (
     <Box
       sx={{
@@ -76,14 +59,14 @@ const UploadDataGrid: React.FC<UploadDataGridProps> = ({
       }}
     >
       <DataGrid
-        rows={uploadedFiles}
+        rows={uploadedFile}
         columns={columns}
         disableRowSelectionOnClick
-        localeText={jaJP.components.MuiDataGrid.defaultProps.localeText}
         processRowUpdate={processRowUpdate}
+        localeText={jaJP.components.MuiDataGrid.defaultProps.localeText}
       />
     </Box>
   );
 };
 
-export default UploadDataGrid;
+export default FileDeliveryUploadEditDataGrid;

@@ -235,7 +235,14 @@ export default function EmailGrid() {
 
     {
       field: "option1",
-      headerName: "Option 1",
+      // headerName: "Option 1",
+      renderHeader: () => (
+        <div>
+          通知業務
+          <br />
+          Option 1
+        </div>
+      ),
       width: 100,
       renderCell: (params) => (
         <Box onClick={(e) => e.stopPropagation()}>

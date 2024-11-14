@@ -26,7 +26,7 @@ const ProgramInformationUploadPage = () => {
     console.info("Uploading:", files);
 
     const newFiles: UploadedFile[] = files.map((file) => ({
-      id: file.name,
+      id: file.name, // Use a unique identifier
       name: file.name,
       date: null,
       reason: "",
