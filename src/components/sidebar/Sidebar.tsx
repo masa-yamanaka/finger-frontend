@@ -63,13 +63,14 @@ const Sidebar: React.FC = () => {
                   ))}
                 </List>
               </Box>
-              <Divider />
+              {dashboardSections.length -1 !== index ? <Divider /> : ''}
             </React.Fragment>
           ))}
         </List>
       </Box>
 
       {/* Logout Link at the bottom */}
+      <Divider />
       <Box sx={{ p: 2 }}>
         <ListItemButton component={Link} href="/">
           <ListItemText primary="ログアウト" />

@@ -1,14 +1,5 @@
 export const dashboardSections = [
   {
-    title: "各種設定",
-    description:
-      "メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜",
-    items: [
-      { title: "メールアドレス設定", href: "/email-settings" },
-      { title: "アカウント管理", href: "/account-management" },
-    ],
-  },
-  {
     title: "番組連携",
     description: "メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜",
     items: [
@@ -30,6 +21,15 @@ export const dashboardSections = [
     items: [
       { title: "個別楽曲連携", href: "/" },
       { title: "ライブラリ楽曲連携", href: "/" },
+    ],
+  },
+  {
+    title: "各種設定",
+    description:
+      "メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜メールアドレスやお客様情報の〜〜〜〜〜〜〜〜〜〜〜",
+    items: [
+      { title: "メールアドレス設定", href: "/email-settings" },
+      { title: "アカウント管理", href: "/account-management" },
     ],
   },
 ];

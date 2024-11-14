@@ -48,6 +48,10 @@ const EditAccountForm: React.FC = () => {
     router.push("/account-management/");
   };
 
+  const handleBack = () => {
+    router.push("/account-management/");
+  };
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevState) => ({
@@ -167,7 +171,15 @@ const EditAccountForm: React.FC = () => {
       <AccountTable rows={rows} />
 
       {/* Open Modal Button */}
-      <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
+      <Box sx={{ display: "flex", justifyContent: "center", my: 4, gap: 2 }}>
+        <Button
+          onClick={handleBack}
+          variant="contained"
+          color="secondary"
+          size="large"
+        >
+          戻る
+        </Button>
         <Button
           onClick={handleSubmit}
           variant="contained"

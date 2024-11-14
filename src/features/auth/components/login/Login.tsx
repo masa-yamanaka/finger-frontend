@@ -31,7 +31,7 @@ const Login = ({
     <Container maxWidth="sm">
       <Paper elevation={3} sx={{ padding: 4, marginTop: 8 }}>
         <Typography variant="h4" align="center" gutterBottom>
-          全曲報告サービス
+          全曲報告サービスログイン
         </Typography>
 
         <Box component="form" noValidate autoComplete="off">
@@ -55,6 +55,10 @@ const Login = ({
 
           {/* Show error message */}
           {error && <Alert severity="error">{error}</Alert>}
+
+          <Typography variant="body2" sx={{ marginTop: 2 }}>
+            ※ パスワードを忘れた方は管理者にご連絡ください。
+          </Typography>
           <Button
             fullWidth
             variant="contained"
