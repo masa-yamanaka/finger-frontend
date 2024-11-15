@@ -1,14 +1,16 @@
-export const mockTVStations = [
-  { id: 1, name: "ABC News" },
-  { id: 2, name: "BBC" },
-  { id: 3, name: "ESPN" },
-  { id: 4, name: "NBC" },
-  { id: 5, name: "CBS" },
-  { id: 6, name: "CNN" },
-  { id: 7, name: "Fox News" },
-  { id: 8, name: "MTV" },
-  { id: 9, name: "Discovery Channel" },
-  { id: 10, name: "National Geographic" },
+export const mockTypes = ["to", "cc", "bcc"];
+
+export const mockTvStations = [
+  "ABC News",
+  "BBC",
+  "ESPN",
+  "NBC",
+  "CBS",
+  "CNN",
+  "Fox News",
+  "MTV",
+  "Discovery Channel",
+  "National Geographic",
 ];
 
 export const mockEmails = [

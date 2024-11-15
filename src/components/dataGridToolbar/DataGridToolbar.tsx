@@ -5,15 +5,8 @@ import AddIcon from "@mui/icons-material/Add";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import SearchIcon from "@mui/icons-material/Search";
-import {
-  InputAdornment,
-  TextField,
-  FormControl,
-  InputLabel,
-  Checkbox,
-  ListItemText,
-} from "@mui/material";
-import { mockTVStations } from "@/constants/emails";
+import { InputAdornment, TextField, FormControl, InputLabel, Checkbox, ListItemText } from "@mui/material";
+import { mockTvStations } from "@/constants/emails";
 
 interface DataGridToolbarProps {
   onAddClick: () => void;
@@ -30,7 +23,6 @@ export default function DataGridToolbar({
   onStationChange,
   searchQuery,
   onSearchChange,
-  disableAddButton = false,
 }: DataGridToolbarProps) {
   return (
     <Box>
@@ -44,10 +36,10 @@ export default function DataGridToolbar({
           multiple
           renderValue={(selected) => selected.join(", ")}
         >
-          {mockTVStations.map((station) => (
-            <MenuItem key={station.id} value={station.name}>
-              <Checkbox checked={selectedStation.includes(station.name)} />
-              <ListItemText primary={station.name} />
+          {mockTvStations.map((station) => (
+            <MenuItem key={station} value={station}>
+              <Checkbox checked={selectedStation.includes(station)} />
+              <ListItemText primary={station} />
             </MenuItem>
           ))}
         </Select>
@@ -67,13 +59,7 @@ export default function DataGridToolbar({
             ),
           }}
         />
-        <Button
-          color="primary"
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={onAddClick}
-          disabled={disableAddButton}
-        >
+        <Button color="primary" variant="contained" startIcon={<AddIcon />} onClick={onAddClick}>
           新規追加
         </Button>
       </Box>
