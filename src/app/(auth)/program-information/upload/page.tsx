@@ -5,7 +5,10 @@ import FileUpload from "@/components/fileUpload/FileUpload";
 import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
 import { Typography, Box, Button, Alert } from "@mui/material";
 import UploadDataGrid from "@/features/program-information/upload-data-grid/UploadDataGrid";
+import { mockApiCall } from "@/utils/mockApiCall";
 import StatusDialog from "@/components/modals/Status/StatusDialog";
+import CircularProgress from '@mui/material/CircularProgress';
+import { green } from '@mui/material/colors';
 
 interface UploadedFile {
   id: string;
@@ -21,6 +24,8 @@ const ProgramInformationUploadPage = () => {
   const [dialogType, setDialogType] = useState<"success" | "error">("success");
   const [dialogTitle, setDialogTitle] = useState("");
   const [dialogMessage, setDialogMessage] = useState("");
+  const [loading, setLoading] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
 
   const handleUpload = (files: File[]) => {
     console.info("Uploading:", files);
@@ -28,8 +33,9 @@ const ProgramInformationUploadPage = () => {
     const newFiles: UploadedFile[] = files.map((file) => ({
       id: file.name, // Use a unique identifier
       name: file.name,
-      date: null,
-      reason: "",
+      startDate: new Date(1990,0,1),
+      endDate: new Date(1990,0,1),
+      reason: "入力してください",
       file: file, // Store the actual File object
     }));
 
@@ -46,18 +52,57 @@ const ProgramInformationUploadPage = () => {
     );
   };
 
-  const handleConfirmUpload = () => {
-    // Add API here for confirming upload
-    setIsModalOpen(true);
-    setDialogType("success");
-    setDialogTitle("アップロード完了しました");
-    setDialogMessage("ファイルが正常にアップロードされました。");
-    console.log("Uploaded Files Data:", uploadedFiles);
+  const handleConfirmUpload = async () => {
+    // Add API here for upload
+    try {
+      if (!loading) {
+        setSuccess(false);
+        setLoading(true);
+        // Mock API Call
+        // const response = await uploadFilesAPI(uploadedFiles)
+        const response = await mockApiCall();
+
+        if (response.success) {
+          setSuccess(true);
+          setLoading(false);
+          setDialogType("success");
+          setDialogTitle("アップロード完了しました");
+          setDialogMessage("ファイルが正常にアップロードされました。");
+        } else {
+          setLoading(false);
+          setDialogType("error");
+          setDialogTitle("アップロードエラー");
+          setDialogMessage(
+            "アップロード中にエラーが発生しました。再試行してください。"
+          );
+        }
+      }
+    } catch (error) {
+      setLoading(false);
+      setDialogType("error");
+      setDialogTitle("アップロードエラー");
+      setDialogMessage(
+        "サーバーエラーが発生しました。後でもう一度お試しください。"
+      );
+    } finally {
+      setLoading(false);
+      setIsModalOpen(true);
+      console.log("Uploaded Files Data:", uploadedFiles);
+    }
+
+    // For testing without API or error
+    // setDialogType("success");
+    // setDialogTitle("アップロード完了しました");
+    // setDialogMessage("ファイルが正常にアップロードされました。");
+    // setIsModalOpen(true);
+    // console.log("Uploaded Files Data:", uploadedFiles);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    router.push("/program-information/");
+    if (dialogType === 'success') {
+      router.push("/program-information/");
+    }
   };
 
   return (
@@ -78,14 +123,30 @@ const ProgramInformationUploadPage = () => {
       </Box>
 
       <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
-        <Button
-          variant="contained"
-          color="primary"
-          disabled={uploadedFiles.length === 0}
-          onClick={handleConfirmUpload}
-        >
-          アップロード確定
-        </Button>
+        <Box sx={{ position: 'relative' }}>
+          <Button
+            variant="contained"
+            // sx={buttonSx}
+            color="primary"
+            disabled={uploadedFiles.length === 0 || loading}
+            onClick={handleConfirmUpload}
+          >
+            アップロード確定
+          </Button>
+          {loading && (
+            <CircularProgress
+              size={24}
+              sx={{
+                color: green[500],
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                marginTop: '-12px',
+                marginLeft: '-12px',
+              }}
+            />
+          )}
+        </Box>
       </Box>
       <StatusDialog
         open={isModalOpen}

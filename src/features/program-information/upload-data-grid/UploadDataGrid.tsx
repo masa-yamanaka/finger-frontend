@@ -3,6 +3,8 @@ import { DataGrid, GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
 import { jaJP } from "@mui/x-data-grid/locales";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import { Box } from "@mui/material";
+import Tooltip from '@mui/material/Tooltip';
+import dayjs from "dayjs";
 
 interface UploadedFile {
   id: string;
@@ -28,17 +30,27 @@ const UploadDataGrid: React.FC<UploadDataGridProps> = ({
     { field: "name", headerName: "アップロードファイル", flex: 1 },
     {
       field: "startDate",
-      headerName: "開始日",
+      headerName: "対象放送期間(Start)",
       type: "date",
       flex: 1,
       editable: true,
+      renderCell: (params) => {
+        return params.value
+          ? dayjs(params.value).format("YYYY/MM/DD")
+          : "";
+      },
     },
     {
       field: "endDate",
-      headerName: "終了日",
+      headerName: "対象放送期間(End)",
       type: "date",
       flex: 1,
       editable: true,
+      renderCell: (params) => {
+        return params.value
+          ? dayjs(params.value).format("YYYY/MM/DD")
+          : "";
+      },
     },
     { field: "reason", headerName: "通信欄", flex: 1, editable: true },
     {
@@ -48,7 +60,7 @@ const UploadDataGrid: React.FC<UploadDataGridProps> = ({
       width: 100,
       getActions: (params) => [
         <GridActionsCellItem
-          icon={<DeleteIcon />}
+          icon={<Tooltip title="削除"><DeleteIcon /></Tooltip>}
           label="Delete"
           onClick={() => onDeleteFile(params.id)}
           color="inherit"
