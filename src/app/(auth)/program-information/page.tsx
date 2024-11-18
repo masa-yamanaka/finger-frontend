@@ -10,6 +10,7 @@ import ConfirmDialog from "@/components/modals/Confirm/ConfirmDialog";
 import ReturnDialog from "@/features/program-information/return-dialog/ReturnDialog";
 import ProgramInformationSearchAccordion from "@/features/program-information/search-accordion/SearchAccordion";
 import { mockProgramInfo } from "@/constants/program-information";
+import dayjs from "dayjs";
 
 const columns: GridColDef[] = [
   { field: "tvStation", headerName: "放送局", width: 180 },
@@ -42,7 +43,13 @@ const columns: GridColDef[] = [
       </a>
     ),
   },
-  { field: "uploadDate", headerName: "アップロード日時", type: "date" },
+  { field: "uploadDate", headerName: "アップロード日時", type: "dateTime",
+      renderCell: (params) => {
+        // Format the date to show only up to minutes (YYYY-MM-DD HH:mm)
+        return params.value
+          ? dayjs(params.value).format("YYYY/MM/DD HH:mm")
+          : "";
+      }, },
   { field: "message", headerName: "通信欄", width: 240, editable: true },
   { field: "reason", headerName: "差戻し理由", width: 240, editable: true },
 ];

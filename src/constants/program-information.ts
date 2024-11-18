@@ -39,7 +39,7 @@ export const mockProgramInfo = [
     status: "差戻し",
     fileName: "ccccc.xlsx",
     fileUrl: "",
-    uploadDate: new Date(),
+    uploadDate: new Date('1995-12-17T03:24'),
     message: "あああああ",
     reason:
       "ああああああああああああああああああああああああああああああああああああああああ",

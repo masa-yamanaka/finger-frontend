@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { styled } from '@mui/material/styles';
 import {
   Box,
   MenuItem,
@@ -8,14 +9,20 @@ import {
   InputLabel,
   Stack,
   Accordion,
-  AccordionSummary,
   AccordionDetails,
   Typography,
   Button,
   Checkbox,
   ListItemText,
   OutlinedInput,
+  TextField,
+  InputAdornment,
 } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import MuiAccordionSummary, {
+  AccordionSummaryProps,
+} from '@mui/material/AccordionSummary';
+import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -30,6 +37,7 @@ const ProgramInformationSearchAccordion = () => {
   const [broadcastPeriodEnd, setbroadcastPeriodEnd] = useState(null);
   const [tvStation, setTvStation] = useState([]);
   const [statusValue, setStatusValue] = useState([]);
+  const [searchQuery, setSearchQuery] = React.useState("");
 
   const handleTvStationChange = (event) => {
     setTvStation(
@@ -56,16 +64,35 @@ const ProgramInformationSearchAccordion = () => {
       uploadDateStart: uploadDateStart ? uploadDateStart : null,
       uploadDateEnd: uploadDateEnd ? uploadDateEnd : null,
       status: statusValue,
+      searchQuery: searchQuery,
     };
 
     console.log("Search parameters:", searchParams);
   };
+  const AccordionSummary = styled((props: AccordionSummaryProps) => (
+    <MuiAccordionSummary
+      expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
+      {...props}
+    />
+  ))(({ theme }) => ({
+    backgroundColor: 'rgba(0, 0, 0, .03)',
+    flexDirection: 'row-reverse',
+    '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+      transform: 'rotate(90deg)',
+    },
+    '& .MuiAccordionSummary-content': {
+      marginLeft: theme.spacing(1),
+    },
+    ...theme.applyStyles('dark', {
+      backgroundColor: 'rgba(255, 255, 255, .05)',
+    }),
+  }));
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ja">
       <Accordion defaultExpanded>
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
+          // expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
@@ -189,18 +216,39 @@ const ProgramInformationSearchAccordion = () => {
                   </FormControl>
                 </Box>
               </Stack>
+              <Stack direction="row" spacing={2} alignItems="center">
+                <Box sx={{ width: "200px" }}>
+                  <Typography variant="body1">フリーワード検索​</Typography>
+                </Box>
+                <Box>
+                  <TextField
+                    variant="outlined"
+                    size="small"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    sx={{ width: "450px" }}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Box>
+              </Stack>
+              {/* Search Button */}
+              <Stack direction="row" spacing={2} justifyContent="center">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSearch}
+                >
+                  検索
+                </Button>
+              </Stack>
             </Stack>
 
-            {/* Search Button */}
-            <Stack direction="row" justifyContent="flex-end">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSearch}
-              >
-                検索
-              </Button>
-            </Stack>
           </Box>
         </AccordionDetails>
       </Accordion>
