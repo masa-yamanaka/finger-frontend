@@ -43,7 +43,9 @@ run
 npm run storybook
 ```
 
-## Other libraries used
+## Framework & Libraries
 
-MUI
-react-dropzone
+- Next.js 14 App Router
+- MUI v6.1.7 [https://mui.com/material-ui/all-components/](https://mui.com/material-ui/all-components/)
+- react-dropzone
+- dayjs

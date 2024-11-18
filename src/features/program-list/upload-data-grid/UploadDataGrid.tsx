@@ -1,4 +1,3 @@
-// ProgramListUploadDataGrid.tsx
 import React, { useState } from "react";
 import { DataGrid, GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
 import { jaJP } from "@mui/x-data-grid/locales";
@@ -31,11 +30,11 @@ const ProgramListUploadDataGrid: React.FC<ProgramListUploadDataGridProps> = ({
     useState(false);
 
   const handlePublishDateAll = () => {
-    setOpenPublishDateDialog(true); // Open the DateTime Picker dialog for publishDate
+    setOpenPublishDateDialog(true);
   };
 
   const handleCreationDeadlineAll = () => {
-    setOpenCreationDeadlineDialog(true); // Open the Date Picker dialog for creationDeadline
+    setOpenCreationDeadlineDialog(true);
   };
 
   const handleCloseDialog = () => {
@@ -89,7 +88,6 @@ const ProgramListUploadDataGrid: React.FC<ProgramListUploadDataGridProps> = ({
       editable: true,
       sortable: false,
       renderCell: (params) => {
-        // Format the date to show only up to minutes (YYYY-MM-DD HH:mm)
         return params.value
           ? dayjs(params.value).format("YYYY-MM-DD HH:mm")
           : "";

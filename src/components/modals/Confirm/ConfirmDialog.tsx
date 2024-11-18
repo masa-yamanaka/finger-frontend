@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -8,8 +8,8 @@ import Button from "@mui/material/Button";
 
 interface ConfirmDialogProps {
   open: boolean;
-  title: string;
-  description: string;
+  title?: string;
+  description?: string | ReactNode;
   color?: "primary" | "secondary" | "error" | "success" | "info" | "warning";
   onClose: () => void;
   onConfirm: () => void;
@@ -30,11 +30,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle id="confirm-dialog-title">{title}</DialogTitle>
-      <DialogContent>
-        <DialogContentText id="confirm-dialog-description">
-          {description}
-        </DialogContentText>
-      </DialogContent>
+      <DialogContent>{description}</DialogContent>
       <DialogActions sx={{ p: 2 }}>
         <Button onClick={onClose} color="primary">
           {cancelButtonText}
