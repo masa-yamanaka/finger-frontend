@@ -83,6 +83,9 @@ const ProgramInformationSearchAccordion = () => {
     '& .MuiAccordionSummary-content': {
       marginLeft: theme.spacing(1),
     },
+    '& .MuiAccordionSummary-content.Mui-expanded': {
+      marginLeft: theme.spacing(1),
+    },
     ...theme.applyStyles('dark', {
       backgroundColor: 'rgba(255, 255, 255, .05)',
     }),
@@ -92,7 +95,6 @@ const ProgramInformationSearchAccordion = () => {
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ja">
       <Accordion defaultExpanded>
         <AccordionSummary
-          // expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
