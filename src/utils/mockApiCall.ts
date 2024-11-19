@@ -1,4 +1,4 @@
-export const mockApiCall = (successProbability = 0.5, delay = 1000) => {
+export const mockApiCall = (successProbability = 0.5, delay = 3000) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       const isSuccess = Math.random() < successProbability;

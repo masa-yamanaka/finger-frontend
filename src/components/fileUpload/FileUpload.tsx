@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, CircularProgress, Paper, Theme } from "@mui/material";
+import { Box, Typography, CircularProgress, Paper } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
@@ -48,23 +48,13 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpload }) => {
             <CircularProgress size={40} />
           ) : (
             <>
-              <CloudUploadIcon
-                sx={{ fontSize: 48, color: "primary.main", mb: 2 }}
-              />
+              <CloudUploadIcon sx={{ fontSize: 48, color: "primary.main", mb: 2 }} />
               {isDragActive ? (
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  align="center"
-                >
+                <Typography variant="body2" color="textSecondary" align="center">
                   ファイルをドロップしてください
                 </Typography>
               ) : (
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  align="center"
-                >
+                <Typography variant="body2" color="textSecondary" align="center">
                   ファイルをここにドラッグアンドドロップ
                   <br />
                   またはクリックで場所を指定

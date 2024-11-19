@@ -5,7 +5,7 @@ export const mockProgramList = [
     broadcastPeriodStart: new Date(2021, 6, 15),
     broadcastPeriodEnd: new Date(2021, 6, 20),
     status: "作成完了",
-    publishDate: new Date(),
+    publishDateTime: new Date(),
     creationDeadline: new Date(),
     // downloadUrl: "",
     // uploadUrl: "",
@@ -18,7 +18,7 @@ export const mockProgramList = [
     broadcastPeriodStart: new Date(2022, 3, 20),
     broadcastPeriodEnd: new Date(2022, 4, 20),
     status: "確定",
-    publishDate: new Date(),
+    publishDateTime: new Date(),
     creationDeadline: new Date(),
     // downloadUrl: "",
     // uploadUrl: "",
@@ -31,7 +31,7 @@ export const mockProgramList = [
     broadcastPeriodStart: new Date(2022, 3, 20),
     broadcastPeriodEnd: new Date(2022, 4, 20),
     status: "確定",
-    publishDate: new Date(),
+    publishDateTime: new Date(),
     creationDeadline: new Date(),
     // downloadUrl: "",
     // uploadUrl: "",
@@ -44,8 +44,7 @@ export const mockRecentFiles = [
     id: 1,
     userName: "John Doe",
     fileName: "program1.mp4",
-    fileUrl:
-      "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+    fileUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
     uploadDate: "2024-11-07",
   },
   {
@@ -114,6 +113,10 @@ export const mockHistoryFiles = [
     uploadDate: "2024-03-15",
   },
 ];
+
+export const mockProgramListStatus = ["未公開", "作成完了", "確定", "差戻し"];
+
+export const mockProgramListTvStations = ["ABC News", "BBC", "ESPN", "NBC", "FOX", "MTV", "Discovery Channel"];
 
 export const mockUploadData = {
   tvStation: "AB",
