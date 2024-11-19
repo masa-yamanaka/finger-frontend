@@ -9,7 +9,8 @@ import { jaJP } from "@mui/x-data-grid/locales";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import ReturnDialog from "@/features/program-information/return-dialog/ReturnDialog";
 import ConfirmDialog from "@/components/modals/Confirm/ConfirmDialog";
-import { mockProgramList } from "@/constants/program-list";
+import { mockProgramList, mockProgramListStatus } from "@/constants/program-list";
+import dayjs from "dayjs";
 
 const columns: GridColDef[] = [
   { field: "tvStation", headerName: "放送局" },
@@ -17,21 +18,26 @@ const columns: GridColDef[] = [
     field: "broadcastPeriodStart",
     headerName: "対象放送期間(Start)",
     type: "date",
-    editable: true,
   },
   {
     field: "broadcastPeriodEnd",
     headerName: "対象放送期間(End)",
     type: "date",
-    editable: true,
   },
   {
     field: "status",
     headerName: "ステータス",
     type: "singleSelect",
-    valueOptions: ["未公開", "作成完了", "確定", "差戻し"],
+    valueOptions: mockProgramListStatus,
   },
-  { field: "publishDate", headerName: "公開日時", type: "date" },
+  {
+    field: "publishDateTime",
+    headerName: "公開日時",
+    type: "dateTime",
+    renderCell: (params) => {
+      return params.value ? dayjs(params.value).format("YYYY/MM/DD HH:mm") : "";
+    },
+  },
   { field: "creationDeadline", headerName: "作成完了期限日", type: "date" },
   {
     field: "downloadUrl",
@@ -67,13 +73,22 @@ const columns: GridColDef[] = [
       </Link>
     ),
   },
-  { field: "lastUploadDate", headerName: "最終アップロード日", type: "date" },
+  {
+    field: "lastUploadDate",
+    headerName: "最終アップロード日",
+    type: "dateTime",
+    renderCell: (params) => {
+      // Format the date to show only up to minutes (YYYY/MM/DD HH:mm)
+      return params.value ? dayjs(params.value).format("YYYY/MM/DD HH:mm") : "";
+    },
+  },
   { field: "reason", headerName: "差戻し理由​", editable: true, flex: 1 },
 ];
 
 const ProgramListPage = () => {
   const router = useRouter();
   const [rows, setRows] = useState(mockProgramList);
+  const [filteredRows, setFilteredRows] = useState(mockProgramList);
   const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
   const [dialogProps, setDialogProps] = useState({
     open: false,
@@ -97,18 +112,14 @@ const ProgramListPage = () => {
 
   const handleStatusConfirm = () => {
     // Add API here for 確定 status
-    const updatedRows = rows.map((row) =>
-      selectedRows.includes(row.id) ? { ...row, status: "確定" } : row
-    );
+    const updatedRows = rows.map((row) => (selectedRows.includes(row.id) ? { ...row, status: "確定" } : row));
     setRows(updatedRows);
     closeDialog();
   };
 
   const handleStatusCompleted = () => {
     // Add API here for 作成完了 status
-    const updatedRows = rows.map((row) =>
-      selectedRows.includes(row.id) ? { ...row, status: "作成完了" } : row
-    );
+    const updatedRows = rows.map((row) => (selectedRows.includes(row.id) ? { ...row, status: "作成完了" } : row));
     setRows(updatedRows);
     closeDialog();
   };
@@ -124,9 +135,7 @@ const ProgramListPage = () => {
     // Log the comment
     console.log("差戻しコメント:", comment);
 
-    const updatedRows = rows.map((row) =>
-      selectedRows.includes(row.id) ? { ...row, status: "差戻し" } : row
-    );
+    const updatedRows = rows.map((row) => (selectedRows.includes(row.id) ? { ...row, status: "差戻し" } : row));
     setRows(updatedRows);
 
     closeReturnModal();
@@ -137,8 +146,7 @@ const ProgramListPage = () => {
       action === "delete"
         ? {
             title: "削除の確認",
-            description:
-              "選択した行を削除してもよろしいですか？この操作は元に戻せません。",
+            description: "選択した行を削除してもよろしいですか？この操作は元に戻せません。",
             color: "error",
             onConfirm: handleDeleteSelected,
           }
@@ -159,20 +167,14 @@ const ProgramListPage = () => {
     setDialogProps({ ...dialogConfig, open: true });
   };
 
-  const closeDialog = () =>
-    setDialogProps((prev) => ({ ...prev, open: false }));
+  const closeDialog = () => setDialogProps((prev) => ({ ...prev, open: false }));
 
   const openReturnModal = () => setIsReturnModalOpen(true);
   const closeReturnModal = () => setIsReturnModalOpen(false);
 
   return (
     <DefaultPageLayout title="番組確認一覧連携">
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleUpload}
-        sx={{ mb: 2 }}
-      >
+      <Button variant="contained" color="primary" onClick={handleUpload} sx={{ mb: 2 }}>
         アップロード
       </Button>
       <ProgramListSearchAccordion />
@@ -183,9 +185,7 @@ const ProgramListPage = () => {
           columns={columns}
           checkboxSelection
           disableRowSelectionOnClick
-          onRowSelectionModelChange={(newSelection) =>
-            setSelectedRows(newSelection)
-          }
+          onRowSelectionModelChange={(newSelection) => setSelectedRows(newSelection)}
           sx={{
             height: 500,
             width: "100%",
@@ -207,25 +207,13 @@ const ProgramListPage = () => {
           削除
         </Button>
         <Stack direction="row" spacing={2}>
-          <Button
-            variant="contained"
-            onClick={() => openDialog("completed")}
-            disabled={!selectedRows.length}
-          >
+          <Button variant="contained" onClick={() => openDialog("completed")} disabled={!selectedRows.length}>
             作成完了
           </Button>
-          <Button
-            variant="contained"
-            onClick={() => openDialog("confirm")}
-            disabled={!selectedRows.length}
-          >
+          <Button variant="contained" onClick={() => openDialog("confirm")} disabled={!selectedRows.length}>
             確定
           </Button>
-          <Button
-            variant="contained"
-            onClick={openReturnModal}
-            disabled={!selectedRows.length}
-          >
+          <Button variant="contained" onClick={openReturnModal} disabled={!selectedRows.length}>
             差戻し
           </Button>
         </Stack>
@@ -244,11 +232,7 @@ const ProgramListPage = () => {
       />
 
       {/* Return Dialog */}
-      <ReturnDialog
-        open={isReturnModalOpen}
-        onClose={closeReturnModal}
-        onConfirm={handleStatusReturn}
-      />
+      <ReturnDialog open={isReturnModalOpen} onClose={closeReturnModal} onConfirm={handleStatusReturn} />
     </DefaultPageLayout>
   );
 };

@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { styled } from "@mui/material/styles";
 import {
   Box,
   MenuItem,
@@ -8,41 +9,43 @@ import {
   InputLabel,
   Stack,
   Accordion,
-  AccordionSummary,
   AccordionDetails,
   Typography,
   Button,
   Checkbox,
   ListItemText,
   OutlinedInput,
+  TextField,
+  InputAdornment,
 } from "@mui/material";
-import { LocalizationProvider } from "@mui/x-date-pickers";
+import SearchIcon from "@mui/icons-material/Search";
+import MuiAccordionSummary, { AccordionSummaryProps } from "@mui/material/AccordionSummary";
+import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
+import { LocalizationProvider, DatePicker, DateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import "dayjs/locale/ja";
-import { mockStatus, mockTvStations } from "@/constants/program-information";
+import { mockProgramListStatus, mockProgramListTvStations } from "@/constants/program-list";
+import dayjs from "dayjs";
 
 const ProgramListSearchAccordion = () => {
+  const [tvStation, setTvStation] = useState([]);
   const [broadcastPeriodStart, setbroadcastPeriodStart] = useState(null);
   const [broadcastPeriodEnd, setbroadcastPeriodEnd] = useState(null);
-  const [tvStation, setTvStation] = useState([]);
   const [statusValue, setStatusValue] = useState([]);
+  const [publishDateTimeStart, setPublishDateTimeStart] = useState(null);
+  const [publishDateTimeEnd, setPublishDateTimeEnd] = useState(null);
+  const [creationDeadlineStart, setCreationDeadlineStart] = useState(null);
+  const [creationDeadlineEnd, setCreationDeadlineEnd] = useState(null);
+  const [lastUploadDateStart, setLastUploadDateStart] = useState(null);
+  const [lastUploadDateEnd, setLastUploadDateEnd] = useState(null);
+  const [searchQuery, setSearchQuery] = React.useState("");
 
   const handleTvStationChange = (event) => {
-    setTvStation(
-      event.target.value === "string"
-        ? event.target.value.split(",")
-        : event.target.value
-    );
+    setTvStation(event.target.value === "string" ? event.target.value.split(",") : event.target.value);
   };
 
   const handleStatusChange = (event) => {
-    setStatusValue(
-      event.target.value === "string"
-        ? event.target.value.split(",")
-        : event.target.value
-    );
+    setStatusValue(event.target.value === "string" ? event.target.value.split(",") : event.target.value);
   };
 
   const handleSearch = () => {
@@ -50,21 +53,44 @@ const ProgramListSearchAccordion = () => {
     const searchParams = {
       tvStation: tvStation,
       broadcastPeriodStart: broadcastPeriodStart,
+      // broadcastPeriodStart: broadcastPeriodStart ? dayjs(broadcastPeriodStart).format("YYYY/MM/DD") : null,
       broadcastPeriodEnd: broadcastPeriodEnd,
       status: statusValue,
+      publishDateTimeStart: publishDateTimeStart,
+      publishDateTimeEnd: publishDateTimeEnd,
+      creationDeadlineStart: creationDeadlineStart,
+      creationDeadlineEnd: creationDeadlineEnd,
+      lastUploadDateStart: lastUploadDateStart,
+      lastUploadDateEnd: lastUploadDateEnd,
+      searchQuery: searchQuery,
     };
 
     console.log("Search parameters:", searchParams);
   };
 
+  const AccordionSummary = styled((props: AccordionSummaryProps) => (
+    <MuiAccordionSummary expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />} {...props} />
+  ))(({ theme }) => ({
+    backgroundColor: "rgba(0, 0, 0, .03)",
+    flexDirection: "row-reverse",
+    "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+      transform: "rotate(90deg)",
+    },
+    "& .MuiAccordionSummary-content": {
+      marginLeft: theme.spacing(1),
+    },
+    "& .MuiAccordionSummary-content.Mui-expanded": {
+      marginLeft: theme.spacing(1),
+    },
+    ...theme.applyStyles("dark", {
+      backgroundColor: "rgba(255, 255, 255, .05)",
+    }),
+  }));
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ja">
       <Accordion defaultExpanded>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
+        <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
           <Typography>番組情報を選択してください​</Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -87,7 +113,7 @@ const ProgramListSearchAccordion = () => {
                       input={<OutlinedInput label="放送局を選択" />}
                       renderValue={(selected) => selected.join(", ")}
                     >
-                      {mockTvStations.map((station) => (
+                      {mockProgramListTvStations.map((station) => (
                         <MenuItem key={station} value={station}>
                           <Checkbox checked={tvStation.includes(station)} />
                           <ListItemText primary={station} />
@@ -145,7 +171,7 @@ const ProgramListSearchAccordion = () => {
                       input={<OutlinedInput label="ステータスを選択" />}
                       renderValue={(selected) => selected.join(", ")}
                     >
-                      {mockStatus.map((status) => (
+                      {mockProgramListStatus.map((status) => (
                         <MenuItem key={status} value={status}>
                           <Checkbox checked={statusValue.includes(status)} />
                           <ListItemText primary={status} />
@@ -155,17 +181,122 @@ const ProgramListSearchAccordion = () => {
                   </FormControl>
                 </Box>
               </Stack>
-            </Stack>
 
-            {/* Search Button */}
-            <Stack direction="row" justifyContent="flex-end">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSearch}
-              >
-                検索
-              </Button>
+              {/* Publish DateTime */}
+              <Stack direction="row" spacing={2} alignItems="center">
+                <Box sx={{ width: "200px" }}>
+                  <Typography variant="body1">公開日時​</Typography>
+                </Box>
+                <Box sx={{ width: "200px" }}>
+                  <DateTimePicker
+                    slotProps={{
+                      textField: { size: "small" },
+                    }}
+                    value={publishDateTimeStart}
+                    onChange={(newValue) => setPublishDateTimeStart(newValue)}
+                    label="公開日時"
+                  />
+                </Box>
+                <Typography>〜</Typography>
+                <Box sx={{ width: "200px" }}>
+                  <DateTimePicker
+                    slotProps={{
+                      textField: { size: "small" },
+                    }}
+                    value={publishDateTimeEnd}
+                    onChange={(newValue) => setPublishDateTimeEnd(newValue)}
+                    label="公開日時"
+                  />
+                </Box>
+              </Stack>
+
+              {/* Creation Deadline  */}
+              <Stack direction="row" spacing={2} alignItems="center">
+                <Box sx={{ width: "200px" }}>
+                  <Typography variant="body1">作成完了期限​</Typography>
+                </Box>
+                <Box sx={{ width: "200px" }}>
+                  <DatePicker
+                    slotProps={{
+                      calendarHeader: { format: "YYYY年MM月" },
+                      textField: { size: "small" },
+                    }}
+                    value={creationDeadlineStart}
+                    onChange={(newValue) => setCreationDeadlineStart(newValue)}
+                    label="作成完了期限"
+                  />
+                </Box>
+                <Typography>〜</Typography>
+                <Box sx={{ width: "200px" }}>
+                  <DatePicker
+                    slotProps={{
+                      calendarHeader: { format: "YYYY年MM月" },
+                      textField: { size: "small" },
+                    }}
+                    value={creationDeadlineEnd}
+                    onChange={(newValue) => setCreationDeadlineEnd(newValue)}
+                    label="作成完了期限"
+                  />
+                </Box>
+              </Stack>
+
+              {/* Last Upload Date  */}
+              <Stack direction="row" spacing={2} alignItems="center">
+                <Box sx={{ width: "200px" }}>
+                  <Typography variant="body1">最終アップロード日時​</Typography>
+                </Box>
+                <Box sx={{ width: "200px" }}>
+                  <DateTimePicker
+                    slotProps={{
+                      textField: { size: "small" },
+                    }}
+                    value={lastUploadDateStart}
+                    onChange={(newValue) => setLastUploadDateStart(newValue)}
+                    label="最終アップロード日"
+                  />
+                </Box>
+                <Typography>〜</Typography>
+                <Box sx={{ width: "200px" }}>
+                  <DateTimePicker
+                    slotProps={{
+                      textField: { size: "small" },
+                    }}
+                    value={lastUploadDateEnd}
+                    onChange={(newValue) => setLastUploadDateEnd(newValue)}
+                    label="最終アップロード日"
+                  />
+                </Box>
+              </Stack>
+
+              {/* Free Word Search */}
+              <Stack direction="row" spacing={2} alignItems="center">
+                <Box sx={{ width: "200px" }}>
+                  <Typography variant="body1">フリーワード検索​</Typography>
+                </Box>
+                <Box>
+                  <TextField
+                    variant="outlined"
+                    size="small"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    sx={{ width: "450px" }}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Box>
+              </Stack>
+
+              {/* Search Button */}
+              <Stack direction="row" justifyContent="center">
+                <Button variant="contained" color="primary" onClick={handleSearch}>
+                  検索
+                </Button>
+              </Stack>
             </Stack>
           </Box>
         </AccordionDetails>

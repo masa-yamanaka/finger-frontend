@@ -9,7 +9,7 @@ import dayjs from "dayjs";
 interface UploadedFile {
   id: string;
   name: string;
-  publishDate: Date | null;
+  publishDateTime: Date | null;
   creationDeadline: Date | null;
   file: File;
 }
@@ -25,12 +25,11 @@ const ProgramListUploadDataGrid: React.FC<ProgramListUploadDataGridProps> = ({
   onDeleteFile,
   onRowEdit,
 }) => {
-  const [openPublishDateDialog, setOpenPublishDateDialog] = useState(false);
-  const [openCreationDeadlineDialog, setOpenCreationDeadlineDialog] =
-    useState(false);
+  const [openPublishDateTimeDialog, setOpenpublishDateTimeDialog] = useState(false);
+  const [openCreationDeadlineDialog, setOpenCreationDeadlineDialog] = useState(false);
 
-  const handlePublishDateAll = () => {
-    setOpenPublishDateDialog(true);
+  const handlepublishDateTimeAll = () => {
+    setOpenpublishDateTimeDialog(true);
   };
 
   const handleCreationDeadlineAll = () => {
@@ -38,16 +37,16 @@ const ProgramListUploadDataGrid: React.FC<ProgramListUploadDataGridProps> = ({
   };
 
   const handleCloseDialog = () => {
-    setOpenPublishDateDialog(false);
+    setOpenpublishDateTimeDialog(false);
     setOpenCreationDeadlineDialog(false);
   };
 
-  const handlePublishDateConfirm = (date: Date | null) => {
+  const handlePublishDateTimeConfirm = (date: Date | null) => {
     if (date) {
       uploadedFiles.forEach((file) => {
         const updatedFile = {
           ...file,
-          publishDate: date,
+          publishDateTime: date,
         };
         onRowEdit(updatedFile);
       });
@@ -69,14 +68,19 @@ const ProgramListUploadDataGrid: React.FC<ProgramListUploadDataGridProps> = ({
   const columns: GridColDef[] = [
     { field: "name", headerName: "アップロードファイル", flex: 1 },
     {
-      field: "publishDate",
+      field: "tvStation",
+      headerName: "放送局",
+      width: 180,
+    },
+    {
+      field: "publishDateTime",
       renderHeader: () => (
         <Stack direction={"row"} spacing={4} alignItems={"center"}>
           <Box>公開日時</Box>
           <Button
             size="small"
             variant="contained"
-            onClick={handlePublishDateAll}
+            onClick={handlepublishDateTimeAll}
             disabled={uploadedFiles.length === 0}
           >
             一括反映
@@ -88,9 +92,7 @@ const ProgramListUploadDataGrid: React.FC<ProgramListUploadDataGridProps> = ({
       editable: true,
       sortable: false,
       renderCell: (params) => {
-        return params.value
-          ? dayjs(params.value).format("YYYY-MM-DD HH:mm")
-          : "";
+        return params.value ? dayjs(params.value).format("YYYY-MM-DD HH:mm") : "";
       },
     },
     {
@@ -150,18 +152,18 @@ const ProgramListUploadDataGrid: React.FC<ProgramListUploadDataGridProps> = ({
     >
       <DataGrid
         rows={uploadedFiles}
-        // editMode="row"
+        editMode="row"
         columns={columns}
         disableRowSelectionOnClick
         localeText={jaJP.components.MuiDataGrid.defaultProps.localeText}
         processRowUpdate={processRowUpdate}
       />
 
-      {/* DatePickerDialog for publishDate */}
+      {/* DatePickerDialog for publishDateTime */}
       <DatePickerDialog
-        open={openPublishDateDialog}
+        open={openPublishDateTimeDialog}
         onClose={handleCloseDialog}
-        onConfirm={handlePublishDateConfirm}
+        onConfirm={handlePublishDateTimeConfirm}
         type="datetime"
         title="公開日時を一括設定"
       />
