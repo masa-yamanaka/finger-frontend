@@ -11,7 +11,6 @@ import {
   Accordion,
   AccordionDetails,
   Typography,
-  Button,
   Checkbox,
   ListItemText,
   OutlinedInput,
@@ -25,9 +24,11 @@ import { LocalizationProvider, DatePicker, DateTimePicker } from "@mui/x-date-pi
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/ja";
 import { mockProgramListStatus, mockProgramListTvStations } from "@/constants/program-list";
-import dayjs from "dayjs";
+import UploadButton from "@/components/button/upload-button/UploadButton";
+import { mockApiCall } from "@/utils/mockApiCall";
+// import dayjs from "dayjs";
 
-const ProgramListSearchAccordion = () => {
+const ProgramListSearchAccordion = ({ onSearchComplete }) => {
   const [tvStation, setTvStation] = useState([]);
   const [broadcastPeriodStart, setbroadcastPeriodStart] = useState(null);
   const [broadcastPeriodEnd, setbroadcastPeriodEnd] = useState(null);
@@ -39,6 +40,7 @@ const ProgramListSearchAccordion = () => {
   const [lastUploadDateStart, setLastUploadDateStart] = useState(null);
   const [lastUploadDateEnd, setLastUploadDateEnd] = useState(null);
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleTvStationChange = (event) => {
     setTvStation(event.target.value === "string" ? event.target.value.split(",") : event.target.value);
@@ -48,7 +50,7 @@ const ProgramListSearchAccordion = () => {
     setStatusValue(event.target.value === "string" ? event.target.value.split(",") : event.target.value);
   };
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     // Add logic here for search button
     const searchParams = {
       tvStation: tvStation,
@@ -64,8 +66,31 @@ const ProgramListSearchAccordion = () => {
       lastUploadDateEnd: lastUploadDateEnd,
       searchQuery: searchQuery,
     };
-
     console.log("Search parameters:", searchParams);
+
+    // Check if searchParams are "empty"
+    const isSearchParamsEmpty = Object.values(searchParams).every(
+      (value) => value === null || value === undefined || (Array.isArray(value) && value.length === 0) || value === ""
+    );
+
+    // If searchParams are empty, skip the API call
+    if (isSearchParamsEmpty) {
+      console.log("No search parameters provided. Skipping API call.");
+      return; // exit the function early
+    }
+
+    setLoading(true);
+
+    try {
+      const data = await mockApiCall();
+
+      // Set the search results here
+      onSearchComplete(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const AccordionSummary = styled((props: AccordionSummaryProps) => (
@@ -293,9 +318,7 @@ const ProgramListSearchAccordion = () => {
 
               {/* Search Button */}
               <Stack direction="row" justifyContent="center">
-                <Button variant="contained" color="primary" onClick={handleSearch}>
-                  検索
-                </Button>
+                <UploadButton onClick={handleSearch} buttonText="検索" loading={loading} disabled={loading} />
               </Stack>
             </Stack>
           </Box>

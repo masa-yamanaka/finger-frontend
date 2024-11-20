@@ -1,6 +1,5 @@
 import React from "react";
 import { Button, CircularProgress, Box } from "@mui/material";
-import { green } from "@mui/material/colors";
 
 interface UploadButtonProps {
   onClick: () => void;
@@ -19,7 +18,7 @@ const UploadButton: React.FC<UploadButtonProps> = ({ onClick, loading, disabled,
         <CircularProgress
           size={24}
           sx={{
-            color: green[500],
+            color: "primary",
             position: "absolute",
             top: "50%",
             left: "50%",

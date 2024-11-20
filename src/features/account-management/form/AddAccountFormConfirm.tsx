@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { Box, Button, Select, MenuItem, TextField } from "@mui/material";
+import { Button, Select, MenuItem, TextField, Stack } from "@mui/material";
 import AccountTable from "../component/AccountTable";
 
 const ConfirmPage = () => {
@@ -28,12 +28,7 @@ const ConfirmPage = () => {
     {
       label: "事業者種類",
       input: (
-        <Select
-          fullWidth
-          name="businessType"
-          value={formData.businessType}
-          disabled
-        >
+        <Select fullWidth name="businessType" value={formData.businessType} disabled>
           <MenuItem key={formData.businessType} value={formData.businessType}>
             {formData.businessType}
           </MenuItem>
@@ -43,12 +38,7 @@ const ConfirmPage = () => {
     {
       label: "事業者名",
       input: (
-        <Select
-          fullWidth
-          name="businessName"
-          value={formData.businessName}
-          disabled
-        >
+        <Select fullWidth name="businessName" value={formData.businessName} disabled>
           <MenuItem key={formData.businessName} value={formData.businessName}>
             {formData.businessName}
           </MenuItem>
@@ -67,15 +57,11 @@ const ConfirmPage = () => {
     },
     {
       label: "ログインID",
-      input: (
-        <TextField fullWidth name="loginId" value={formData.loginId} disabled />
-      ),
+      input: <TextField fullWidth name="loginId" value={formData.loginId} disabled />,
     },
     {
       label: "メールアドレス",
-      input: (
-        <TextField fullWidth name="email" value={formData.email} disabled />
-      ),
+      input: <TextField fullWidth name="email" value={formData.email} disabled />,
     },
   ];
 
@@ -83,24 +69,14 @@ const ConfirmPage = () => {
     <>
       <AccountTable rows={rows} />
 
-      <Box sx={{ display: "flex", justifyContent: "center", gap: 4, my: 4 }}>
-        <Button
-          variant="contained"
-          color="error"
-          size="large"
-          onClick={handleBack}
-        >
+      <Stack direction="row" spacing={4} justifyContent={"center"} m={4}>
+        <Button variant="contained" color="error" size="large" onClick={handleBack}>
           戻る
         </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          onClick={handleConfirm}
-        >
+        <Button variant="contained" color="primary" size="large" onClick={handleConfirm}>
           確認完了
         </Button>
-      </Box>
+      </Stack>
     </>
   );
 };
