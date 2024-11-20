@@ -1,13 +1,10 @@
 "use client";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { Select, MenuItem, TextField, Button, Box } from "@mui/material";
-import {
-  mockAccountBusinessNames,
-  mockAccountBusinessTypes,
-  mockAccountRoles,
-} from "@/constants/accounts";
+import { Select, MenuItem, TextField, Button, Stack } from "@mui/material";
+import { mockAccountBusinessNames, mockAccountBusinessTypes, mockAccountRoles } from "@/constants/accounts";
 import AccountTable from "../component/AccountTable";
+import { isValidEmail } from "@/utils/string";
 
 const AddAccountForm = () => {
   const router = useRouter();
@@ -18,6 +15,7 @@ const AddAccountForm = () => {
     loginId: "",
     email: "",
   });
+  const [emailError, setEmailError] = React.useState("");
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -25,10 +23,20 @@ const AddAccountForm = () => {
       ...prevState,
       [name]: value,
     }));
+    if (name === "email") {
+      setEmailError("");
+    }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    // Validate email
+    if (!isValidEmail(formData.email)) {
+      setEmailError("有効なメールアドレスを入力してください。");
+      return;
+    }
+
     console.log("Add account data: ", formData);
     router.push("/account-management/add/confirm");
   };
@@ -41,13 +49,7 @@ const AddAccountForm = () => {
     {
       label: "事業者種類",
       input: (
-        <Select
-          fullWidth
-          name="businessType"
-          value={formData.businessType}
-          onChange={handleChange}
-          displayEmpty
-        >
+        <Select fullWidth name="businessType" value={formData.businessType} onChange={handleChange} displayEmpty>
           <MenuItem value="" disabled>
             事業者種類を選択
           </MenuItem>
@@ -62,13 +64,7 @@ const AddAccountForm = () => {
     {
       label: "事業者名",
       input: (
-        <Select
-          fullWidth
-          name="businessName"
-          value={formData.businessName}
-          onChange={handleChange}
-          displayEmpty
-        >
+        <Select fullWidth name="businessName" value={formData.businessName} onChange={handleChange} displayEmpty>
           <MenuItem value="" disabled>
             事業者名を選択
           </MenuItem>
@@ -83,13 +79,7 @@ const AddAccountForm = () => {
     {
       label: "管理権限",
       input: (
-        <Select
-          fullWidth
-          name="role"
-          value={formData.role}
-          onChange={handleChange}
-          displayEmpty
-        >
+        <Select fullWidth name="role" value={formData.role} onChange={handleChange} displayEmpty>
           <MenuItem value="" disabled>
             権限を選択
           </MenuItem>
@@ -122,6 +112,8 @@ const AddAccountForm = () => {
           value={formData.email}
           onChange={handleChange}
           placeholder="メールアドレスを入力"
+          error={!!emailError}
+          helperText={emailError}
         />
       ),
     },
@@ -131,19 +123,14 @@ const AddAccountForm = () => {
     <form>
       <AccountTable rows={rows} />
 
-      <Box sx={{ display: "flex", justifyContent: "center", my: 4, gap: 2 }}>
-        <Button onClick={handleBack} variant="contained" color="secondary" size="large">
+      <Stack direction="row" spacing={4} justifyContent="center" m={4}>
+        <Button onClick={handleBack} variant="contained" color="error" size="large">
           戻る
         </Button>
-        <Button
-          onClick={handleSubmit}
-          variant="contained"
-          color="primary"
-          size="large"
-        >
+        <Button onClick={handleSubmit} variant="contained" color="primary" size="large">
           入力完了
         </Button>
-      </Box>
+      </Stack>
     </form>
   );
 };

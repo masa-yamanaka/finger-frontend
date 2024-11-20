@@ -1,13 +1,7 @@
 import React from "react";
-import {
-  Drawer,
-  List,
-  ListItemText,
-  ListItemButton,
-  Box,
-  Divider,
-  Typography,
-} from "@mui/material";
+import { Drawer, List, ListItemIcon, ListItemText, ListItemButton, Box, Divider, Typography } from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
+import LogoutIcon from "@mui/icons-material/Logout";
 import Link from "next/link";
 import { dashboardSections } from "@/constants/dashboard";
 
@@ -31,8 +25,11 @@ const Sidebar: React.FC = () => {
     >
       <Box sx={{ flexGrow: 1 }}>
         <List>
-          <Box sx={{ px: 2 }}>
+          <Box>
             <ListItemButton component={Link} href="/dashboard">
+              <ListItemIcon sx={{ minWidth: "40px" }}>
+                <HomeIcon />
+              </ListItemIcon>
               <ListItemText primary="ホーム" />
             </ListItemButton>
           </Box>
@@ -42,28 +39,18 @@ const Sidebar: React.FC = () => {
           {dashboardSections.map((section, index) => (
             <React.Fragment key={index}>
               <Box sx={{ p: 2 }}>
-                <Typography
-                  variant="subtitle1"
-                  gutterBottom
-                  color="info.dark"
-                  sx={{ fontWeight: "bold" }}
-                >
+                <Typography variant="subtitle1" gutterBottom color="info.dark" sx={{ fontWeight: "bold" }}>
                   {section.title}
                 </Typography>
                 <List sx={{ p: 0 }}>
                   {section.items.map((item, itemIndex) => (
-                    <ListItemButton
-                      key={itemIndex}
-                      component={Link}
-                      href={item.href}
-                      sx={{ py: 0.5 }}
-                    >
+                    <ListItemButton key={itemIndex} component={Link} href={item.href} sx={{ py: 0.5 }}>
                       <ListItemText primary={item.title} />
                     </ListItemButton>
                   ))}
                 </List>
               </Box>
-              {dashboardSections.length -1 !== index ? <Divider /> : ''}
+              {dashboardSections.length - 1 !== index ? <Divider /> : ""}
             </React.Fragment>
           ))}
         </List>
@@ -71,8 +58,11 @@ const Sidebar: React.FC = () => {
 
       {/* Logout Link at the bottom */}
       <Divider />
-      <Box sx={{ p: 2 }}>
+      <Box py={1}>
         <ListItemButton component={Link} href="/">
+          <ListItemIcon sx={{ minWidth: "40px" }}>
+            <LogoutIcon />
+          </ListItemIcon>
           <ListItemText primary="ログアウト" />
         </ListItemButton>
       </Box>

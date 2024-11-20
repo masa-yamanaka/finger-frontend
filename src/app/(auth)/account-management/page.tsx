@@ -28,14 +28,9 @@ import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
 const AccountManagement = () => {
   const [selectedStation, setSelectedStation] = React.useState<string[]>([]);
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
-    {}
-  );
+  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
   const router = useRouter();
-  const [rowToDelete, setRowToDelete] = React.useState<GridRowId | null>(null);
-  const [selectedRows, setSelectedRows] = React.useState<GridRowSelectionModel>(
-    []
-  );
+  const [selectedRows, setSelectedRows] = React.useState<GridRowSelectionModel>([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
 
   // Add API here to fetch data
@@ -45,10 +40,7 @@ const AccountManagement = () => {
     router.push("/account-management/add");
   };
 
-  const handleRowEditStop: GridEventListener<"rowEditStop"> = (
-    params,
-    event
-  ) => {
+  const handleRowEditStop: GridEventListener<"rowEditStop"> = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
       event.defaultMuiPrevented = true;
     }
@@ -63,15 +55,6 @@ const AccountManagement = () => {
   const handleSaveClick = (id: GridRowId) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
-
-  // const handleDeleteClick = () => {
-  //   // Add API here to delete
-  //   console.log("Deleted row id: ", rowToDelete);
-
-  //   setRows(rows.filter((row) => row.id !== rowToDelete));
-  //   setRowToDelete(null);
-  //   closeDeleteModal();
-  // };
 
   const openDeleteModal = () => {
     setIsDeleteModalOpen(true);
@@ -107,9 +90,7 @@ const AccountManagement = () => {
     // Add API here to delete
     console.log("Deleted row ids: ", selectedRows);
 
-    setRows((oldRows) =>
-      oldRows.filter((row) => !selectedRows.includes(row.id))
-    );
+    setRows((oldRows) => oldRows.filter((row) => !selectedRows.includes(row.id)));
     setSelectedRows([]);
     closeDeleteModal();
   };
@@ -121,14 +102,9 @@ const AccountManagement = () => {
         ? selectedStation.includes(row.tvStation) // updated for multiple selections
         : true;
 
-    const matchesSearch = row.email
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
+    const matchesSearch = row.email.toLowerCase().includes(searchQuery.toLowerCase());
 
-    return (
-      (matchesStation && matchesSearch) ||
-      (row.isNew && selectedStation.includes(row.tvStation))
-    );
+    return (matchesStation && matchesSearch) || (row.isNew && selectedStation.includes(row.tvStation));
   });
 
   const columns: GridColDef[] = [
@@ -209,7 +185,6 @@ const AccountManagement = () => {
           onStationChange={setSelectedStation}
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
-          disableAddButton={false}
         />
         <DataGrid
           rows={filteredRows}
@@ -221,9 +196,7 @@ const AccountManagement = () => {
           onRowEditStop={handleRowEditStop}
           processRowUpdate={processRowUpdate}
           checkboxSelection
-          onRowSelectionModelChange={(newSelection) =>
-            setSelectedRows(newSelection)
-          }
+          onRowSelectionModelChange={(newSelection) => setSelectedRows(newSelection)}
           rowSelectionModel={selectedRows}
           sx={{
             height: 500,

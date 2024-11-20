@@ -8,6 +8,8 @@ import ProgramListUploadDataGrid from "@/features/program-list/upload-data-grid/
 import { mockApiCall } from "@/utils/mockApiCall";
 import StatusDialog from "@/components/modals/Status/StatusDialog";
 import UploadButton from "@/components/button/upload-button/UploadButton";
+import { filterDuplicateFiles } from "@/utils/file";
+import { extractTextBeforeUnderscore } from "@/utils/string";
 
 const ProgramListUploadPage = () => {
   const router = useRouter();
@@ -25,21 +27,33 @@ const ProgramListUploadPage = () => {
   const handleUpload = (files: File[]) => {
     console.info("Uploading:", files);
 
-    const newFiles = files.map((file) => {
-      // Extract text before the first underscore from the file name
-      const tvStation = file.name.includes("_") ? file.name.split("_")[0] : "";
+    setUploadedFiles((prevFiles) => {
+      // Check for duplicate files
+      const { uniqueFiles, duplicateFiles } = filterDuplicateFiles(files, prevFiles);
 
-      return {
-        id: file.name,
-        name: file.name,
-        tvStation: tvStation,
-        publishDateTime: null,
-        creationDeadline: null,
-        file: file,
-      };
+      if (duplicateFiles.length > 0) {
+        setIsModalOpen(true);
+        setDialogType("error");
+        setDialogTitle("アップロードエラー");
+        setDialogMessage(` 同一ファイルのためアップロードできません：${duplicateFiles.map((f) => f.name).join(", ")}`);
+      }
+
+      const newFiles = uniqueFiles.map((file) => {
+        // Extract the text (tv station) before the first underscore from the file name
+        const tvStation = extractTextBeforeUnderscore(file.name);
+
+        return {
+          id: file.name,
+          name: file.name,
+          tvStation: tvStation,
+          publishDateTime: new Date(),
+          creationDeadline: new Date(),
+          file: file,
+        };
+      });
+
+      return [...prevFiles, ...newFiles];
     });
-
-    setUploadedFiles((prevFiles) => [...prevFiles, ...newFiles]);
   };
 
   const handleDeleteFile = (id: string) => {
@@ -92,34 +106,47 @@ const ProgramListUploadPage = () => {
 
   return (
     <DefaultPageLayout title="番組確認一覧アップロード">
-      <Alert severity="info" sx={{ mb: 2 }}>
-        ここに番組表確認一覧ファイルをアップロードできます。アップロードを契機に放送局様・NTTデータへ自動でメール通知します。​​
-      </Alert>
-      <FileUpload onUpload={handleUpload} />
+      <Stack direction="column" spacing={2}>
+        {/* Top Alert Section  */}
+        <Alert severity="info">
+          ここに番組表確認一覧ファイルをアップロードできます。アップロードを契機に放送局様・NTTデータへ自動でメール通知します。​​
+        </Alert>
 
-      <Box sx={{ mt: 2 }}>
-        <ProgramListUploadDataGrid
-          uploadedFiles={uploadedFiles}
-          onDeleteFile={handleDeleteFile}
-          onRowEdit={handleRowEdit}
-        />
-      </Box>
+        {/* File Upload Section  */}
+        <FileUpload onUpload={handleUpload} />
 
-      <Stack direction="row" justifyContent={"space-between"} mt={2}>
-        <Button variant="contained" color="error" onClick={handleReturn}>
-          戻る
-        </Button>
+        {/* Warning Section  */}
+        {uploadedFiles.length > 0 && (
+          <Alert severity="warning" icon={false}>
+            公開日時と作成完了期限をダブルクリックで入力してください。
+          </Alert>
+        )}
+
+        {/* Data Grid Sectiond */}
         <Box>
-          <UploadButton
-            onClick={handleConfirmUpload}
-            loading={loading}
-            disabled={uploadedFiles.length === 0 || loading}
-            buttonText="アップロード確定"
+          <ProgramListUploadDataGrid
+            uploadedFiles={uploadedFiles}
+            onDeleteFile={handleDeleteFile}
+            onRowEdit={handleRowEdit}
           />
         </Box>
+
+        {/* Buttons  */}
+        <Stack direction="row" justifyContent={"space-between"}>
+          <Button variant="contained" color="error" onClick={handleReturn}>
+            戻る
+          </Button>
+          <Box>
+            <UploadButton
+              onClick={handleConfirmUpload}
+              loading={loading}
+              disabled={uploadedFiles.length === 0 || loading}
+              buttonText="アップロード確定"
+            />
+          </Box>
+        </Stack>
       </Stack>
 
-      {/* Modal for success and error */}
       <StatusDialog
         open={isModalOpen}
         onClose={handleCloseModal}

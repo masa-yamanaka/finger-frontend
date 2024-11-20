@@ -88,7 +88,6 @@ const columns: GridColDef[] = [
 const ProgramListPage = () => {
   const router = useRouter();
   const [rows, setRows] = useState(mockProgramList);
-  const [filteredRows, setFilteredRows] = useState(mockProgramList);
   const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
   const [dialogProps, setDialogProps] = useState({
     open: false,
@@ -98,6 +97,12 @@ const ProgramListPage = () => {
     onConfirm: () => {},
   });
   const [isReturnModalOpen, setIsReturnModalOpen] = useState(false);
+
+  const handleSearchComplete = (data) => {
+    console.log("handleSearchComplete data: ", data);
+    // Update the DataGrid rows when search is complete
+    setRows(data);
+  };
 
   const handleUpload = () => {
     router.push(`/program-list/upload`);
@@ -177,7 +182,7 @@ const ProgramListPage = () => {
       <Button variant="contained" color="primary" onClick={handleUpload} sx={{ mb: 2 }}>
         アップロード
       </Button>
-      <ProgramListSearchAccordion />
+      <ProgramListSearchAccordion onSearchComplete={handleSearchComplete} />
 
       <Box sx={{ width: "100%", mt: 2 }}>
         <DataGrid
