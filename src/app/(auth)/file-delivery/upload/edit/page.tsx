@@ -19,6 +19,8 @@ import { styled } from "@mui/material/styles";
 import { mockUploadData } from "@/constants/file-delivery";
 import FileDeliveryUploadEditDataGrid from "@/features/file-delivery/upload/FileDeliveryUploadEditDataGrid";
 import StatusDialog from "@/components/modals/Status/StatusDialog";
+import { mockApiCall } from "@/utils/mockApiCall";
+import UploadButton from "@/components/button/upload-button/UploadButton";
 
 // Styled component for the TableCell
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -29,11 +31,13 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 const FileDeliveryUploadEditPage = () => {
   const router = useRouter();
-  const [uploadedFile, setUploadedFile] = useState([]);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dialogType, setDialogType] = useState<"success" | "error">("success");
   const [dialogTitle, setDialogTitle] = useState("");
   const [dialogMessage, setDialogMessage] = useState("");
+  const [loading, setLoading] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
 
   const handleUpload = (files: File[]) => {
     console.info("Uploading:", files);
@@ -45,31 +49,72 @@ const FileDeliveryUploadEditPage = () => {
       file: file,
     }));
 
-    setUploadedFile((prevFiles) => [...prevFiles, ...newFiles]);
+    setUploadedFiles((prevFiles) => [...prevFiles, ...newFiles]);
+  };
+
+  const handleReturn = () => {
+    router.push("/program-information/");
   };
 
   const handleDeleteFile = (id: string) => {
-    setUploadedFile((prevFiles) => prevFiles.filter((file) => file.id !== id));
+    setUploadedFiles((prevFiles) => prevFiles.filter((file) => file.id !== id));
   };
 
   const handleRowEdit = (updatedFile) => {
-    setUploadedFile((prevFiles) =>
+    setUploadedFiles((prevFiles) =>
       prevFiles.map((file) => (file.id === updatedFile.id ? updatedFile : file))
     );
   };
 
   const handleConfirmUpload = async () => {
     // Add API here for upload
-    setDialogType("success");
-    setDialogTitle("アップロード完了しました");
-    setDialogMessage("ファイルが正常にアップロードされました。");
-    setIsModalOpen(true);
-    console.log("Uploaded File Data:", uploadedFile);
+    try {
+      if (!loading) {
+        setSuccess(false);
+        setLoading(true);
+        // Mock API Call
+        // const response = await uploadFilesAPI(uploadedFiles)
+        const response = await mockApiCall();
+
+        if (response.success) {
+          setSuccess(true);
+          setLoading(false);
+          setDialogType("success");
+          setDialogTitle("アップロード完了しました");
+          setDialogMessage("ファイルが正常にアップロードされました。");
+        } else {
+          setLoading(false);
+          setDialogType("error");
+          setDialogTitle("アップロードエラー");
+          setDialogMessage(
+            "アップロード中にエラーが発生しました。再試行してください。"
+          );
+        }
+      }
+    } catch (error) {
+      setLoading(false);
+      setDialogType("error");
+      setDialogTitle("アップロードエラー");
+      setDialogMessage(
+        "サーバーエラーが発生しました。後でもう一度お試しください。"
+      );
+    } finally {
+      setLoading(false);
+      setIsModalOpen(true);
+      console.log("Uploaded Files Data:", uploadedFiles);
+    }
+
+    // For testing without API or error
+    // setDialogType("success");
+    // setDialogTitle("アップロード完了しました");
+    // setDialogMessage("ファイルが正常にアップロードされました。");
+    // setIsModalOpen(true);
+    // console.log("Uploaded Files Data:", uploadedFiles);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    if (dialogType === "success") {
+    if (dialogType === 'success') {
       router.push("/file-delivery/");
     }
   };
@@ -113,23 +158,26 @@ const FileDeliveryUploadEditPage = () => {
           </TableContainer>
 
           <FileDeliveryUploadEditDataGrid
-            uploadedFile={uploadedFile}
+            uploadedFiles={uploadedFiles}
             onDeleteFile={handleDeleteFile}
             onRowEdit={handleRowEdit}
           />
         </Stack>
       </Paper>
 
-      <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
-        <Button
-          variant="contained"
-          color="primary"
-          disabled={uploadedFile.length === 0}
-          onClick={handleConfirmUpload}
-        >
-          アップロード確定
+      <Stack direction="row" justifyContent={"space-between"} mt={2}>
+        <Button variant="contained" color="error" onClick={handleReturn}>
+          戻る
         </Button>
-      </Box>
+        <Box>
+          <UploadButton
+            onClick={handleConfirmUpload}
+            loading={loading}
+            disabled={uploadedFiles.length === 0 || loading}
+            buttonText="アップロード確定"
+          />
+        </Box>
+      </Stack>
 
       <StatusDialog
         open={isModalOpen}

@@ -3,12 +3,11 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import FileUpload from "@/components/fileUpload/FileUpload";
 import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
-import { Typography, Box, Button, Alert } from "@mui/material";
+import { Typography, Box, Button, Alert, Stack } from "@mui/material";
 import UploadDataGrid from "@/features/program-information/upload-data-grid/UploadDataGrid";
 import { mockApiCall } from "@/utils/mockApiCall";
 import StatusDialog from "@/components/modals/Status/StatusDialog";
-import CircularProgress from '@mui/material/CircularProgress';
-import { green } from '@mui/material/colors';
+import UploadButton from "@/components/button/upload-button/UploadButton";
 
 interface UploadedFile {
   id: string;
@@ -33,13 +32,17 @@ const ProgramInformationUploadPage = () => {
     const newFiles: UploadedFile[] = files.map((file) => ({
       id: file.name, // Use a unique identifier
       name: file.name,
-      startDate: new Date(1990,0,1),
-      endDate: new Date(1990,0,1),
+      startDate: new Date(),
+      endDate: new Date(),
       reason: "入力してください",
       file: file, // Store the actual File object
     }));
 
     setUploadedFiles((prevFiles) => [...prevFiles, ...newFiles]);
+  };
+
+  const handleReturn = () => {
+    router.push("/program-information/");
   };
 
   const handleDeleteFile = (id: string) => {
@@ -122,32 +125,19 @@ const ProgramInformationUploadPage = () => {
         />
       </Box>
 
-      <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
-        <Box sx={{ position: 'relative' }}>
-          <Button
-            variant="contained"
-            // sx={buttonSx}
-            color="primary"
-            disabled={uploadedFiles.length === 0 || loading}
+      <Stack direction="row" justifyContent={"space-between"} mt={2}>
+        <Button variant="contained" color="error" onClick={handleReturn}>
+          戻る
+        </Button>
+        <Box>
+          <UploadButton
             onClick={handleConfirmUpload}
-          >
-            アップロード確定
-          </Button>
-          {loading && (
-            <CircularProgress
-              size={24}
-              sx={{
-                color: green[500],
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                marginTop: '-12px',
-                marginLeft: '-12px',
-              }}
-            />
-          )}
+            loading={loading}
+            disabled={uploadedFiles.length === 0 || loading}
+            buttonText="アップロード確定"
+          />
         </Box>
-      </Box>
+      </Stack>
       <StatusDialog
         open={isModalOpen}
         onClose={handleCloseModal}

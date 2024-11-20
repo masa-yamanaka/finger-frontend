@@ -20,7 +20,7 @@ export const mockFileDelivery = [
   {
     id: 1,
     tvStation: "ABC News",
-    broadcastDate: new Date(2024, 8, 15),
+    broadcastDate: new Date(2024, 8),
     status: "Status1",
     // downloadUrl: "",
     // uploadUrl: "",
@@ -31,7 +31,7 @@ export const mockFileDelivery = [
   {
     id: 2,
     tvStation: "ABC News",
-    broadcastDate: new Date(2024, 8, 15),
+    broadcastDate: new Date(2024, 8),
     status: "Status2",
     // downloadUrl: "",
     // uploadUrl: "",
@@ -42,7 +42,7 @@ export const mockFileDelivery = [
   {
     id: 3,
     tvStation: "ABC News",
-    broadcastDate: new Date(2024, 8, 15),
+    broadcastDate: new Date(2024, 8),
     status: "Status3",
     // downloadUrl: "",
     // uploadUrl: "",

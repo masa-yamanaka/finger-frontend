@@ -4,7 +4,7 @@ import { jaJP } from "@mui/x-data-grid/locales";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import { Box } from "@mui/material";
 
-interface UploadedFile {
+interface UploadedFiles {
   id: string;
   name: string;
   publishDate: Date | null;
@@ -13,22 +13,22 @@ interface UploadedFile {
 }
 
 interface FileDeliveryUploadEditDataGridProps {
-  uploadedFile: UploadedFile[];
+  uploadedFiles: UploadedFiles[];
   onDeleteFile: (id: string) => void;
-  onRowEdit: (updatedFile: UploadedFile) => void;
+  onRowEdit: (updatedFile: UploadedFiles) => void;
 }
 
 const FileDeliveryUploadEditDataGrid: React.FC<
   FileDeliveryUploadEditDataGridProps
-> = ({ uploadedFile, onDeleteFile, onRowEdit }) => {
-  const processRowUpdate = (newRow: UploadedFile) => {
+> = ({ uploadedFiles, onDeleteFile, onRowEdit }) => {
+  const processRowUpdate = (newRow: UploadedFiles) => {
     onRowEdit(newRow);
     return newRow;
   };
 
   const columns: GridColDef[] = [
     { field: "name", headerName: "アップロードファイル", flex: 1 },
-    { field: "message", headerName: "通信欄", flex: 1, editable: true },
+    { field: "message", headerName: "ファイル説明", flex: 1, editable: true },
     {
       field: "actions",
       type: "actions",
@@ -59,7 +59,7 @@ const FileDeliveryUploadEditDataGrid: React.FC<
       }}
     >
       <DataGrid
-        rows={uploadedFile}
+        rows={uploadedFiles}
         columns={columns}
         disableRowSelectionOnClick
         processRowUpdate={processRowUpdate}

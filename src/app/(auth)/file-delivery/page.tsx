@@ -13,6 +13,7 @@ import {
   mockTvStations,
 } from "@/constants/file-delivery";
 import ConfirmDialog from "@/components/modals/Confirm/ConfirmDialog";
+import dayjs from "dayjs";
 
 const columns: GridColDef[] = [
   {
@@ -27,6 +28,11 @@ const columns: GridColDef[] = [
     headerName: "放送年月",
     type: "date",
     editable: true,
+    renderCell: (params) => {
+      return params.value
+        ? dayjs(params.value).format("YYYY/MM")
+        : "";
+    },
   },
 
   {
@@ -128,7 +134,7 @@ const FileDeliveryPage = () => {
   };
 
   return (
-    <DefaultPageLayout title="納品ファイル連携画面">
+    <DefaultPageLayout title="納品ファイル連携">
       <Typography sx={{ color: "red", mb: 4 }}>メッセージエリア</Typography>
       <Button
         variant="contained"
