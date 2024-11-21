@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { styled } from '@mui/material/styles';
 import {
   Box,
   MenuItem,
@@ -29,6 +30,10 @@ import {
   mockStatus,
   mockTvStations,
 } from "@/constants/file-delivery";
+import MuiAccordionSummary, {
+  AccordionSummaryProps,
+} from '@mui/material/AccordionSummary';
+import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 
 const FileDeliverySearchAccordion = () => {
   const [publishDateStart, setPublishDateStart] = useState(null);
@@ -80,11 +85,32 @@ const FileDeliverySearchAccordion = () => {
     console.log("Search parameters:", searchParams);
   };
 
+  const AccordionSummary = styled((props: AccordionSummaryProps) => (
+    <MuiAccordionSummary
+      expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
+      {...props}
+    />
+  ))(({ theme }) => ({
+    backgroundColor: 'rgba(0, 0, 0, .03)',
+    flexDirection: 'row-reverse',
+    '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+      transform: 'rotate(90deg)',
+    },
+    '& .MuiAccordionSummary-content': {
+      marginLeft: theme.spacing(1),
+    },
+    '& .MuiAccordionSummary-content.Mui-expanded': {
+      marginLeft: theme.spacing(1),
+    },
+    ...theme.applyStyles('dark', {
+      backgroundColor: 'rgba(255, 255, 255, .05)',
+    }),
+  }));
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ja">
       <Accordion defaultExpanded>
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
@@ -134,7 +160,9 @@ const FileDeliverySearchAccordion = () => {
                     }}
                     value={broadcastDateStart}
                     onChange={(newValue) => setBroadcastDateStart(newValue)}
-                    label="対象放送期間start"
+                    label="放送年月start"
+                    format="YYYY/MM"
+                    views={['year', 'month']}
                   />
                 </Box>
                 <Typography>〜</Typography>
@@ -146,7 +174,9 @@ const FileDeliverySearchAccordion = () => {
                     }}
                     value={broadcastDateEnd}
                     onChange={(newValue) => setBroadcastDateEnd(newValue)}
-                    label="対象放送期間end"
+                    label="放送年月end"
+                    format="YYYY/MM"
+                    views={['year', 'month']}
                   />
                 </Box>
               </Stack>
@@ -259,17 +289,17 @@ const FileDeliverySearchAccordion = () => {
                   />
                 </Box>
               </Stack>
-            </Stack>
 
-            {/* Search Button */}
-            <Stack direction="row" justifyContent="flex-end">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSearch}
-              >
-                検索
-              </Button>
+              {/* Search Button */}
+              <Stack direction="row" spacing={2} justifyContent="center">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSearch}
+                >
+                  検索
+                </Button>
+              </Stack>
             </Stack>
           </Box>
         </AccordionDetails>

@@ -53,7 +53,7 @@ const FileDeliveryUploadEditPage = () => {
   };
 
   const handleReturn = () => {
-    router.push("/program-information/");
+    router.push("/file-delivery/");
   };
 
   const handleDeleteFile = (id: string) => {

@@ -99,7 +99,7 @@ const FileDeliveryUploadTable = ({ onTableDataChange }) => {
                     handleChange("broadcastDate", newValue)
                   }
                   format="YYYY/MM"
-                  views={['month', 'year']}
+                  views={['year', 'month']}
                 />
               </LocalizationProvider>
             </TableCell>

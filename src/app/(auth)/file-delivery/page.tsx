@@ -14,6 +14,11 @@ import {
 } from "@/constants/file-delivery";
 import ConfirmDialog from "@/components/modals/Confirm/ConfirmDialog";
 import dayjs from "dayjs";
+import _ from 'lodash';
+// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 const columns: GridColDef[] = [
   {
@@ -33,6 +38,38 @@ const columns: GridColDef[] = [
         ? dayjs(params.value).format("YYYY/MM")
         : "";
     },
+    // renderCell: (params) => {
+    //   return (
+    //     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ja">
+    //       <DatePicker
+    //         value={dayjs(params.value)}
+    //         format='YYYY/MM'
+    //         views={['year', 'month']}
+    //         slots={{
+    //           openPickerIcon: CalendarMonthIcon
+    //         }}
+    //         slotProps={{
+    //           textField: {
+    //             sx: {
+    //               border: 'none',
+    //               color: '#f00',
+    //               width: '100%',
+    //             },
+    //           },
+    //           openPickerIcon: {
+    //             sx: {
+    //               width: '.6em',
+    //               height: '.6em',
+    //             },
+    //           },
+    //         }}
+    //         // onChange={(e) => 
+    //         //   params.api.updateRows([{ ...params.row, broadcastDate: dayjs(params.value) }])
+    //         // }
+    //       />
+    //     </LocalizationProvider>
+    //   );
+    // }
   },
 
   {
@@ -128,9 +165,14 @@ const FileDeliveryPage = () => {
 
   const handleCsvDownload = () => {
     const selectedRowData = rows.filter((row) => selectedRows.includes(row.id));
-
     // Add logic here for CSV download
     console.log("Selected row data:", selectedRowData);
+  };
+
+  const processRowUpdate = (newRow: any) => {
+    const updatedRow = { ...newRow, isNew: false };
+    setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+    return updatedRow;
   };
 
   return (
@@ -158,6 +200,8 @@ const FileDeliveryPage = () => {
           onRowSelectionModelChange={(newSelection) =>
             setSelectedRows(newSelection)
           }
+          processRowUpdate={processRowUpdate}
+          onProcessRowUpdateError={(error) => console.log(error)}
           sx={{
             height: 500,
             width: "100%",
