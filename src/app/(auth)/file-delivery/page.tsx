@@ -15,10 +15,6 @@ import {
 import ConfirmDialog from "@/components/modals/Confirm/ConfirmDialog";
 import dayjs from "dayjs";
 import _ from 'lodash';
-// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-// import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 const columns: GridColDef[] = [
   {
@@ -38,38 +34,6 @@ const columns: GridColDef[] = [
         ? dayjs(params.value).format("YYYY/MM")
         : "";
     },
-    // renderCell: (params) => {
-    //   return (
-    //     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ja">
-    //       <DatePicker
-    //         value={dayjs(params.value)}
-    //         format='YYYY/MM'
-    //         views={['year', 'month']}
-    //         slots={{
-    //           openPickerIcon: CalendarMonthIcon
-    //         }}
-    //         slotProps={{
-    //           textField: {
-    //             sx: {
-    //               border: 'none',
-    //               color: '#f00',
-    //               width: '100%',
-    //             },
-    //           },
-    //           openPickerIcon: {
-    //             sx: {
-    //               width: '.6em',
-    //               height: '.6em',
-    //             },
-    //           },
-    //         }}
-    //         // onChange={(e) => 
-    //         //   params.api.updateRows([{ ...params.row, broadcastDate: dayjs(params.value) }])
-    //         // }
-    //       />
-    //     </LocalizationProvider>
-    //   );
-    // }
   },
 
   {
