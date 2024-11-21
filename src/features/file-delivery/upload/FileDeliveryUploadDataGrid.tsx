@@ -31,7 +31,7 @@ const FileDeliveryUploadDataGrid: React.FC<FileDeliveryUploadDataGridProps> = ({
     { field: "name", headerName: "アップロードファイル", flex: 1 },
     {
       field: "description",
-      headerName: "ファイル説明欄​",
+      headerName: "ファイル説明​",
       flex: 2,
       editable: true,
     },
