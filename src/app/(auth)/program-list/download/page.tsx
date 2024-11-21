@@ -3,7 +3,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { Button, Typography } from "@mui/material";
 import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
-import ProgramListDownloadTable from "@/features/program-list/download/DownloadTable";
+import ProgramListDownloadTable from "@/features/program-list/download/ProgramListDownloadTable";
 import { mockHistoryFiles, mockRecentFiles } from "@/constants/program-list";
 
 const ProgramListDownloadPage = () => {

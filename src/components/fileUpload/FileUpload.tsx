@@ -5,9 +5,10 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 interface FileUploadProps {
   onUpload: (files: File[]) => void;
+  multiple?: boolean;
 }
 
-const FileUpload: React.FC<FileUploadProps> = ({ onUpload }) => {
+const FileUpload: React.FC<FileUploadProps> = ({ onUpload, multiple = true }) => {
   const [loading, setLoading] = React.useState(false);
 
   const onDrop = React.useCallback(
@@ -19,7 +20,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUpload }) => {
     [onUpload]
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, multiple });
 
   return (
     <Box sx={{ width: "100%", margin: "0 auto" }}>

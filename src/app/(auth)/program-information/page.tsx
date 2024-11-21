@@ -7,8 +7,8 @@ import { jaJP } from "@mui/x-data-grid/locales";
 import { useRouter } from "next/navigation";
 import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
 import ConfirmDialog from "@/components/modals/Confirm/ConfirmDialog";
-import ReturnDialog from "@/features/program-information/return-dialog/ReturnDialog";
-import ProgramInformationSearchAccordion from "@/features/program-information/search-accordion/SearchAccordion";
+import ReturnDialog from "@/components/modals/Return/ReturnDialog";
+import ProgramInformationSearchAccordion from "@/features/program-information/search-accordion/ProgramInformationSearchAccordion";
 import { mockProgramInfo } from "@/constants/program-information";
 import dayjs from "dayjs";
 
@@ -43,15 +43,18 @@ const columns: GridColDef[] = [
       </a>
     ),
   },
-  { field: "uploadDate", headerName: "アップロード日時", type: "dateTime",
-      renderCell: (params) => {
-        // Format the date to show only up to minutes (YYYY-MM-DD HH:mm)
-        return params.value
-          ? dayjs(params.value).format("YYYY/MM/DD HH:mm")
-          : "";
-      }, },
-  { field: "message", headerName: "通信欄", width: 240, editable: true },
-  { field: "reason", headerName: "差戻し理由", width: 240, editable: true },
+  {
+    field: "uploadDate",
+    headerName: "アップロード日時",
+    type: "dateTime",
+    width: 150,
+    renderCell: (params) => {
+      // Format the date to show only up to minutes (YYYY-MM-DD HH:mm)
+      return params.value ? dayjs(params.value).format("YYYY/MM/DD HH:mm") : "";
+    },
+  },
+  { field: "message", headerName: "通信欄", width: 300, editable: true },
+  { field: "reason", headerName: "差戻し理由", width: 300, editable: true },
 ];
 
 const ProgramInformation = () => {
@@ -67,7 +70,24 @@ const ProgramInformation = () => {
   });
   const [isReturnModalOpen, setIsReturnModalOpen] = useState(false);
 
+  const handleSearchComplete = (data) => {
+    console.log("handleSearchComplete data: ", data);
+    // Update the DataGrid rows when search is complete
+    setRows(data);
+  };
+
   const handleUpload = () => router.push(`/program-information/upload`);
+
+  const processRowUpdate = (newRow: any) => {
+    // Add API here to update
+    const updatedRow = { ...newRow, isNew: false };
+    setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+
+    // Log updated data
+    console.log("Saved data: ", updatedRow);
+
+    return updatedRow;
+  };
 
   const handleDeleteSelected = () => {
     setRows(rows.filter((row) => !selectedRows.includes(row.id)));
@@ -85,9 +105,12 @@ const ProgramInformation = () => {
 
   const handleStatusConfirm = () => {
     // Add API here for 確定 status
-    const updatedRows = rows.map((row) =>
-      selectedRows.includes(row.id) ? { ...row, status: "確定" } : row
-    );
+
+    // Log the rows for the Confrim Status change
+    const selectedRowData = rows.filter((row) => selectedRows.includes(row.id));
+    console.log("Rows updated: ", selectedRowData);
+
+    const updatedRows = rows.map((row) => (selectedRows.includes(row.id) ? { ...row, status: "確定" } : row));
     setRows(updatedRows);
     closeDialog();
   };
@@ -103,9 +126,7 @@ const ProgramInformation = () => {
     // Log the comment
     console.log("差戻しコメント:", comment);
 
-    const updatedRows = rows.map((row) =>
-      selectedRows.includes(row.id) ? { ...row, status: "差戻し" } : row
-    );
+    const updatedRows = rows.map((row) => (selectedRows.includes(row.id) ? { ...row, status: "差戻し" } : row));
     setRows(updatedRows);
 
     closeReturnModal();
@@ -116,8 +137,7 @@ const ProgramInformation = () => {
       action === "delete"
         ? {
             title: "削除の確認",
-            description:
-              "選択した行を削除してもよろしいですか？この操作は元に戻せません。",
+            description: "選択した行を削除してもよろしいですか？この操作は元に戻せません。",
             color: "error",
             onConfirm: handleDeleteSelected,
           }
@@ -131,33 +151,32 @@ const ProgramInformation = () => {
     setDialogProps({ ...dialogConfig, open: true });
   };
 
-  const closeDialog = () =>
-    setDialogProps((prev) => ({ ...prev, open: false }));
+  const closeDialog = () => setDialogProps((prev) => ({ ...prev, open: false }));
   const openReturnModal = () => setIsReturnModalOpen(true);
   const closeReturnModal = () => setIsReturnModalOpen(false);
 
   return (
     <DefaultPageLayout title="番組情報連携">
+      {/* Message Area  */}
       <Typography sx={{ color: "red", mb: 4 }}>メッセージエリア</Typography>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleUpload}
-        sx={{ mb: 2 }}
-      >
+
+      {/* Upload Button  */}
+      <Button variant="contained" color="primary" onClick={handleUpload} sx={{ mb: 2 }}>
         アップロード
       </Button>
-      <ProgramInformationSearchAccordion />
 
+      {/* Search Accordion  */}
+      <ProgramInformationSearchAccordion onSearchComplete={handleSearchComplete} />
+
+      {/* Data Grid  */}
       <Box sx={{ width: "100%", mt: 2 }}>
         <DataGrid
           rows={rows}
           columns={columns}
           checkboxSelection
           disableRowSelectionOnClick
-          onRowSelectionModelChange={(newSelection) =>
-            setSelectedRows(newSelection)
-          }
+          processRowUpdate={processRowUpdate}
+          onRowSelectionModelChange={(newSelection) => setSelectedRows(newSelection)}
           sx={{
             height: 500,
             width: "100%",
@@ -167,13 +186,10 @@ const ProgramInformation = () => {
           localeText={jaJP.components.MuiDataGrid.defaultProps.localeText}
         />
 
+        {/* Buttons  */}
         <Stack direction="row" justifyContent="space-between" sx={{ mt: 2 }}>
           <Stack direction="row" spacing={2}>
-            <Button
-              variant="contained"
-              onClick={handleDownloadSelected}
-              disabled={selectedRows.length === 0}
-            >
+            <Button variant="contained" onClick={handleDownloadSelected} disabled={selectedRows.length === 0}>
               ダウンロード
             </Button>
             <Button
@@ -187,18 +203,10 @@ const ProgramInformation = () => {
             </Button>
           </Stack>
           <Stack direction="row" spacing={2}>
-            <Button
-              variant="contained"
-              onClick={() => openDialog("confirm")}
-              disabled={!selectedRows.length}
-            >
+            <Button variant="contained" onClick={() => openDialog("confirm")} disabled={!selectedRows.length}>
               確定
             </Button>
-            <Button
-              variant="contained"
-              onClick={openReturnModal}
-              disabled={!selectedRows.length}
-            >
+            <Button variant="contained" onClick={openReturnModal} disabled={!selectedRows.length}>
               差戻し
             </Button>
           </Stack>
@@ -217,11 +225,7 @@ const ProgramInformation = () => {
         />
 
         {/* Return Dialog */}
-        <ReturnDialog
-          open={isReturnModalOpen}
-          onClose={closeReturnModal}
-          onConfirm={handleStatusReturn}
-        />
+        <ReturnDialog open={isReturnModalOpen} onClose={closeReturnModal} onConfirm={handleStatusReturn} />
       </Box>
     </DefaultPageLayout>
   );

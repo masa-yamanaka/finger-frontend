@@ -3,10 +3,10 @@ import { DataGrid, GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
 import { jaJP } from "@mui/x-data-grid/locales";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import { Box } from "@mui/material";
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from "@mui/material/Tooltip";
 import dayjs from "dayjs";
 
-interface UploadedFile {
+export interface UploadedFile {
   id: string;
   name: string;
   startDate: Date | null;
@@ -15,13 +15,13 @@ interface UploadedFile {
   file: File;
 }
 
-interface UploadDataGridProps {
+interface ProgramInformationUploadDataGridProps {
   uploadedFiles: UploadedFile[];
   onDeleteFile: (id: string) => void;
   onRowEdit: (updatedFile: UploadedFile) => void;
 }
 
-const UploadDataGrid: React.FC<UploadDataGridProps> = ({
+const ProgramInformationUploadDataGrid: React.FC<ProgramInformationUploadDataGridProps> = ({
   uploadedFiles,
   onDeleteFile,
   onRowEdit,
@@ -35,9 +35,7 @@ const UploadDataGrid: React.FC<UploadDataGridProps> = ({
       flex: 1,
       editable: true,
       renderCell: (params) => {
-        return params.value
-          ? dayjs(params.value).format("YYYY/MM/DD")
-          : "";
+        return params.value ? dayjs(params.value).format("YYYY/MM/DD") : "";
       },
     },
     {
@@ -47,9 +45,7 @@ const UploadDataGrid: React.FC<UploadDataGridProps> = ({
       flex: 1,
       editable: true,
       renderCell: (params) => {
-        return params.value
-          ? dayjs(params.value).format("YYYY/MM/DD")
-          : "";
+        return params.value ? dayjs(params.value).format("YYYY/MM/DD") : "";
       },
     },
     { field: "reason", headerName: "通信欄", flex: 1, editable: true },
@@ -60,7 +56,11 @@ const UploadDataGrid: React.FC<UploadDataGridProps> = ({
       width: 100,
       getActions: (params) => [
         <GridActionsCellItem
-          icon={<Tooltip title="削除"><DeleteIcon /></Tooltip>}
+          icon={
+            <Tooltip title="削除">
+              <DeleteIcon />
+            </Tooltip>
+          }
           label="Delete"
           onClick={() => onDeleteFile(params.id)}
           color="inherit"
@@ -98,4 +98,4 @@ const UploadDataGrid: React.FC<UploadDataGridProps> = ({
   );
 };
 
-export default UploadDataGrid;
+export default ProgramInformationUploadDataGrid;

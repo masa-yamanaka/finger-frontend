@@ -1,13 +1,13 @@
 "use client";
 import React, { useState } from "react";
 import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
-import { Box, Button, Link, Stack } from "@mui/material";
+import { Box, Button, Link, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
-import ProgramListSearchAccordion from "@/features/program-list/search-accordion/SearchAccordion";
+import ProgramListSearchAccordion from "@/features/program-list/search-accordion/ProgramListSearchAccordion";
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import { jaJP } from "@mui/x-data-grid/locales";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import ReturnDialog from "@/features/program-information/return-dialog/ReturnDialog";
+import ReturnDialog from "@/components/modals/Return/ReturnDialog";
 import ConfirmDialog from "@/components/modals/Confirm/ConfirmDialog";
 import { mockProgramList, mockProgramListStatus } from "@/constants/program-list";
 import dayjs from "dayjs";
@@ -18,11 +18,13 @@ const columns: GridColDef[] = [
     field: "broadcastPeriodStart",
     headerName: "対象放送期間(Start)",
     type: "date",
+    width: 150,
   },
   {
     field: "broadcastPeriodEnd",
     headerName: "対象放送期間(End)",
     type: "date",
+    width: 150,
   },
   {
     field: "status",
@@ -34,11 +36,12 @@ const columns: GridColDef[] = [
     field: "publishDateTime",
     headerName: "公開日時",
     type: "dateTime",
+    width: 150,
     renderCell: (params) => {
       return params.value ? dayjs(params.value).format("YYYY/MM/DD HH:mm") : "";
     },
   },
-  { field: "creationDeadline", headerName: "作成完了期限日", type: "date" },
+  { field: "creationDeadline", headerName: "作成完了期限日", type: "date", width: 150 },
   {
     field: "downloadUrl",
     headerName: "ダウンロード",
@@ -77,6 +80,7 @@ const columns: GridColDef[] = [
     field: "lastUploadDate",
     headerName: "最終アップロード日",
     type: "dateTime",
+    width: 150,
     renderCell: (params) => {
       // Format the date to show only up to minutes (YYYY/MM/DD HH:mm)
       return params.value ? dayjs(params.value).format("YYYY/MM/DD HH:mm") : "";
@@ -104,15 +108,24 @@ const ProgramListPage = () => {
     setRows(data);
   };
 
-  const handleUpload = () => {
-    router.push(`/program-list/upload`);
-  };
+  const handleUpload = () => router.push(`/program-list/upload`);
 
   const handleDeleteSelected = () => {
     // Add API here to delete
     setRows(rows.filter((row) => !selectedRows.includes(row.id)));
     setSelectedRows([]);
     closeDialog();
+  };
+
+  const processRowUpdate = (newRow: any) => {
+    // Add API here to update
+    const updatedRow = { ...newRow, isNew: false };
+    setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+
+    // Log updated data
+    console.log("Saved data: ", updatedRow);
+
+    return updatedRow;
   };
 
   const handleStatusConfirm = () => {
@@ -179,17 +192,25 @@ const ProgramListPage = () => {
 
   return (
     <DefaultPageLayout title="番組確認一覧連携">
+      {/* Message Area  */}
+      <Typography sx={{ color: "red", mb: 4 }}>メッセージエリア</Typography>
+
+      {/* Upload Button  */}
       <Button variant="contained" color="primary" onClick={handleUpload} sx={{ mb: 2 }}>
         アップロード
       </Button>
+
+      {/* Search Accordion  */}
       <ProgramListSearchAccordion onSearchComplete={handleSearchComplete} />
 
+      {/* Data Grid  */}
       <Box sx={{ width: "100%", mt: 2 }}>
         <DataGrid
           rows={rows}
           columns={columns}
           checkboxSelection
           disableRowSelectionOnClick
+          processRowUpdate={processRowUpdate}
           onRowSelectionModelChange={(newSelection) => setSelectedRows(newSelection)}
           sx={{
             height: 500,
@@ -201,6 +222,7 @@ const ProgramListPage = () => {
         />
       </Box>
 
+      {/* Buttons  */}
       <Stack direction="row" justifyContent="space-between" sx={{ mt: 2 }}>
         <Button
           variant="contained"

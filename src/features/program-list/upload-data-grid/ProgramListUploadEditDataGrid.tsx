@@ -2,6 +2,7 @@ import React from "react";
 import { DataGrid, GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
 import { jaJP } from "@mui/x-data-grid/locales";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import Tooltip from "@mui/material/Tooltip";
 import { Box } from "@mui/material";
 
 interface UploadedFile {
@@ -17,9 +18,10 @@ interface ProgramListUploadEditDataGridProps {
   onDeleteFile: (id: string) => void;
 }
 
-const ProgramListUploadEditDataGrid: React.FC<
-  ProgramListUploadEditDataGridProps
-> = ({ uploadedFile, onDeleteFile }) => {
+const ProgramListUploadEditDataGrid: React.FC<ProgramListUploadEditDataGridProps> = ({
+  uploadedFile,
+  onDeleteFile,
+}) => {
   const columns: GridColDef[] = [
     { field: "name", headerName: "（更新）アップロードファイル", flex: 1 },
     {
@@ -29,7 +31,11 @@ const ProgramListUploadEditDataGrid: React.FC<
       width: 100,
       getActions: (params) => [
         <GridActionsCellItem
-          icon={<DeleteIcon />}
+          icon={
+            <Tooltip title="削除">
+              <DeleteIcon />
+            </Tooltip>
+          }
           label="Delete"
           onClick={() => onDeleteFile(params.id)}
           color="inherit"
