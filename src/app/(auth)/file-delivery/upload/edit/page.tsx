@@ -21,6 +21,8 @@ import FileDeliveryUploadEditDataGrid from "@/features/file-delivery/upload/File
 import StatusDialog from "@/components/modals/Status/StatusDialog";
 import { mockApiCall } from "@/utils/mockApiCall";
 import UploadButton from "@/components/button/upload-button/UploadButton";
+import { filterDuplicateFiles } from "@/utils/file";
+import { extractTextBeforeUnderscore } from "@/utils/string";
 
 // Styled component for the TableCell
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -42,14 +44,31 @@ const FileDeliveryUploadEditPage = () => {
   const handleUpload = (files: File[]) => {
     console.info("Uploading:", files);
 
-    const newFiles = files.map((file) => ({
-      id: file.name, // Use a unique identifier
-      name: file.name,
-      message: "",
-      file: file,
-    }));
+    setUploadedFiles((prevFiles) => {
+      // Check for duplicate files
+      const { uniqueFiles, duplicateFiles } = filterDuplicateFiles(files, prevFiles);
 
-    setUploadedFiles((prevFiles) => [...prevFiles, ...newFiles]);
+      if (duplicateFiles.length > 0) {
+        setIsModalOpen(true);
+        setDialogType("error");
+        setDialogTitle("アップロードエラー");
+        setDialogMessage(` 同一ファイルのためアップロードできません：${duplicateFiles.map((f) => f.name).join(", ")}`);
+      }
+
+      const newFiles = uniqueFiles.map((file) => {
+        // Extract the text (tv station) before the first underscore from the file name
+        const tvStation = extractTextBeforeUnderscore(file.name);
+
+        return {
+          id: file.name, // Use a unique identifier
+          name: file.name,
+          message: "入力してください",
+          file: file,
+        };
+      });
+
+      return [...prevFiles, ...newFiles];
+    });
   };
 
   const handleReturn = () => {
@@ -156,6 +175,12 @@ const FileDeliveryUploadEditPage = () => {
               </TableBody>
             </Table>
           </TableContainer>
+
+          {uploadedFiles.length > 0 && (
+            <Alert severity="warning" icon={false}>
+              ファイル説明をダブルクリックで入力してください。
+            </Alert>
+          )}
 
           <FileDeliveryUploadEditDataGrid
             uploadedFiles={uploadedFiles}

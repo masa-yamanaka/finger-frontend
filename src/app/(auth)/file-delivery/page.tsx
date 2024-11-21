@@ -85,7 +85,7 @@ const columns: GridColDef[] = [
   },
   {
     field: "publishDate",
-    headerName: "公開日",
+    headerName: "公開日時",
     type: "dateTime",
     editable: true,
   },

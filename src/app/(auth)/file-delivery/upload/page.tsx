@@ -9,6 +9,8 @@ import StatusDialog from "@/components/modals/Status/StatusDialog";
 import FileDeliveryUploadTable from "@/features/file-delivery/upload/FileDeliveryUploadTable";
 import { mockApiCall } from "@/utils/mockApiCall";
 import UploadButton from "@/components/button/upload-button/UploadButton";
+import { filterDuplicateFiles } from "@/utils/file";
+import { extractTextBeforeUnderscore } from "@/utils/string";
 
 const FileDeliveryUploadPage = () => {
   const router = useRouter();
@@ -22,13 +24,31 @@ const FileDeliveryUploadPage = () => {
   const handleUpload = (files: File[]) => {
     console.info("Uploading:", files);
 
-    const newFiles = files.map((file) => ({
-      id: file.name,
-      name: file.name,
-      file: file,
-    }));
+    setUploadedFiles((prevFiles) => {
+      // Check for duplicate files
+      const { uniqueFiles, duplicateFiles } = filterDuplicateFiles(files, prevFiles);
 
-    setUploadedFiles((prevFiles) => [...prevFiles, ...newFiles]);
+      if (duplicateFiles.length > 0) {
+        setIsModalOpen(true);
+        setDialogType("error");
+        setDialogTitle("アップロードエラー");
+        setDialogMessage(` 同一ファイルのためアップロードできません：${duplicateFiles.map((f) => f.name).join(", ")}`);
+      }
+
+      const newFiles = uniqueFiles.map((file) => {
+        // Extract the text (tv station) before the first underscore from the file name
+        const tvStation = extractTextBeforeUnderscore(file.name);
+
+        return {
+          id: file.name,
+          name: file.name,
+          message: "入力してください",
+          file: file,
+        };
+      });
+
+      return [...prevFiles, ...newFiles];
+    });
   };
 
   const handleDeleteFile = (id: string) => {
@@ -116,6 +136,12 @@ const FileDeliveryUploadPage = () => {
 
       <Stack direction={"column"} spacing={2}>
         <FileUpload onUpload={handleUpload} />
+
+        {uploadedFiles.length > 0 && (
+          <Alert severity="warning" icon={false}>
+            ファイル説明をダブルクリックで入力してください。
+          </Alert>
+        )}
 
         <FileDeliveryUploadDataGrid
           uploadedFiles={uploadedFiles}
