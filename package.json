@@ -9,7 +9,7 @@
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "export": "next build && next export"
+    "export": "next build"
   },
   "dependencies": {
     "@emotion/cache": "^11.13.1",
