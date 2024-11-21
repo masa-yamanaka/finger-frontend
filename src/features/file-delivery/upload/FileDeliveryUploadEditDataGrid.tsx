@@ -3,6 +3,7 @@ import { DataGrid, GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
 import { jaJP } from "@mui/x-data-grid/locales";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import { Box } from "@mui/material";
+import Tooltip from '@mui/material/Tooltip';
 
 interface UploadedFiles {
   id: string;
@@ -36,7 +37,7 @@ const FileDeliveryUploadEditDataGrid: React.FC<
       width: 100,
       getActions: (params) => [
         <GridActionsCellItem
-          icon={<DeleteIcon />}
+          icon={<Tooltip title="削除"><DeleteIcon /></Tooltip>}
           label="Delete"
           onClick={() => onDeleteFile(params.id)}
           color="inherit"

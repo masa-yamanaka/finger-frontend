@@ -160,7 +160,7 @@ const FileDeliverySearchAccordion = () => {
                     }}
                     value={broadcastDateStart}
                     onChange={(newValue) => setBroadcastDateStart(newValue)}
-                    label="放送年月start"
+                    label="start"
                     format="YYYY/MM"
                     views={['year', 'month']}
                   />
@@ -174,7 +174,7 @@ const FileDeliverySearchAccordion = () => {
                     }}
                     value={broadcastDateEnd}
                     onChange={(newValue) => setBroadcastDateEnd(newValue)}
-                    label="放送年月end"
+                    label="end"
                     format="YYYY/MM"
                     views={['year', 'month']}
                   />
@@ -250,7 +250,7 @@ const FileDeliverySearchAccordion = () => {
                     }}
                     value={publishDateStart}
                     onChange={(newValue) => setPublishDateStart(newValue)}
-                    label="公開日時start"
+                    label="start"
                   />
                 </Box>
                 <Typography>〜</Typography>
@@ -262,7 +262,7 @@ const FileDeliverySearchAccordion = () => {
                     }}
                     value={publishDateEnd}
                     onChange={(newValue) => setPublishDateEnd(newValue)}
-                    label="公開日時end"
+                    label="end"
                   />
                 </Box>
               </Stack>
