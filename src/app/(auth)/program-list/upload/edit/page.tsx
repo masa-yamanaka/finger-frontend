@@ -7,11 +7,10 @@ import FileUpload from "@/components/fileUpload/FileUpload";
 import { styled } from "@mui/material/styles";
 import StatusDialog from "@/components/modals/Status/StatusDialog";
 import { mockUploadData } from "@/constants/program-list";
-import ProgramListUploadEditDataGrid from "@/features/program-list/upload-data-grid/UploadEditDataGrid";
+import ProgramListUploadEditDataGrid from "@/features/program-list/upload-data-grid/ProgramListUploadEditDataGrid";
 import UploadButton from "@/components/button/upload-button/UploadButton";
 import { mockApiCall } from "@/utils/mockApiCall";
 
-// Styled component for the TableCell
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   backgroundColor: theme.palette.grey[100],
   width: "200px",
@@ -32,6 +31,15 @@ const ProgramListUploadEditPage = () => {
   };
 
   const handleUpload = (files: File[]) => {
+    // Limit to 1 upload file
+    if (uploadedFile.length > 0) {
+      setIsModalOpen(true);
+      setDialogType("error");
+      setDialogTitle("アップロードエラー");
+      setDialogMessage("アップロードは１ファイルのみです");
+      return;
+    }
+
     console.info("Uploading:", files);
 
     const newFiles = files.map((file) => ({
@@ -94,7 +102,7 @@ const ProgramListUploadEditPage = () => {
           ここに番組表確認一覧ファイルをアップロードできます。アップロードを契機に放送局様・NTTデータへ自動でメール通知します。​​
         </Alert>
 
-        <FileUpload onUpload={handleUpload} />
+        <FileUpload onUpload={handleUpload} multiple={false} />
 
         <Paper variant="outlined">
           <Stack direction="column" spacing={2} padding={2}>
@@ -130,6 +138,7 @@ const ProgramListUploadEditPage = () => {
                 </TableBody>
               </Table>
             </TableContainer>
+
             {/* Data Grid  */}
             <ProgramListUploadEditDataGrid uploadedFile={uploadedFile} onDeleteFile={handleDeleteFile} />
           </Stack>

@@ -24,9 +24,8 @@ import { LocalizationProvider, DatePicker, DateTimePicker } from "@mui/x-date-pi
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/ja";
 import { mockProgramListStatus, mockProgramListTvStations } from "@/constants/program-list";
-import UploadButton from "@/components/button/upload-button/UploadButton";
 import { mockApiCall } from "@/utils/mockApiCall";
-// import dayjs from "dayjs";
+import UploadButton from "@/components/button/upload-button/UploadButton";
 
 const ProgramListSearchAccordion = ({ onSearchComplete }) => {
   const [tvStation, setTvStation] = useState([]);
@@ -55,7 +54,6 @@ const ProgramListSearchAccordion = ({ onSearchComplete }) => {
     const searchParams = {
       tvStation: tvStation,
       broadcastPeriodStart: broadcastPeriodStart,
-      // broadcastPeriodStart: broadcastPeriodStart ? dayjs(broadcastPeriodStart).format("YYYY/MM/DD") : null,
       broadcastPeriodEnd: broadcastPeriodEnd,
       status: statusValue,
       publishDateTimeStart: publishDateTimeStart,
@@ -68,19 +66,7 @@ const ProgramListSearchAccordion = ({ onSearchComplete }) => {
     };
     console.log("Search parameters:", searchParams);
 
-    // Check if searchParams are "empty"
-    const isSearchParamsEmpty = Object.values(searchParams).every(
-      (value) => value === null || value === undefined || (Array.isArray(value) && value.length === 0) || value === ""
-    );
-
-    // If searchParams are empty, skip the API call
-    if (isSearchParamsEmpty) {
-      console.log("No search parameters provided. Skipping API call.");
-      return; // exit the function early
-    }
-
     setLoading(true);
-
     try {
       const data = await mockApiCall();
 
@@ -162,7 +148,7 @@ const ProgramListSearchAccordion = ({ onSearchComplete }) => {
                     }}
                     value={broadcastPeriodStart}
                     onChange={(newValue) => setbroadcastPeriodStart(newValue)}
-                    label="対象放送期間start"
+                    label="Start"
                   />
                 </Box>
                 <Typography>〜</Typography>
@@ -174,7 +160,7 @@ const ProgramListSearchAccordion = ({ onSearchComplete }) => {
                     }}
                     value={broadcastPeriodEnd}
                     onChange={(newValue) => setbroadcastPeriodEnd(newValue)}
-                    label="対象放送期間end"
+                    label="End"
                   />
                 </Box>
               </Stack>
@@ -219,7 +205,7 @@ const ProgramListSearchAccordion = ({ onSearchComplete }) => {
                     }}
                     value={publishDateTimeStart}
                     onChange={(newValue) => setPublishDateTimeStart(newValue)}
-                    label="公開日時"
+                    label="Start"
                   />
                 </Box>
                 <Typography>〜</Typography>
@@ -230,7 +216,7 @@ const ProgramListSearchAccordion = ({ onSearchComplete }) => {
                     }}
                     value={publishDateTimeEnd}
                     onChange={(newValue) => setPublishDateTimeEnd(newValue)}
-                    label="公開日時"
+                    label="End"
                   />
                 </Box>
               </Stack>
@@ -248,7 +234,7 @@ const ProgramListSearchAccordion = ({ onSearchComplete }) => {
                     }}
                     value={creationDeadlineStart}
                     onChange={(newValue) => setCreationDeadlineStart(newValue)}
-                    label="作成完了期限"
+                    label="Start"
                   />
                 </Box>
                 <Typography>〜</Typography>
@@ -260,7 +246,7 @@ const ProgramListSearchAccordion = ({ onSearchComplete }) => {
                     }}
                     value={creationDeadlineEnd}
                     onChange={(newValue) => setCreationDeadlineEnd(newValue)}
-                    label="作成完了期限"
+                    label="End"
                   />
                 </Box>
               </Stack>
@@ -277,7 +263,7 @@ const ProgramListSearchAccordion = ({ onSearchComplete }) => {
                     }}
                     value={lastUploadDateStart}
                     onChange={(newValue) => setLastUploadDateStart(newValue)}
-                    label="最終アップロード日"
+                    label="Start"
                   />
                 </Box>
                 <Typography>〜</Typography>
@@ -288,7 +274,7 @@ const ProgramListSearchAccordion = ({ onSearchComplete }) => {
                     }}
                     value={lastUploadDateEnd}
                     onChange={(newValue) => setLastUploadDateEnd(newValue)}
-                    label="最終アップロード日"
+                    label="End"
                   />
                 </Box>
               </Stack>

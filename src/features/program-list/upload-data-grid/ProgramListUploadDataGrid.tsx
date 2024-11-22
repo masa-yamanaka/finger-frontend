@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { DataGrid, GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
 import { jaJP } from "@mui/x-data-grid/locales";
-import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Tooltip from "@mui/material/Tooltip";
 import { Box, Button, Stack } from "@mui/material";
 import DatePickerDialog from "@/components/modals/DatePicker/DatePickerDialog";
 import dayjs from "dayjs";
@@ -120,9 +121,14 @@ const ProgramListUploadDataGrid: React.FC<ProgramListUploadDataGridProps> = ({
       type: "actions",
       headerName: "Actions",
       width: 100,
+
       getActions: (params) => [
         <GridActionsCellItem
-          icon={<DeleteIcon />}
+          icon={
+            <Tooltip title="削除">
+              <DeleteIcon />
+            </Tooltip>
+          }
           label="Delete"
           onClick={() => onDeleteFile(params.id)}
           color="inherit"

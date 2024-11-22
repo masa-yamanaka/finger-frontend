@@ -8,8 +8,7 @@ export const mockProgramInfo = [
     broadcastPeriodEnd: new Date(2021, 6, 20),
     status: "作成完了",
     fileName: "aaaaa.xlsx",
-    fileUrl:
-      "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+    fileUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
     uploadDate: new Date(),
     message: "あああああ",
     reason: "あああああ",
@@ -25,8 +24,7 @@ export const mockProgramInfo = [
     fileName: "bbbbb.xlsx",
     fileUrl: "",
     uploadDate: new Date(),
-    message:
-      "ああああああああああああああああああああああああああああああああああああああああ",
+    message: "ああああああああああああああああああああああああああああああああああああああああ",
     reason: "あああああ",
   },
   {
@@ -39,20 +37,11 @@ export const mockProgramInfo = [
     status: "差戻し",
     fileName: "ccccc.xlsx",
     fileUrl: "",
-    uploadDate: new Date('1995-12-17T03:24'),
+    uploadDate: new Date("1995-12-17T03:24"),
     message: "あああああ",
-    reason:
-      "ああああああああああああああああああああああああああああああああああああああああ",
+    reason: "ああああああああああああああああああああああああああああああああああああああああ",
   },
 ];
 
-export const mockTvStations = [
-  "ABC News",
-  "BBC",
-  "ESPN",
-  "NBC",
-  "FOX",
-  "MTV",
-  "Discovery Channel",
-];
+export const mockTvStations = ["ABC News", "BBC", "ESPN", "NBC", "FOX", "MTV", "Discovery Channel"];
 export const mockStatus = ["Status1", "Status2", "Status3", "Status4"];

@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
 import { Alert, Box, Button, Stack } from "@mui/material";
 import FileUpload from "@/components/fileUpload/FileUpload";
-import ProgramListUploadDataGrid from "@/features/program-list/upload-data-grid/UploadDataGrid";
+import ProgramListUploadDataGrid from "@/features/program-list/upload-data-grid/ProgramListUploadDataGrid";
 import { mockApiCall } from "@/utils/mockApiCall";
 import StatusDialog from "@/components/modals/Status/StatusDialog";
 import UploadButton from "@/components/button/upload-button/UploadButton";
@@ -123,13 +123,11 @@ const ProgramListUploadPage = () => {
         )}
 
         {/* Data Grid Sectiond */}
-        <Box>
-          <ProgramListUploadDataGrid
-            uploadedFiles={uploadedFiles}
-            onDeleteFile={handleDeleteFile}
-            onRowEdit={handleRowEdit}
-          />
-        </Box>
+        <ProgramListUploadDataGrid
+          uploadedFiles={uploadedFiles}
+          onDeleteFile={handleDeleteFile}
+          onRowEdit={handleRowEdit}
+        />
 
         {/* Buttons  */}
         <Stack direction="row" justifyContent={"space-between"}>

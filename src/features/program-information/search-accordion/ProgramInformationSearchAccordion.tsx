@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { styled } from '@mui/material/styles';
+import { styled } from "@mui/material/styles";
 import {
   Box,
   MenuItem,
@@ -11,7 +11,6 @@ import {
   Accordion,
   AccordionDetails,
   Typography,
-  Button,
   Checkbox,
   ListItemText,
   OutlinedInput,
@@ -19,18 +18,17 @@ import {
   InputAdornment,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import MuiAccordionSummary, {
-  AccordionSummaryProps,
-} from '@mui/material/AccordionSummary';
-import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+import MuiAccordionSummary, { AccordionSummaryProps } from "@mui/material/AccordionSummary";
+import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import "dayjs/locale/ja";
 import { mockStatus, mockTvStations } from "@/constants/program-information";
+import UploadButton from "@/components/button/upload-button/UploadButton";
+import { mockApiCall } from "@/utils/mockApiCall";
 
-const ProgramInformationSearchAccordion = () => {
+const ProgramInformationSearchAccordion = ({ onSearchComplete }) => {
   const [uploadDateStart, setUploadDateStart] = useState(null);
   const [uploadDateEnd, setUploadDateEnd] = useState(null);
   const [broadcastPeriodStart, setbroadcastPeriodStart] = useState(null);
@@ -38,24 +36,17 @@ const ProgramInformationSearchAccordion = () => {
   const [tvStation, setTvStation] = useState([]);
   const [statusValue, setStatusValue] = useState([]);
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleTvStationChange = (event) => {
-    setTvStation(
-      event.target.value === "string"
-        ? event.target.value.split(",")
-        : event.target.value
-    );
+    setTvStation(event.target.value === "string" ? event.target.value.split(",") : event.target.value);
   };
 
   const handleStatusChange = (event) => {
-    setStatusValue(
-      event.target.value === "string"
-        ? event.target.value.split(",")
-        : event.target.value
-    );
+    setStatusValue(event.target.value === "string" ? event.target.value.split(",") : event.target.value);
   };
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     // Add logic here for search button
     const searchParams = {
       tvStation: tvStation,
@@ -68,36 +59,42 @@ const ProgramInformationSearchAccordion = () => {
     };
 
     console.log("Search parameters:", searchParams);
+
+    setLoading(true);
+    try {
+      const data = await mockApiCall();
+
+      // Set the search results here
+      onSearchComplete(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
   const AccordionSummary = styled((props: AccordionSummaryProps) => (
-    <MuiAccordionSummary
-      expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
-      {...props}
-    />
+    <MuiAccordionSummary expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />} {...props} />
   ))(({ theme }) => ({
-    backgroundColor: 'rgba(0, 0, 0, .03)',
-    flexDirection: 'row-reverse',
-    '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-      transform: 'rotate(90deg)',
+    backgroundColor: "rgba(0, 0, 0, .03)",
+    flexDirection: "row-reverse",
+    "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+      transform: "rotate(90deg)",
     },
-    '& .MuiAccordionSummary-content': {
+    "& .MuiAccordionSummary-content": {
       marginLeft: theme.spacing(1),
     },
-    '& .MuiAccordionSummary-content.Mui-expanded': {
+    "& .MuiAccordionSummary-content.Mui-expanded": {
       marginLeft: theme.spacing(1),
     },
-    ...theme.applyStyles('dark', {
-      backgroundColor: 'rgba(255, 255, 255, .05)',
+    ...theme.applyStyles("dark", {
+      backgroundColor: "rgba(255, 255, 255, .05)",
     }),
   }));
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ja">
       <Accordion defaultExpanded>
-        <AccordionSummary
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
+        <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
           <Typography>番組情報を選択してください​</Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -144,7 +141,7 @@ const ProgramInformationSearchAccordion = () => {
                     }}
                     value={broadcastPeriodStart}
                     onChange={(newValue) => setbroadcastPeriodStart(newValue)}
-                    label="対象放送期間start"
+                    label="Start"
                   />
                 </Box>
                 <Typography>〜</Typography>
@@ -156,7 +153,7 @@ const ProgramInformationSearchAccordion = () => {
                     }}
                     value={broadcastPeriodEnd}
                     onChange={(newValue) => setbroadcastPeriodEnd(newValue)}
-                    label="対象放送期間end"
+                    label="End"
                   />
                 </Box>
               </Stack>
@@ -174,7 +171,7 @@ const ProgramInformationSearchAccordion = () => {
                     }}
                     value={uploadDateStart}
                     onChange={(newValue) => setUploadDateStart(newValue)}
-                    label="アップロード日start"
+                    label="Start"
                   />
                 </Box>
                 <Typography>〜</Typography>
@@ -186,7 +183,7 @@ const ProgramInformationSearchAccordion = () => {
                     }}
                     value={uploadDateEnd}
                     onChange={(newValue) => setUploadDateEnd(newValue)}
-                    label="アップロード日end"
+                    label="End"
                   />
                 </Box>
               </Stack>
@@ -239,18 +236,12 @@ const ProgramInformationSearchAccordion = () => {
                   />
                 </Box>
               </Stack>
+
               {/* Search Button */}
-              <Stack direction="row" spacing={2} justifyContent="center">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleSearch}
-                >
-                  検索
-                </Button>
+              <Stack direction="row" justifyContent="center">
+                <UploadButton onClick={handleSearch} buttonText="検索" loading={loading} disabled={loading} />
               </Stack>
             </Stack>
-
           </Box>
         </AccordionDetails>
       </Accordion>
