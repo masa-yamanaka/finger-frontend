@@ -5,7 +5,7 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import { Box } from "@mui/material";
 import Tooltip from '@mui/material/Tooltip';
 
-interface UploadedFiles {
+interface UploadedFile {
   id: string;
   name: string;
   publishDate: Date | null;
@@ -14,15 +14,15 @@ interface UploadedFiles {
 }
 
 interface FileDeliveryUploadEditDataGridProps {
-  uploadedFiles: UploadedFiles[];
+  uploadedFile: UploadedFile[];
   onDeleteFile: (id: string) => void;
-  onRowEdit: (updatedFile: UploadedFiles) => void;
+  onRowEdit: (updatedFile: UploadedFile) => void;
 }
 
 const FileDeliveryUploadEditDataGrid: React.FC<
   FileDeliveryUploadEditDataGridProps
-> = ({ uploadedFiles, onDeleteFile, onRowEdit }) => {
-  const processRowUpdate = (newRow: UploadedFiles) => {
+> = ({ uploadedFile, onDeleteFile, onRowEdit }) => {
+  const processRowUpdate = (newRow: UploadedFile) => {
     onRowEdit(newRow);
     return newRow;
   };
@@ -60,7 +60,7 @@ const FileDeliveryUploadEditDataGrid: React.FC<
       }}
     >
       <DataGrid
-        rows={uploadedFiles}
+        rows={uploadedFile}
         columns={columns}
         disableRowSelectionOnClick
         processRowUpdate={processRowUpdate}

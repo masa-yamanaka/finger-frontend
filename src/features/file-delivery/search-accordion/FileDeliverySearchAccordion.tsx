@@ -34,8 +34,10 @@ import MuiAccordionSummary, {
   AccordionSummaryProps,
 } from '@mui/material/AccordionSummary';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+import { mockApiCall } from "@/utils/mockApiCall";
+import UploadButton from "@/components/button/upload-button/UploadButton";
 
-const FileDeliverySearchAccordion = () => {
+const FileDeliverySearchAccordion = ({ onSearchComplete }) => {
   const [publishDateStart, setPublishDateStart] = useState(null);
   const [publishDateEnd, setPublishDateEnd] = useState(null);
   const [broadcastDateStart, setBroadcastDateStart] = useState(null);
@@ -44,32 +46,21 @@ const FileDeliverySearchAccordion = () => {
   const [statusValue, setStatusValue] = useState([]);
   const [deliveryType, setDeliveryType] = useState([]);
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleTvStationChange = (event) => {
-    setTvStation(
-      event.target.value === "string"
-        ? event.target.value.split(",")
-        : event.target.value
-    );
+    setTvStation(event.target.value === "string" ? event.target.value.split(",") : event.target.value);
   };
 
   const handleStatusChange = (event) => {
-    setStatusValue(
-      event.target.value === "string"
-        ? event.target.value.split(",")
-        : event.target.value
-    );
+    setStatusValue(event.target.value === "string" ? event.target.value.split(",") : event.target.value);
   };
 
   const handleDeliveryTypeChange = (event) => {
-    setDeliveryType(
-      event.target.value === "string"
-        ? event.target.value.split(",")
-        : event.target.value
-    );
+    setDeliveryType(event.target.value === "string" ? event.target.value.split(",") : event.target.value);
   };
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     // Add logic here for search button
     const searchParams = {
       tvStation: tvStation,
@@ -83,6 +74,18 @@ const FileDeliverySearchAccordion = () => {
     };
 
     console.log("Search parameters:", searchParams);
+
+    setLoading(true);
+    try {
+      const data = await mockApiCall();
+
+      // Set the search results here
+      onSearchComplete(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const AccordionSummary = styled((props: AccordionSummaryProps) => (
@@ -291,14 +294,8 @@ const FileDeliverySearchAccordion = () => {
               </Stack>
 
               {/* Search Button */}
-              <Stack direction="row" spacing={2} justifyContent="center">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleSearch}
-                >
-                  検索
-                </Button>
+              <Stack direction="row" justifyContent="center">
+                <UploadButton onClick={handleSearch} buttonText="検索" loading={loading} disabled={loading} />
               </Stack>
             </Stack>
           </Box>

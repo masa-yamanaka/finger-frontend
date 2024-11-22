@@ -33,7 +33,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 const FileDeliveryUploadEditPage = () => {
   const router = useRouter();
-  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [uploadedFile, setUploadedFile] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dialogType, setDialogType] = useState<"success" | "error">("success");
   const [dialogTitle, setDialogTitle] = useState("");
@@ -43,8 +43,15 @@ const FileDeliveryUploadEditPage = () => {
 
   const handleUpload = (files: File[]) => {
     console.info("Uploading:", files);
+    if (uploadedFile.length > 0) {
+      setIsModalOpen(true);
+      setDialogType("error");
+      setDialogTitle("アップロードエラー");
+      setDialogMessage("アップロードは１ファイルのみです");
+      return;
+    }
 
-    setUploadedFiles((prevFiles) => {
+    setUploadedFile((prevFiles) => {
       // Check for duplicate files
       const { uniqueFiles, duplicateFiles } = filterDuplicateFiles(files, prevFiles);
 
@@ -76,11 +83,11 @@ const FileDeliveryUploadEditPage = () => {
   };
 
   const handleDeleteFile = (id: string) => {
-    setUploadedFiles((prevFiles) => prevFiles.filter((file) => file.id !== id));
+    setUploadedFile((prevFiles) => prevFiles.filter((file) => file.id !== id));
   };
 
   const handleRowEdit = (updatedFile) => {
-    setUploadedFiles((prevFiles) =>
+    setUploadedFile((prevFiles) =>
       prevFiles.map((file) => (file.id === updatedFile.id ? updatedFile : file))
     );
   };
@@ -92,7 +99,7 @@ const FileDeliveryUploadEditPage = () => {
         setSuccess(false);
         setLoading(true);
         // Mock API Call
-        // const response = await uploadFilesAPI(uploadedFiles)
+        // const response = await uploadFilesAPI(uploadedFile)
         const response = await mockApiCall();
 
         if (response.success) {
@@ -120,7 +127,7 @@ const FileDeliveryUploadEditPage = () => {
     } finally {
       setLoading(false);
       setIsModalOpen(true);
-      console.log("Uploaded Files Data:", uploadedFiles);
+      console.log("Uploaded Files Data:", uploadedFile);
     }
 
     // For testing without API or error
@@ -128,7 +135,7 @@ const FileDeliveryUploadEditPage = () => {
     // setDialogTitle("アップロード完了しました");
     // setDialogMessage("ファイルが正常にアップロードされました。");
     // setIsModalOpen(true);
-    // console.log("Uploaded Files Data:", uploadedFiles);
+    // console.log("Uploaded Files Data:", uploadedFile);
   };
 
   const handleCloseModal = () => {
@@ -144,7 +151,7 @@ const FileDeliveryUploadEditPage = () => {
         ここに番組表確認一覧ファイルをアップロードできます。アップロードを契機に放送局様・NTTデータへ自動でメール通知します。​
       </Alert>
 
-      <FileUpload onUpload={handleUpload} />
+      <FileUpload onUpload={handleUpload} multiple={false} />
 
       <Paper variant="outlined" sx={{ mt: 2 }}>
         <Stack direction="column" spacing={4} padding={2}>
@@ -176,14 +183,14 @@ const FileDeliveryUploadEditPage = () => {
             </Table>
           </TableContainer>
 
-          {uploadedFiles.length > 0 && (
+          {uploadedFile.length > 0 && (
             <Alert severity="warning" icon={false}>
               ファイル説明をダブルクリックで入力してください。
             </Alert>
           )}
 
           <FileDeliveryUploadEditDataGrid
-            uploadedFiles={uploadedFiles}
+            uploadedFile={uploadedFile}
             onDeleteFile={handleDeleteFile}
             onRowEdit={handleRowEdit}
           />
@@ -198,7 +205,7 @@ const FileDeliveryUploadEditPage = () => {
           <UploadButton
             onClick={handleConfirmUpload}
             loading={loading}
-            disabled={uploadedFiles.length === 0 || loading}
+            disabled={uploadedFile.length === 0 || loading}
             buttonText="アップロード確定"
           />
         </Box>

@@ -138,6 +138,12 @@ const FileDeliveryPage = () => {
     return updatedRow;
   };
 
+  const handleSearchComplete = (data) => {
+    console.log("handleSearchComplete data: ", data);
+    // Update the DataGrid rows when search is complete
+    setRows(data);
+  };
+
   return (
     <DefaultPageLayout title="納品ファイル連携">
       <Typography sx={{ color: "red", mb: 4 }}>メッセージエリア</Typography>
@@ -151,7 +157,7 @@ const FileDeliveryPage = () => {
       </Button>
 
       {/* Search Accordion  */}
-      <FileDeliverySearchAccordion />
+      <FileDeliverySearchAccordion onSearchComplete={handleSearchComplete} />
 
       {/* Data Grid  */}
       <Box sx={{ width: "100%", mt: 2 }}>
