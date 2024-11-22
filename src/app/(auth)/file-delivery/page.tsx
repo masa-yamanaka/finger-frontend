@@ -84,7 +84,7 @@ const columns: GridColDef[] = [
   },
   {
     field: "publishDate",
-    headerName: "公開日",
+    headerName: "公開日時",
     type: "dateTime",
     editable: true,
   },
@@ -128,9 +128,20 @@ const FileDeliveryPage = () => {
 
   const handleCsvDownload = () => {
     const selectedRowData = rows.filter((row) => selectedRows.includes(row.id));
-
     // Add logic here for CSV download
     console.log("Selected row data:", selectedRowData);
+  };
+  
+  const processRowUpdate = (newRow: any) => {
+    const updatedRow = { ...newRow, isNew: false };
+    setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+    return updatedRow;
+  };
+
+  const handleSearchComplete = (data) => {
+    console.log("handleSearchComplete data: ", data);
+    // Update the DataGrid rows when search is complete
+    setRows(data);
   };
 
   return (
@@ -146,7 +157,7 @@ const FileDeliveryPage = () => {
       </Button>
 
       {/* Search Accordion  */}
-      <FileDeliverySearchAccordion />
+      <FileDeliverySearchAccordion onSearchComplete={handleSearchComplete} />
 
       {/* Data Grid  */}
       <Box sx={{ width: "100%", mt: 2 }}>
@@ -158,6 +169,8 @@ const FileDeliveryPage = () => {
           onRowSelectionModelChange={(newSelection) =>
             setSelectedRows(newSelection)
           }
+          processRowUpdate={processRowUpdate}
+          onProcessRowUpdateError={(error) => console.log(error)}
           sx={{
             height: 500,
             width: "100%",

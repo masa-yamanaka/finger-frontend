@@ -3,8 +3,9 @@ import { DataGrid, GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
 import { jaJP } from "@mui/x-data-grid/locales";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import { Box } from "@mui/material";
+import Tooltip from '@mui/material/Tooltip';
 
-interface UploadedFiles {
+interface UploadedFile {
   id: string;
   name: string;
   publishDate: Date | null;
@@ -13,15 +14,15 @@ interface UploadedFiles {
 }
 
 interface FileDeliveryUploadEditDataGridProps {
-  uploadedFiles: UploadedFiles[];
+  uploadedFile: UploadedFile[];
   onDeleteFile: (id: string) => void;
-  onRowEdit: (updatedFile: UploadedFiles) => void;
+  onRowEdit: (updatedFile: UploadedFile) => void;
 }
 
 const FileDeliveryUploadEditDataGrid: React.FC<
   FileDeliveryUploadEditDataGridProps
-> = ({ uploadedFiles, onDeleteFile, onRowEdit }) => {
-  const processRowUpdate = (newRow: UploadedFiles) => {
+> = ({ uploadedFile, onDeleteFile, onRowEdit }) => {
+  const processRowUpdate = (newRow: UploadedFile) => {
     onRowEdit(newRow);
     return newRow;
   };
@@ -36,7 +37,7 @@ const FileDeliveryUploadEditDataGrid: React.FC<
       width: 100,
       getActions: (params) => [
         <GridActionsCellItem
-          icon={<DeleteIcon />}
+          icon={<Tooltip title="削除"><DeleteIcon /></Tooltip>}
           label="Delete"
           onClick={() => onDeleteFile(params.id)}
           color="inherit"
@@ -59,7 +60,7 @@ const FileDeliveryUploadEditDataGrid: React.FC<
       }}
     >
       <DataGrid
-        rows={uploadedFiles}
+        rows={uploadedFile}
         columns={columns}
         disableRowSelectionOnClick
         processRowUpdate={processRowUpdate}
