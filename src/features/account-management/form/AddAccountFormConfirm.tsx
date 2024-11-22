@@ -7,7 +7,7 @@ import AccountTable from "../component/AccountTable";
 const ConfirmPage = () => {
   const router = useRouter();
 
-  const [formData] = React.useState({
+  const [formData, setFormData] = React.useState({
     businessType: "test",
     businessName: "test",
     role: "test",

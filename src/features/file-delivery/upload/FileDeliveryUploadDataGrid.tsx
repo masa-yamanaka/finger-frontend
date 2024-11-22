@@ -3,17 +3,12 @@ import { DataGrid, GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
 import { jaJP } from "@mui/x-data-grid/locales";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import { Box } from "@mui/material";
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from "@mui/material/Tooltip";
 
-interface UploadedFile {
+export interface UploadedFile {
   id: string;
   name: string;
   description: string;
-  tvStation: string;
-  deliveryType: string;
-  broadcastDate: Date | null;
-  publishDate: Date | null;
-  message: string;
   file: File;
 }
 
@@ -31,7 +26,7 @@ const FileDeliveryUploadDataGrid: React.FC<FileDeliveryUploadDataGridProps> = ({
   const columns: GridColDef[] = [
     { field: "name", headerName: "アップロードファイル", flex: 1 },
     {
-      field: "message",
+      field: "description",
       headerName: "ファイル説明​",
       flex: 2,
       editable: true,
@@ -43,7 +38,11 @@ const FileDeliveryUploadDataGrid: React.FC<FileDeliveryUploadDataGridProps> = ({
       width: 100,
       getActions: (params) => [
         <GridActionsCellItem
-          icon={<Tooltip title="削除"><DeleteIcon /></Tooltip>}
+          icon={
+            <Tooltip title="削除">
+              <DeleteIcon />
+            </Tooltip>
+          }
           label="Delete"
           onClick={() => onDeleteFile(params.id)}
           color="inherit"

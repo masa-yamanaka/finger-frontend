@@ -45,7 +45,7 @@ npm run storybook
 
 ## Framework & Libraries
 
-- Next.js 14 App Router
-- MUI v6.1.7 [https://mui.com/material-ui/all-components/](https://mui.com/material-ui/all-components/)
-- react-dropzone
-- dayjs
+- Next.js 14 App Router - [https://nextjs.org/docs](https://nextjs.org/docs)
+- MUI v6.1.7 - [https://mui.com/material-ui/all-components/](https://mui.com/material-ui/all-components/)
+- react-dropzone - [https://react-dropzone.js.org/](https://react-dropzone.js.org/)
+- dayjs - [https://day.js.org/en/](https://day.js.org/en/)

@@ -7,11 +7,7 @@ import FileDeliverySearchAccordion from "@/features/file-delivery/search-accordi
 import { DataGrid, GridColDef, GridRowSelectionModel } from "@mui/x-data-grid";
 import { jaJP } from "@mui/x-data-grid/locales";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import {
-  mockFileDelivery,
-  mockStatus,
-  mockTvStations,
-} from "@/constants/file-delivery";
+import { mockFileDelivery, mockFileDeliveryStatus, mockTvStations } from "@/constants/file-delivery";
 import ConfirmDialog from "@/components/modals/Confirm/ConfirmDialog";
 import dayjs from "dayjs";
 
@@ -27,11 +23,10 @@ const columns: GridColDef[] = [
     field: "broadcastDate",
     headerName: "放送年月",
     type: "date",
+    width: 150,
     editable: true,
     renderCell: (params) => {
-      return params.value
-        ? dayjs(params.value).format("YYYY/MM")
-        : "";
+      return params.value ? dayjs(params.value).format("YYYY/MM") : "";
     },
   },
 
@@ -39,7 +34,7 @@ const columns: GridColDef[] = [
     field: "status",
     headerName: "ステータス",
     type: "singleSelect",
-    valueOptions: mockStatus,
+    valueOptions: mockFileDeliveryStatus,
   },
   {
     field: "downloadUrl",
@@ -86,6 +81,10 @@ const columns: GridColDef[] = [
     field: "publishDate",
     headerName: "公開日時",
     type: "dateTime",
+    width: 150,
+    renderCell: (params) => {
+      return params.value ? dayjs(params.value).format("YYYY/MM/DD HH:mm") : "";
+    },
     editable: true,
   },
   { field: "message", headerName: "通信欄", editable: true, flex: 1 },
@@ -117,9 +116,7 @@ const FileDeliveryPage = () => {
     // Add API here to delete
     console.log("Deleted rows:  ", selectedRowData);
 
-    setRows((oldRows) =>
-      oldRows.filter((row) => !selectedRows.includes(row.id))
-    );
+    setRows((oldRows) => oldRows.filter((row) => !selectedRows.includes(row.id)));
     setSelectedRows([]);
     closeDeleteModal();
   };
@@ -131,7 +128,7 @@ const FileDeliveryPage = () => {
     // Add logic here for CSV download
     console.log("Selected row data:", selectedRowData);
   };
-  
+
   const processRowUpdate = (newRow: any) => {
     const updatedRow = { ...newRow, isNew: false };
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
@@ -146,13 +143,11 @@ const FileDeliveryPage = () => {
 
   return (
     <DefaultPageLayout title="納品ファイル連携">
+      {/* Message Area  */}
       <Typography sx={{ color: "red", mb: 4 }}>メッセージエリア</Typography>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleUpload}
-        sx={{ mb: 2 }}
-      >
+
+      {/* Upload Button  */}
+      <Button variant="contained" color="primary" onClick={handleUpload} sx={{ mb: 2 }}>
         アップロード
       </Button>
 
@@ -166,9 +161,7 @@ const FileDeliveryPage = () => {
           columns={columns}
           checkboxSelection
           disableRowSelectionOnClick
-          onRowSelectionModelChange={(newSelection) =>
-            setSelectedRows(newSelection)
-          }
+          onRowSelectionModelChange={(newSelection) => setSelectedRows(newSelection)}
           processRowUpdate={processRowUpdate}
           onProcessRowUpdateError={(error) => console.log(error)}
           sx={{
@@ -181,14 +174,10 @@ const FileDeliveryPage = () => {
         />
       </Box>
 
+      {/* Buttons  */}
       <Stack direction="row" justifyContent="flex-end" sx={{ mt: 2 }}>
-        <Stack direction={"row"} spacing={2}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleCsvDownload}
-            disabled={!selectedRows.length}
-          >
+        <Stack direction="row" spacing={2}>
+          <Button variant="contained" color="primary" onClick={handleCsvDownload} disabled={!selectedRows.length}>
             CSV出力
           </Button>
           <Button

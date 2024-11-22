@@ -1,20 +1,8 @@
-export const mockTvStations = [
-  "ABC News",
-  "BBC",
-  "ESPN",
-  "NBC",
-  "FOX",
-  "MTV",
-  "Discovery Channel",
-];
+export const mockTvStations = ["ABC News", "BBC", "ESPN", "NBC", "FOX", "MTV", "Discovery Channel"];
 
-export const mockStatus = ["Status1", "Status2", "Status3", "Status4"];
+export const mockFileDeliveryStatus = ["Status1", "Status2", "Status3", "Status4"];
 
-export const mockDeliveryType = [
-  "Delivery Type1",
-  "Delivery Type2",
-  "Delivery Type3",
-];
+export const mockDeliveryType = ["Delivery Type1", "Delivery Type2", "Delivery Type3"];
 
 export const mockFileDelivery = [
   {
@@ -104,10 +92,9 @@ export const mockFileDeliveryDownload = [
   },
 ];
 
-export const mockUploadData = {
+export const mockFileDeliveryUploadData = {
   tvStation: "AB",
   targetDate: "2024/09",
   status: "未公開",
   deliveryType: "定時​",
-  uploadedFileUrl: "http://example.com",
 };

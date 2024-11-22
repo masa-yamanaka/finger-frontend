@@ -29,9 +29,9 @@ import CustomSnackbar from "@/components/snackbar/Snackbar";
 import { v4 as uuidv4 } from "uuid";
 import DataGridToolbar from "@/components/dataGridToolbar/DataGridToolbar";
 import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
-import { InputBase, Typography } from "@mui/material";
+import { InputBase, Stack, Typography } from "@mui/material";
 
-export default function EmailGrid() {
+const EmailSettingsPage = () => {
   const cellRef = React.useRef<HTMLInputElement>(null);
   const [rows, setRows] = React.useState<GridRowsProp>(mockEmails);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
@@ -48,11 +48,6 @@ export default function EmailGrid() {
 
   const [isSaveModalOpen, setIsSaveModalOpen] = React.useState(false);
   const [saveRowId, setSaveRowId] = React.useState<GridRowId | null>(null);
-
-  const openSaveModal = (id: GridRowId) => {
-    setSaveRowId(id);
-    setIsSaveModalOpen(true);
-  };
 
   const closeSaveModal = () => {
     setSaveRowId(null);
@@ -90,7 +85,7 @@ export default function EmailGrid() {
   };
 
   const handleAddClick = () => {
-    // Using UUID for the new record; replace with actual id
+    // Using UUID for the new record
     const id = uuidv4();
 
     setRows((oldRows) => {
@@ -171,8 +166,9 @@ export default function EmailGrid() {
     closeSaveModal();
   };
 
-  const handleSaveClick = (id: GridRowId) => () => {
-    openSaveModal(id);
+  const handleSaveClick = (id: GridRowId) => {
+    setSaveRowId(id);
+    setIsSaveModalOpen(true);
   };
 
   const sendTestEmail = () => {
@@ -224,7 +220,7 @@ export default function EmailGrid() {
     setRows(rows.map((row) => (row.id === params.row.id ? { ...row, [field]: newValue } : row)));
   };
 
-  // Grid column definitions
+  // Data Grid column definitions
   const columns: GridColDef[] = [
     {
       field: "type",
@@ -359,7 +355,7 @@ export default function EmailGrid() {
               icon={<SaveIcon />}
               label="Save"
               sx={{ color: "primary.main" }}
-              onClick={handleSaveClick(id)}
+              onClick={() => handleSaveClick(id)}
             />,
             <GridActionsCellItem
               icon={<CancelIcon />}
@@ -386,54 +382,44 @@ export default function EmailGrid() {
 
   return (
     <DefaultPageLayout title="メールアドレス設定画面">
-      <Box
+      {/* Toolbar  */}
+      <DataGridToolbar
+        onAddClick={handleAddClick}
+        selectedStation={selectedStation}
+        onStationChange={setSelectedStation}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+      />
+
+      {/* Data Grid  */}
+      <DataGrid
+        rows={filteredRows}
+        columns={columns}
+        editMode="row"
+        rowModesModel={rowModesModel}
+        onRowModesModelChange={handleRowModesModelChange}
+        onRowEditStop={handleRowEditStop}
+        processRowUpdate={processRowUpdate}
+        checkboxSelection
+        disableRowSelectionOnClick
+        onRowSelectionModelChange={(newSelection) => setSelectedRows(newSelection)}
+        rowSelectionModel={selectedRows}
         sx={{
+          height: 500,
           width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          height: "80vh",
+          "& .actions": {
+            color: "text.secondary",
+          },
+          "& .textPrimary": {
+            color: "text.primary",
+          },
         }}
-      >
-        <DataGridToolbar
-          onAddClick={handleAddClick}
-          selectedStation={selectedStation}
-          onStationChange={setSelectedStation}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-        />
-        <DataGrid
-          rows={filteredRows}
-          // rows={rows}
-          columns={columns}
-          editMode="row"
-          rowModesModel={rowModesModel}
-          onRowModesModelChange={handleRowModesModelChange}
-          onRowEditStop={handleRowEditStop}
-          processRowUpdate={processRowUpdate}
-          checkboxSelection
-          disableRowSelectionOnClick
-          onRowSelectionModelChange={(newSelection) => setSelectedRows(newSelection)}
-          rowSelectionModel={selectedRows}
-          sx={{
-            height: 500,
-            width: "100%",
-            "& .actions": {
-              color: "text.secondary",
-            },
-            "& .textPrimary": {
-              color: "text.primary",
-            },
-          }}
-          localeText={jaJP.components.MuiDataGrid.defaultProps.localeText}
-        />
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            gap: 2,
-            mt: 2,
-          }}
-        >
+        localeText={jaJP.components.MuiDataGrid.defaultProps.localeText}
+      />
+
+      {/* Buttons  */}
+      <Stack direction="row" justifyContent="flex-end" sx={{ mt: 2 }}>
+        <Stack direction="row" spacing={2}>
           <Button
             color="error"
             variant="contained"
@@ -451,37 +437,41 @@ export default function EmailGrid() {
           >
             テスト通知
           </Button>
-        </Box>
+        </Stack>
+      </Stack>
 
-        {/* Save Modal  */}
-        <ConfirmDialog
-          open={isSaveModalOpen}
-          title="保存の確認"
-          description="保存しますか？"
-          color="primary"
-          onClose={closeSaveModal}
-          onConfirm={confirmSave}
-          confirmButtonText="OK"
-          cancelButtonText="キャンセル"
-        />
+      {/* Save Modal  */}
+      <ConfirmDialog
+        open={isSaveModalOpen}
+        title="保存の確認"
+        description="保存しますか？"
+        color="primary"
+        onClose={closeSaveModal}
+        onConfirm={confirmSave}
+        confirmButtonText="OK"
+        cancelButtonText="キャンセル"
+      />
 
-        {/* Delete Modal  */}
-        <ConfirmDialog
-          open={isDeleteModalOpen}
-          title="削除の確認"
-          description={deleteModalDescription}
-          onClose={closeDeleteModal}
-          onConfirm={confirmDelete}
-          confirmButtonText="OK"
-          cancelButtonText="キャンセル"
-        />
-        <CustomSnackbar
-          open={openSnackbar}
-          onClose={() => setOpenSnackbar(false)}
-          message={snackbarMessage}
-          severity={snackbarSeverity}
-        />
-      </Box>
+      {/* Delete Modal  */}
+      <ConfirmDialog
+        open={isDeleteModalOpen}
+        title="削除の確認"
+        description={deleteModalDescription}
+        onClose={closeDeleteModal}
+        onConfirm={confirmDelete}
+        confirmButtonText="OK"
+        cancelButtonText="キャンセル"
+      />
+
+      {/* Snackbar  */}
+      <CustomSnackbar
+        open={openSnackbar}
+        onClose={() => setOpenSnackbar(false)}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+      />
     </DefaultPageLayout>
   );
-}
+};
+
+export default EmailSettingsPage;

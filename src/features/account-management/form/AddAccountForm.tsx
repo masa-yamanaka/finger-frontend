@@ -124,10 +124,10 @@ const AddAccountForm = () => {
       <AccountTable rows={rows} />
 
       <Stack direction="row" spacing={4} justifyContent="center" m={4}>
-        <Button onClick={handleBack} variant="contained" color="error" size="large">
+        <Button variant="contained" color="error" size="large" onClick={handleBack}>
           戻る
         </Button>
-        <Button onClick={handleSubmit} variant="contained" color="primary" size="large">
+        <Button variant="contained" color="primary" size="large" onClick={handleSubmit}>
           入力完了
         </Button>
       </Stack>

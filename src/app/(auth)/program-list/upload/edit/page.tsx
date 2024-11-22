@@ -1,14 +1,14 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { styled } from "@mui/material/styles";
 import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
 import { Alert, Box, Paper, Stack, Table, TableCell, TableBody, TableContainer, TableRow, Button } from "@mui/material";
 import FileUpload from "@/components/fileUpload/FileUpload";
-import { styled } from "@mui/material/styles";
 import StatusDialog from "@/components/modals/Status/StatusDialog";
-import { mockUploadData } from "@/constants/program-list";
 import ProgramListUploadEditDataGrid from "@/features/program-list/upload-data-grid/ProgramListUploadEditDataGrid";
 import UploadButton from "@/components/button/upload-button/UploadButton";
+import { mockProgramListUploadData } from "@/constants/program-list";
 import { mockApiCall } from "@/utils/mockApiCall";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -117,21 +117,21 @@ const ProgramListUploadEditPage = () => {
                 <TableBody>
                   <TableRow>
                     <StyledTableCell>放送局</StyledTableCell>
-                    <TableCell>{mockUploadData.tvStation}</TableCell>
+                    <TableCell>{mockProgramListUploadData.tvStation}</TableCell>
                   </TableRow>
                   <TableRow>
                     <StyledTableCell>放送対象期間</StyledTableCell>
-                    <TableCell>{mockUploadData.broadcastPeriod}</TableCell>
+                    <TableCell>{mockProgramListUploadData.broadcastPeriod}</TableCell>
                   </TableRow>
                   <TableRow>
                     <StyledTableCell>ステータス</StyledTableCell>
-                    <TableCell>{mockUploadData.status}</TableCell>
+                    <TableCell>{mockProgramListUploadData.status}</TableCell>
                   </TableRow>
                   <TableRow>
                     <StyledTableCell>アップロードファイル</StyledTableCell>
                     <TableCell>
-                      <a href={mockUploadData.uploadedFileUrl} download target="_blank">
-                        {mockUploadData.uploadedFileName}
+                      <a href={mockProgramListUploadData.uploadedFileUrl} download target="_blank">
+                        {mockProgramListUploadData.uploadedFileName}
                       </a>
                     </TableCell>
                   </TableRow>

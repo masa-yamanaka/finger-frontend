@@ -118,7 +118,7 @@ export const mockProgramListStatus = ["未公開", "作成完了", "確定", "�
 
 export const mockProgramListTvStations = ["ABC News", "BBC", "ESPN", "NBC", "FOX", "MTV", "Discovery Channel"];
 
-export const mockUploadData = {
+export const mockProgramListUploadData = {
   tvStation: "AB",
   broadcastPeriod: "2024/09/01～2024/09/08",
   status: "未公開",

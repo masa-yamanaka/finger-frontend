@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { styled } from '@mui/material/styles';
+import { styled } from "@mui/material/styles";
 import {
   Box,
   MenuItem,
@@ -9,10 +9,8 @@ import {
   InputLabel,
   Stack,
   Accordion,
-  AccordionSummary,
   AccordionDetails,
   Typography,
-  Button,
   Checkbox,
   ListItemText,
   OutlinedInput,
@@ -23,17 +21,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import "dayjs/locale/ja";
-import {
-  mockDeliveryType,
-  mockStatus,
-  mockTvStations,
-} from "@/constants/file-delivery";
-import MuiAccordionSummary, {
-  AccordionSummaryProps,
-} from '@mui/material/AccordionSummary';
-import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+import { mockDeliveryType, mockFileDeliveryStatus, mockTvStations } from "@/constants/file-delivery";
+import MuiAccordionSummary, { AccordionSummaryProps } from "@mui/material/AccordionSummary";
+import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import { mockApiCall } from "@/utils/mockApiCall";
 import UploadButton from "@/components/button/upload-button/UploadButton";
 
@@ -89,34 +80,28 @@ const FileDeliverySearchAccordion = ({ onSearchComplete }) => {
   };
 
   const AccordionSummary = styled((props: AccordionSummaryProps) => (
-    <MuiAccordionSummary
-      expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
-      {...props}
-    />
+    <MuiAccordionSummary expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />} {...props} />
   ))(({ theme }) => ({
-    backgroundColor: 'rgba(0, 0, 0, .03)',
-    flexDirection: 'row-reverse',
-    '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-      transform: 'rotate(90deg)',
+    backgroundColor: "rgba(0, 0, 0, .03)",
+    flexDirection: "row-reverse",
+    "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+      transform: "rotate(90deg)",
     },
-    '& .MuiAccordionSummary-content': {
+    "& .MuiAccordionSummary-content": {
       marginLeft: theme.spacing(1),
     },
-    '& .MuiAccordionSummary-content.Mui-expanded': {
+    "& .MuiAccordionSummary-content.Mui-expanded": {
       marginLeft: theme.spacing(1),
     },
-    ...theme.applyStyles('dark', {
-      backgroundColor: 'rgba(255, 255, 255, .05)',
+    ...theme.applyStyles("dark", {
+      backgroundColor: "rgba(255, 255, 255, .05)",
     }),
   }));
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ja">
       <Accordion defaultExpanded>
-        <AccordionSummary
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
+        <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
           <Typography>納品ファイル情報を選択してください​</Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -163,9 +148,9 @@ const FileDeliverySearchAccordion = ({ onSearchComplete }) => {
                     }}
                     value={broadcastDateStart}
                     onChange={(newValue) => setBroadcastDateStart(newValue)}
-                    label="start"
+                    label="Start"
                     format="YYYY/MM"
-                    views={['year', 'month']}
+                    views={["year", "month"]}
                   />
                 </Box>
                 <Typography>〜</Typography>
@@ -177,9 +162,9 @@ const FileDeliverySearchAccordion = ({ onSearchComplete }) => {
                     }}
                     value={broadcastDateEnd}
                     onChange={(newValue) => setBroadcastDateEnd(newValue)}
-                    label="end"
+                    label="End"
                     format="YYYY/MM"
-                    views={['year', 'month']}
+                    views={["year", "month"]}
                   />
                 </Box>
               </Stack>
@@ -201,7 +186,7 @@ const FileDeliverySearchAccordion = ({ onSearchComplete }) => {
                       input={<OutlinedInput label="ステータスを選択" />}
                       renderValue={(selected) => selected.join(", ")}
                     >
-                      {mockStatus.map((status) => (
+                      {mockFileDeliveryStatus.map((status) => (
                         <MenuItem key={status} value={status}>
                           <Checkbox checked={statusValue.includes(status)} />
                           <ListItemText primary={status} />
@@ -253,7 +238,7 @@ const FileDeliverySearchAccordion = ({ onSearchComplete }) => {
                     }}
                     value={publishDateStart}
                     onChange={(newValue) => setPublishDateStart(newValue)}
-                    label="start"
+                    label="Start"
                   />
                 </Box>
                 <Typography>〜</Typography>
@@ -265,7 +250,7 @@ const FileDeliverySearchAccordion = ({ onSearchComplete }) => {
                     }}
                     value={publishDateEnd}
                     onChange={(newValue) => setPublishDateEnd(newValue)}
-                    label="end"
+                    label="End"
                   />
                 </Box>
               </Stack>

@@ -1,19 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  Select,
-  MenuItem,
-  TextField,
-  Button,
-  Box,
-  Checkbox,
-} from "@mui/material";
-import {
-  mockAccountBusinessTypes,
-  mockAccountBusinessNames,
-  mockAccountRoles,
-} from "@/constants/accounts";
+import { Select, MenuItem, TextField, Button, Box, Checkbox } from "@mui/material";
+import { mockAccountBusinessTypes, mockAccountBusinessNames, mockAccountRoles } from "@/constants/accounts";
 import AccountTable from "../component/AccountTable";
 import StatusDialog from "@/components/modals/Status/StatusDialog";
 
@@ -68,13 +57,7 @@ const EditAccountForm: React.FC = () => {
     {
       label: "事業者種類",
       input: (
-        <Select
-          fullWidth
-          name="businessType"
-          value={formData.businessType}
-          onChange={handleChange}
-          displayEmpty
-        >
+        <Select fullWidth name="businessType" value={formData.businessType} onChange={handleChange} displayEmpty>
           <MenuItem value="" disabled>
             事業者種類を選択
           </MenuItem>
@@ -111,13 +94,7 @@ const EditAccountForm: React.FC = () => {
     {
       label: "管理権限",
       input: (
-        <Select
-          fullWidth
-          name="role"
-          value={formData.role}
-          onChange={handleChange}
-          displayEmpty
-        >
+        <Select fullWidth name="role" value={formData.role} onChange={handleChange} displayEmpty>
           <MenuItem value="" disabled>
             権限を選択
           </MenuItem>
@@ -131,25 +108,12 @@ const EditAccountForm: React.FC = () => {
     },
     {
       label: "ログインID",
-      input: (
-        <TextField
-          fullWidth
-          name="loginId"
-          value={formData.loginId}
-          onChange={handleChange}
-          disabled
-        />
-      ),
+      input: <TextField fullWidth name="loginId" value={formData.loginId} onChange={handleChange} disabled />,
     },
     {
       label: (
         <span>
-          <Checkbox
-            checked={isEmailEditable}
-            onChange={handleCheckboxChange}
-            size="small"
-            sx={{ p: 0, mr: 1 }}
-          />
+          <Checkbox checked={isEmailEditable} onChange={handleCheckboxChange} size="small" sx={{ p: 0, mr: 1 }} />
           パスワード初期化
         </span>
       ),
@@ -172,20 +136,10 @@ const EditAccountForm: React.FC = () => {
 
       {/* Open Modal Button */}
       <Box sx={{ display: "flex", justifyContent: "center", my: 4, gap: 2 }}>
-        <Button
-          onClick={handleBack}
-          variant="contained"
-          color="secondary"
-          size="large"
-        >
+        <Button onClick={handleBack} variant="contained" color="error" size="large">
           戻る
         </Button>
-        <Button
-          onClick={handleSubmit}
-          variant="contained"
-          color="primary"
-          size="large"
-        >
+        <Button onClick={handleSubmit} variant="contained" color="primary" size="large">
           確定
         </Button>
       </Box>
