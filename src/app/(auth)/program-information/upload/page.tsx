@@ -10,6 +10,7 @@ import UploadButton from "@/components/button/upload-button/UploadButton";
 import ProgramInformationUploadDataGrid, {
   UploadedFile,
 } from "@/features/program-information/upload-data-grid/ProgramInformationUploadDataGrid";
+import { filterDuplicateFiles } from "@/utils/file";
 
 const ProgramInformationUploadPage = () => {
   const router = useRouter();
@@ -23,16 +24,30 @@ const ProgramInformationUploadPage = () => {
   const handleUpload = (files: File[]) => {
     console.info("Uploading:", files);
 
-    const newFiles: UploadedFile[] = files.map((file) => ({
-      id: file.name, // Using file name as id
-      name: file.name,
-      startDate: new Date(),
-      endDate: new Date(),
-      reason: "入力してください",
-      file: file, // Store the actual File object
-    }));
+    setUploadedFiles((prevFiles) => {
+      // Check for duplicate files
+      const { uniqueFiles, duplicateFiles } = filterDuplicateFiles(files, prevFiles);
 
-    setUploadedFiles((prevFiles) => [...prevFiles, ...newFiles]);
+      if (duplicateFiles.length > 0) {
+        setIsModalOpen(true);
+        setDialogType("error");
+        setDialogTitle("アップロードエラー");
+        setDialogMessage(` 同一ファイルのためアップロードできません：${duplicateFiles.map((f) => f.name).join(", ")}`);
+      }
+
+      const newFiles = uniqueFiles.map((file) => {
+        return {
+          id: file.name,
+          name: file.name,
+          broadcastPeriodStart: new Date(),
+          broadcastPeriodEnd: new Date(),
+          message: "入力してください",
+          file: file,
+        };
+      });
+
+      return [...prevFiles, ...newFiles];
+    });
   };
 
   const handleReturn = () => {

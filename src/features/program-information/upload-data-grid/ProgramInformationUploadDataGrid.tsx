@@ -9,9 +9,9 @@ import dayjs from "dayjs";
 export interface UploadedFile {
   id: string;
   name: string;
-  startDate: Date | null;
-  endDate: Date | null;
-  reason: string;
+  broadcastPeriodStart: Date | null;
+  broadcastPeriodEnd: Date | null;
+  message: string;
   file: File;
 }
 
@@ -29,7 +29,7 @@ const ProgramInformationUploadDataGrid: React.FC<ProgramInformationUploadDataGri
   const columns: GridColDef[] = [
     { field: "name", headerName: "アップロードファイル", flex: 1 },
     {
-      field: "startDate",
+      field: "broadcastPeriodStart",
       headerName: "対象放送期間(Start)",
       type: "date",
       flex: 1,
@@ -39,7 +39,7 @@ const ProgramInformationUploadDataGrid: React.FC<ProgramInformationUploadDataGri
       },
     },
     {
-      field: "endDate",
+      field: "broadcastPeriodEnd",
       headerName: "対象放送期間(End)",
       type: "date",
       flex: 1,
@@ -48,7 +48,7 @@ const ProgramInformationUploadDataGrid: React.FC<ProgramInformationUploadDataGri
         return params.value ? dayjs(params.value).format("YYYY/MM/DD") : "";
       },
     },
-    { field: "reason", headerName: "通信欄", flex: 1, editable: true },
+    { field: "message", headerName: "通信欄", flex: 1, editable: true },
     {
       field: "actions",
       type: "actions",
