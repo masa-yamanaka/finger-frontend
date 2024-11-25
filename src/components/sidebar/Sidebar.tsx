@@ -39,7 +39,7 @@ const Sidebar: React.FC = () => {
           {dashboardSections.map((section, index) => (
             <React.Fragment key={index}>
               <Box sx={{ p: 2 }}>
-                <Typography variant="subtitle1" gutterBottom color="info.dark" sx={{ fontWeight: "bold" }}>
+                <Typography variant="subtitle1" gutterBottom color="primary.dark" sx={{ fontWeight: "bold" }}>
                   {section.title}
                 </Typography>
                 <List sx={{ p: 0 }}>

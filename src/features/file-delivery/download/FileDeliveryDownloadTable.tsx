@@ -40,18 +40,13 @@ interface FileDeliveryDownloadTableProps {
   onSelectFiles: (selectedFiles: any[]) => void;
 }
 
-const FileDeliveryDownloadTable: React.FC<FileDeliveryDownloadTableProps> = ({
-  title,
-  data,
-  onSelectFiles,
-}) => {
+const FileDeliveryDownloadTable: React.FC<FileDeliveryDownloadTableProps> = ({ title, data, onSelectFiles }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [selectedFiles, setSelectedFiles] = useState<any[]>([]);
 
   const handleChangePage = (event, newPage) => setPage(newPage);
-  const handleChangeRowsPerPage = (event) =>
-    setRowsPerPage(parseInt(event.target.value, 10));
+  const handleChangeRowsPerPage = (event) => setRowsPerPage(parseInt(event.target.value, 10));
 
   const handleSelectRow = (file: any) => {
     setSelectedFiles((prevSelected) =>
@@ -74,10 +69,7 @@ const FileDeliveryDownloadTable: React.FC<FileDeliveryDownloadTableProps> = ({
   };
 
   // Paginated data
-  const paginatedData = data.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-  );
+  const paginatedData = data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   useEffect(() => {
     handleSelectionChange();
@@ -100,35 +92,22 @@ const FileDeliveryDownloadTable: React.FC<FileDeliveryDownloadTableProps> = ({
                 />
               </StyledTableCell>
               <StyledTableCell sx={{ width: "10%" }}>#</StyledTableCell>
-              <StyledTableCell sx={{ width: "15%" }}>
-                アップロードユーザ
-              </StyledTableCell>
+              <StyledTableCell sx={{ width: "15%" }}>アップロードユーザ</StyledTableCell>
               <StyledTableCell sx={{ width: "30%" }}>ファイル​</StyledTableCell>
-              <StyledTableCell sx={{ width: "15%" }}>
-                アップロード日
-              </StyledTableCell>
-              <StyledTableCell sx={{ width: "30%" }}>
-                ファイル説明
-              </StyledTableCell>
+              <StyledTableCell sx={{ width: "15%" }}>アップロード日</StyledTableCell>
+              <StyledTableCell sx={{ width: "30%" }}>ファイル説明</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {paginatedData.map((file) => (
               <StyledTableRow key={file.id}>
                 <StyledTableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedFiles.includes(file)}
-                    onChange={() => handleSelectRow(file)}
-                  />
+                  <Checkbox checked={selectedFiles.includes(file)} onChange={() => handleSelectRow(file)} />
                 </StyledTableCell>
                 <StyledTableCell>{file.id}</StyledTableCell>
                 <StyledTableCell>{file.userName}</StyledTableCell>
                 <StyledTableCell>
-                  <a
-                    href={file.fileUrl}
-                    target="_blank"
-                    download={file.fileName}
-                  >
+                  <a href={file.fileUrl} target="_blank" download={file.fileName}>
                     {file.fileName}
                   </a>
                 </StyledTableCell>

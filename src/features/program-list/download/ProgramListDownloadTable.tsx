@@ -17,7 +17,7 @@ import { tableCellClasses } from "@mui/material/TableCell";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.info.dark,
+    backgroundColor: theme.palette.primary.dark,
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -39,13 +39,10 @@ const ProgramListDownloadTable = ({ title, data, pagination = false }) => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (event, newPage) => setPage(newPage);
-  const handleChangeRowsPerPage = (event) =>
-    setRowsPerPage(parseInt(event.target.value, 10));
+  const handleChangeRowsPerPage = (event) => setRowsPerPage(parseInt(event.target.value, 10));
 
   // Paginated data
-  const paginatedData = pagination
-    ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-    : data;
+  const paginatedData = pagination ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : data;
 
   return (
     <div>
@@ -57,13 +54,9 @@ const ProgramListDownloadTable = ({ title, data, pagination = false }) => {
           <TableHead>
             <TableRow>
               <StyledTableCell sx={{ width: "10%" }}>#</StyledTableCell>
-              <StyledTableCell sx={{ width: "25%" }}>
-                アップロードユーザ
-              </StyledTableCell>
+              <StyledTableCell sx={{ width: "25%" }}>アップロードユーザ</StyledTableCell>
               <StyledTableCell sx={{ width: "40%" }}>ファイル​</StyledTableCell>
-              <StyledTableCell sx={{ width: "25%" }}>
-                アップロード日
-              </StyledTableCell>
+              <StyledTableCell sx={{ width: "25%" }}>アップロード日</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -72,11 +65,7 @@ const ProgramListDownloadTable = ({ title, data, pagination = false }) => {
                 <StyledTableCell>{file.id}</StyledTableCell>
                 <StyledTableCell>{file.userName}</StyledTableCell>
                 <StyledTableCell>
-                  <a
-                    href={file.fileUrl}
-                    target="_blank"
-                    download={file.fileName}
-                  >
+                  <a href={file.fileUrl} target="_blank" download={file.fileName}>
                     {file.fileName}
                   </a>
                 </StyledTableCell>

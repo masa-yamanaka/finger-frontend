@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  Container,
-  Box,
-  TextField,
-  Button,
-  Typography,
-  Paper,
-  Alert,
-} from "@mui/material";
+import { Container, Box, TextField, Button, Typography, Paper, Alert } from "@mui/material";
 
 interface SetPasswordProps {
   password: string;
@@ -35,9 +27,7 @@ const SetPassword = ({
         </Typography>
 
         <Box component="form" noValidate autoComplete="off">
-          <Typography variant="body1">
-            ID: xxxxxxxxxx@email.com
-          </Typography>
+          <Typography variant="body1">ID: xxxxxxxxxx@email.com</Typography>
           <TextField
             fullWidth
             label="新規パスワード"
@@ -47,9 +37,7 @@ const SetPassword = ({
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Typography variant="body2">
-            ※ パスワードのルールを表記
-          </Typography>
+          <Typography variant="body2">※ パスワードのルールを表記</Typography>
           <TextField
             fullWidth
             label="新規パスワード（再入力）"
@@ -62,13 +50,8 @@ const SetPassword = ({
 
           {/* Show error message */}
           {error && <Alert severity="error">{error}</Alert>}
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick={handleSetPassword}
-            sx={{ marginTop: 2 }}
-          >
+
+          <Button fullWidth variant="contained" color="primary" onClick={handleSetPassword} sx={{ marginTop: 2 }}>
             完了
           </Button>
         </Box>

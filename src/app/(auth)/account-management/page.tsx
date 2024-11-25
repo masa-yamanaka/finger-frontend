@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import DataGridToolbar from "@/components/dataGridToolbar/DataGridToolbar";
+import DataGridToolbar from "@/features/email-settings/data-grid-toolbar/DataGridToolbar";
 import { Box } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
@@ -24,9 +24,10 @@ import { mockAccounts } from "@/constants/accounts";
 import { useRouter } from "next/navigation";
 import ConfirmDialog from "@/components/modals/Confirm/ConfirmDialog";
 import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
+import AccountManagementDataGridToolbar from "@/features/account-management/data-grid-toolbar/AccountManagementDataGridToolbar";
 
 const AccountManagement = () => {
-  const [selectedStation, setSelectedStation] = React.useState<string[]>([]);
+  const [selectedBusinessName, setSelectedBusinessName] = React.useState<string[]>([]);
   const [searchQuery, setSearchQuery] = React.useState("");
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
   const router = useRouter();
@@ -98,13 +99,13 @@ const AccountManagement = () => {
   // Filter rows based on selected station
   const filteredRows = rows.filter((row) => {
     const matchesStation =
-      selectedStation.length > 0
-        ? selectedStation.includes(row.tvStation) // updated for multiple selections
+      selectedBusinessName.length > 0
+        ? selectedBusinessName.includes(row.businessName) // updated for multiple selections
         : true;
 
     const matchesSearch = row.email.toLowerCase().includes(searchQuery.toLowerCase());
 
-    return (matchesStation && matchesSearch) || (row.isNew && selectedStation.includes(row.tvStation));
+    return (matchesStation && matchesSearch) || (row.isNew && selectedBusinessName.includes(row.tvStation));
   });
 
   const columns: GridColDef[] = [
@@ -114,7 +115,6 @@ const AccountManagement = () => {
       width: 180,
       editable: false,
     },
-
     {
       field: "role",
       headerName: "権限",
@@ -179,16 +179,15 @@ const AccountManagement = () => {
           height: "80vh",
         }}
       >
-        <DataGridToolbar
+        <AccountManagementDataGridToolbar
           onAddClick={handleAddClick}
-          selectedStation={selectedStation}
-          onStationChange={setSelectedStation}
+          selectedBusinessName={selectedBusinessName}
+          onBusinessNameChange={setSelectedBusinessName}
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
         />
         <DataGrid
           rows={filteredRows}
-          // rows={rows}
           columns={columns}
           editMode="row"
           rowModesModel={rowModesModel}

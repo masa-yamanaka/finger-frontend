@@ -27,7 +27,7 @@ import { mockEmails, mockTvStations, mockTypes } from "@/constants/emails";
 import ConfirmDialog from "@/components/modals/Confirm/ConfirmDialog";
 import CustomSnackbar from "@/components/snackbar/Snackbar";
 import { v4 as uuidv4 } from "uuid";
-import DataGridToolbar from "@/components/dataGridToolbar/DataGridToolbar";
+import DataGridToolbar from "@/features/email-settings/data-grid-toolbar/DataGridToolbar";
 import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
 import { InputBase, Stack, Typography } from "@mui/material";
 
@@ -47,6 +47,7 @@ const EmailSettingsPage = () => {
   const [deleteModalDescription, setDeleteModalDescription] = React.useState<React.ReactNode>("");
 
   const [isSaveModalOpen, setIsSaveModalOpen] = React.useState(false);
+  const [saveModalDescription, setSaveModalDescription] = React.useState<React.ReactNode>("");
   const [saveRowId, setSaveRowId] = React.useState<GridRowId | null>(null);
 
   const closeSaveModal = () => {
@@ -103,7 +104,8 @@ const EmailSettingsPage = () => {
       // Add API here for adding
       console.log("Adding new row: ", newRow);
 
-      return [...oldRows, newRow];
+      // Add new row to the top
+      return [newRow, ...oldRows];
     });
 
     setRowModesModel((oldModel) => ({
@@ -136,6 +138,22 @@ const EmailSettingsPage = () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
   };
 
+  const handleSaveClick = (id: GridRowId) => {
+    // Get the current value from the edit cell
+    const editedValue = cellRef.current?.value;
+    const originalRow = rows.find((row) => row.id === id);
+    const currentEmail = editedValue || originalRow?.email || "";
+
+    setSaveRowId(id);
+    setSaveModalDescription(
+      <Box>
+        <Typography sx={{ mb: 2 }}>選択した行を保存してもよろしいですか？</Typography>
+        <Typography variant="body2">{currentEmail}</Typography>
+      </Box>
+    );
+    setIsSaveModalOpen(true);
+  };
+
   const confirmSave = () => {
     if (saveRowId === null) return;
 
@@ -164,11 +182,6 @@ const EmailSettingsPage = () => {
       setOpenSnackbar(true);
     }
     closeSaveModal();
-  };
-
-  const handleSaveClick = (id: GridRowId) => {
-    setSaveRowId(id);
-    setIsSaveModalOpen(true);
   };
 
   const sendTestEmail = () => {
@@ -444,7 +457,7 @@ const EmailSettingsPage = () => {
       <ConfirmDialog
         open={isSaveModalOpen}
         title="保存の確認"
-        description="保存しますか？"
+        description={saveModalDescription}
         color="primary"
         onClose={closeSaveModal}
         onConfirm={confirmSave}

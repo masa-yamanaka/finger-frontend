@@ -14,7 +14,8 @@ const theme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#1976d2",
+      main: "#1976d2", // default MUI blue color
+      dark: "#005b96", // MediaSearch+ blue
     },
     secondary: {
       main: "#dc004e",
