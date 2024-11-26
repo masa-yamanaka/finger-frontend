@@ -267,9 +267,9 @@ const EmailSettingsPage = () => {
               value: event.target.value,
             })
           }
+          placeholder={!params.row.isNew ? "" : "email@example.com"}
           disabled={!params.row.isNew}
           fullWidth
-          autoFocus={params.row.isNew} // Add autoFocus for new rows
           sx={{
             fontSize: "0.875rem",
             padding: "4px 10px",
