@@ -64,16 +64,19 @@ const FileDeliveryDownloadTable: React.FC<FileDeliveryDownloadTableProps> = ({ t
     }
   };
 
-  const handleSelectionChange = () => {
-    onSelectFiles(selectedFiles);
-  };
-
   // Paginated data
   const paginatedData = data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
+  // Reset page when data changes
   useEffect(() => {
-    handleSelectionChange();
-  }, [selectedFiles]);
+    setPage(0);
+    setSelectedFiles([]);
+  }, [data]);
+
+  // Handle selection changes
+  useEffect(() => {
+    onSelectFiles(selectedFiles);
+  }, [selectedFiles, onSelectFiles]);
 
   return (
     <div>
