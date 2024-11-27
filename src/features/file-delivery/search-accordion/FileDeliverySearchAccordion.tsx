@@ -26,7 +26,7 @@ import { mockDeliveryType, mockFileDeliveryStatus, mockTvStations } from "@/cons
 import MuiAccordionSummary, { AccordionSummaryProps } from "@mui/material/AccordionSummary";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import { mockApiCall } from "@/utils/mockApiCall";
-import UploadButton from "@/components/button/upload-button/UploadButton";
+import LoadingButton from "@/components/button/loading-button/LoadingButton";
 
 const FileDeliverySearchAccordion = ({ onSearchComplete }) => {
   const [publishDateStart, setPublishDateStart] = useState(null);
@@ -280,7 +280,7 @@ const FileDeliverySearchAccordion = ({ onSearchComplete }) => {
 
               {/* Search Button */}
               <Stack direction="row" justifyContent="center">
-                <UploadButton onClick={handleSearch} buttonText="検索" loading={loading} disabled={loading} />
+                <LoadingButton onClick={handleSearch} buttonText="検索" loading={loading} disabled={loading} />
               </Stack>
             </Stack>
           </Box>

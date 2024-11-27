@@ -7,7 +7,7 @@ import FileUpload from "@/components/fileUpload/FileUpload";
 import ProgramListUploadDataGrid from "@/features/program-list/upload-data-grid/ProgramListUploadDataGrid";
 import { mockApiCall } from "@/utils/mockApiCall";
 import StatusDialog from "@/components/modals/Status/StatusDialog";
-import UploadButton from "@/components/button/upload-button/UploadButton";
+import LoadingButton from "@/components/button/loading-button/LoadingButton";
 import { filterDuplicateFiles } from "@/utils/file";
 import { extractTextBeforeUnderscore } from "@/utils/string";
 
@@ -135,7 +135,7 @@ const ProgramListUploadPage = () => {
             戻る
           </Button>
           <Box>
-            <UploadButton
+            <LoadingButton
               onClick={handleConfirmUpload}
               loading={loading}
               disabled={uploadedFiles.length === 0 || loading}

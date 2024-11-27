@@ -25,7 +25,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import "dayjs/locale/ja";
 import { mockStatus, mockTvStations } from "@/constants/program-information";
-import UploadButton from "@/components/button/upload-button/UploadButton";
+import LoadingButton from "@/components/button/loading-button/LoadingButton";
 import { mockApiCall } from "@/utils/mockApiCall";
 
 const ProgramInformationSearchAccordion = ({ onSearchComplete }) => {
@@ -239,7 +239,7 @@ const ProgramInformationSearchAccordion = ({ onSearchComplete }) => {
 
               {/* Search Button */}
               <Stack direction="row" justifyContent="center">
-                <UploadButton onClick={handleSearch} buttonText="検索" loading={loading} disabled={loading} />
+                <LoadingButton onClick={handleSearch} buttonText="検索" loading={loading} disabled={loading} />
               </Stack>
             </Stack>
           </Box>

@@ -8,7 +8,7 @@ import FileDeliveryUploadDataGrid, { UploadedFile } from "@/features/file-delive
 import StatusDialog from "@/components/modals/Status/StatusDialog";
 import FileDeliveryUploadTable from "@/features/file-delivery/upload/FileDeliveryUploadTable";
 import { mockApiCall } from "@/utils/mockApiCall";
-import UploadButton from "@/components/button/upload-button/UploadButton";
+import LoadingButton from "@/components/button/loading-button/LoadingButton";
 import { filterDuplicateFiles } from "@/utils/file";
 
 const FileDeliveryUploadPage = () => {
@@ -144,7 +144,7 @@ const FileDeliveryUploadPage = () => {
             戻る
           </Button>
           <Box>
-            <UploadButton
+            <LoadingButton
               onClick={handleConfirmUpload}
               loading={loading}
               disabled={uploadedFiles.length === 0 || loading}

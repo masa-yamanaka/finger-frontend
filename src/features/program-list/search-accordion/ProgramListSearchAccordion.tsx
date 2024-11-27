@@ -25,7 +25,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/ja";
 import { mockProgramListStatus, mockProgramListTvStations } from "@/constants/program-list";
 import { mockApiCall } from "@/utils/mockApiCall";
-import UploadButton from "@/components/button/upload-button/UploadButton";
+import LoadingButton from "@/components/button/loading-button/LoadingButton";
 
 const ProgramListSearchAccordion = ({ onSearchComplete }) => {
   const [tvStation, setTvStation] = useState([]);
@@ -304,7 +304,7 @@ const ProgramListSearchAccordion = ({ onSearchComplete }) => {
 
               {/* Search Button */}
               <Stack direction="row" justifyContent="center">
-                <UploadButton onClick={handleSearch} buttonText="検索" loading={loading} disabled={loading} />
+                <LoadingButton onClick={handleSearch} buttonText="検索" loading={loading} disabled={loading} />
               </Stack>
             </Stack>
           </Box>

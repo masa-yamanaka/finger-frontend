@@ -9,7 +9,7 @@ import { mockFileDeliveryUploadData } from "@/constants/file-delivery";
 import FileDeliveryUploadEditDataGrid from "@/features/file-delivery/upload/FileDeliveryUploadEditDataGrid";
 import StatusDialog from "@/components/modals/Status/StatusDialog";
 import { mockApiCall } from "@/utils/mockApiCall";
-import UploadButton from "@/components/button/upload-button/UploadButton";
+import LoadingButton from "@/components/button/loading-button/LoadingButton";
 import { filterDuplicateFiles } from "@/utils/file";
 
 // Styled component for the TableCell
@@ -166,7 +166,7 @@ const FileDeliveryUploadEditPage = () => {
           戻る
         </Button>
         <Box>
-          <UploadButton
+          <LoadingButton
             onClick={handleConfirmUpload}
             loading={loading}
             disabled={uploadedFile.length === 0 || loading}

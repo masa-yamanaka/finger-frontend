@@ -7,7 +7,7 @@ import { Alert, Box, Paper, Stack, Table, TableCell, TableBody, TableContainer, 
 import FileUpload from "@/components/fileUpload/FileUpload";
 import StatusDialog from "@/components/modals/Status/StatusDialog";
 import ProgramListUploadEditDataGrid from "@/features/program-list/upload-data-grid/ProgramListUploadEditDataGrid";
-import UploadButton from "@/components/button/upload-button/UploadButton";
+import LoadingButton from "@/components/button/loading-button/LoadingButton";
 import { mockProgramListUploadData } from "@/constants/program-list";
 import { mockApiCall } from "@/utils/mockApiCall";
 
@@ -149,7 +149,7 @@ const ProgramListUploadEditPage = () => {
             戻る
           </Button>
           <Box>
-            <UploadButton
+            <LoadingButton
               onClick={handleConfirmUpload}
               loading={loading}
               disabled={uploadedFile.length === 0 || loading}

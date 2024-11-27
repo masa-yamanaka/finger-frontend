@@ -6,7 +6,7 @@ import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
 import { Typography, Box, Button, Alert, Stack } from "@mui/material";
 import { mockApiCall } from "@/utils/mockApiCall";
 import StatusDialog from "@/components/modals/Status/StatusDialog";
-import UploadButton from "@/components/button/upload-button/UploadButton";
+import LoadingButton from "@/components/button/loading-button/LoadingButton";
 import ProgramInformationUploadDataGrid, {
   UploadedFile,
 } from "@/features/program-information/upload-data-grid/ProgramInformationUploadDataGrid";
@@ -136,7 +136,7 @@ const ProgramInformationUploadPage = () => {
             戻る
           </Button>
           <Box>
-            <UploadButton
+            <LoadingButton
               onClick={handleConfirmUpload}
               loading={loading}
               disabled={uploadedFiles.length === 0 || loading}
