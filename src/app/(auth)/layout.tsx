@@ -9,11 +9,7 @@ import { useEffect } from "react";
 // Add logic here for authentication
 const isLoggedIn = true; // Set to true for now
 
-export default function AuthLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AuthLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   // Redirect to login page if not authenticated

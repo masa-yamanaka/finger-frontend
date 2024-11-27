@@ -184,6 +184,13 @@ const EmailSettingsPage = () => {
     closeSaveModal();
   };
 
+  const handleCellKeyDown: GridEventListener<"cellKeyDown"> = (params, event) => {
+    // Prevent save on Enter key
+    if (event.key === "Enter") {
+      event.defaultMuiPrevented = true;
+    }
+  };
+
   const sendTestEmail = () => {
     const selectedData = rows.filter((row) => selectedRows.includes(row.id));
 
@@ -417,6 +424,7 @@ const EmailSettingsPage = () => {
         disableRowSelectionOnClick
         onRowSelectionModelChange={(newSelection) => setSelectedRows(newSelection)}
         rowSelectionModel={selectedRows}
+        onCellKeyDown={handleCellKeyDown}
         sx={{
           height: 500,
           width: "100%",

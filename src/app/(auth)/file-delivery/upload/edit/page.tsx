@@ -105,13 +105,6 @@ const FileDeliveryUploadEditPage = () => {
       setIsModalOpen(true);
       console.log("Uploaded Files Data:", uploadedFile);
     }
-
-    // For testing without API or error
-    // setDialogType("success");
-    // setDialogTitle("アップロード完了しました");
-    // setDialogMessage("ファイルが正常にアップロードされました。");
-    // setIsModalOpen(true);
-    // console.log("Uploaded Files Data:", uploadedFile);
   };
 
   const handleCloseModal = () => {

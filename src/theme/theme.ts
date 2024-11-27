@@ -17,9 +17,6 @@ const theme = createTheme({
       main: "#1976d2", // default MUI blue color
       dark: "#005b96", // MediaSearch+ blue
     },
-    secondary: {
-      main: "#dc004e",
-    },
   },
   // typography: {
   //   fontFamily: roboto.style.fontFamily,

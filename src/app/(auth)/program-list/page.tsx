@@ -112,6 +112,9 @@ const ProgramListPage = () => {
 
   const handleDeleteSelected = () => {
     // Add API here to delete
+    const selectedRowData = rows.filter((row) => selectedRows.includes(row.id));
+    console.log("Deleted row data:", selectedRowData);
+
     setRows(rows.filter((row) => !selectedRows.includes(row.id)));
     setSelectedRows([]);
     closeDialog();
@@ -130,6 +133,11 @@ const ProgramListPage = () => {
 
   const handleStatusConfirm = () => {
     // Add API here for 確定 status
+
+    // Log the rows for the Confrim Status change
+    const selectedRowData = rows.filter((row) => selectedRows.includes(row.id));
+    console.log("Rows updated: ", selectedRowData);
+
     const updatedRows = rows.map((row) => (selectedRows.includes(row.id) ? { ...row, status: "確定" } : row));
     setRows(updatedRows);
     closeDialog();
@@ -137,6 +145,11 @@ const ProgramListPage = () => {
 
   const handleStatusCompleted = () => {
     // Add API here for 作成完了 status
+
+    // Log the rows for the Completed Status change
+    const selectedRowData = rows.filter((row) => selectedRows.includes(row.id));
+    console.log("Rows updated: ", selectedRowData);
+
     const updatedRows = rows.map((row) => (selectedRows.includes(row.id) ? { ...row, status: "作成完了" } : row));
     setRows(updatedRows);
     closeDialog();
@@ -180,7 +193,7 @@ const ProgramListPage = () => {
             description: "作成完了する？",
             color: "primary",
             onConfirm: handleStatusCompleted,
-          }; // New case
+          };
 
     setDialogProps({ ...dialogConfig, open: true });
   };

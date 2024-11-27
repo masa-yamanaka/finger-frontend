@@ -90,6 +90,10 @@ const ProgramInformation = () => {
   };
 
   const handleDeleteSelected = () => {
+    // Add API here to delete
+    const selectedRowData = rows.filter((row) => selectedRows.includes(row.id));
+    console.log("Deleted row data:", selectedRowData);
+
     setRows(rows.filter((row) => !selectedRows.includes(row.id)));
     setSelectedRows([]);
     closeDialog();
@@ -117,7 +121,7 @@ const ProgramInformation = () => {
 
   const handleStatusReturn = (comment: string) => {
     // Add API here for 差戻し status
-    // Add logic here for email notification
+    // Add API here for email notification
 
     // Log the full data of the selected rows
     const selectedRowData = rows.filter((row) => selectedRows.includes(row.id));
