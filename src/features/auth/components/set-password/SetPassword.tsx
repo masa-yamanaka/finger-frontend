@@ -22,7 +22,7 @@ const SetPassword = ({
   return (
     <Container maxWidth="sm">
       <Paper elevation={3} sx={{ padding: 4, marginTop: 8 }}>
-        <Typography variant="h4" align="center" gutterBottom>
+        <Typography variant="h4" component="h1" align="center" gutterBottom>
           パスワード変更
         </Typography>
 

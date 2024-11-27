@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  Container,
-  Box,
-  TextField,
-  Button,
-  Typography,
-  Paper,
-  Alert,
-} from "@mui/material";
+import { Container, Box, TextField, Button, Typography, Paper, Alert } from "@mui/material";
 
 interface LoginProps {
   username: string;
@@ -19,18 +11,11 @@ interface LoginProps {
   error?: string;
 }
 
-const Login = ({
-  username,
-  password,
-  setUsername,
-  setPassword,
-  handleLogin,
-  error,
-}: LoginProps) => {
+const Login = ({ username, password, setUsername, setPassword, handleLogin, error }: LoginProps) => {
   return (
     <Container maxWidth="sm">
       <Paper elevation={3} sx={{ padding: 4, marginTop: 8 }}>
-        <Typography variant="h4" align="center" gutterBottom>
+        <Typography variant="h4" component="h1" align="center" gutterBottom>
           全曲報告サービスログイン
         </Typography>
 
@@ -59,13 +44,7 @@ const Login = ({
           <Typography variant="body2" sx={{ marginTop: 2 }}>
             ※ パスワードを忘れた方は管理者にご連絡ください。
           </Typography>
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick={handleLogin}
-            sx={{ marginTop: 2 }}
-          >
+          <Button fullWidth variant="contained" color="primary" onClick={handleLogin} sx={{ marginTop: 2 }}>
             ログイン
           </Button>
         </Box>

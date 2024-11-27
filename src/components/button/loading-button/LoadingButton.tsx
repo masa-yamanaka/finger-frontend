@@ -1,14 +1,14 @@
 import React from "react";
 import { Button, CircularProgress, Box } from "@mui/material";
 
-interface UploadButtonProps {
+interface LoadingButtonProps {
   onClick: () => void;
   loading: boolean;
   disabled: boolean;
   buttonText: string;
 }
 
-const UploadButton: React.FC<UploadButtonProps> = ({ onClick, loading, disabled, buttonText }) => {
+const LoadingButton: React.FC<LoadingButtonProps> = ({ onClick, loading, disabled, buttonText }) => {
   return (
     <Box sx={{ position: "relative" }}>
       <Button variant="contained" color="primary" onClick={onClick} disabled={disabled || loading}>
@@ -31,4 +31,4 @@ const UploadButton: React.FC<UploadButtonProps> = ({ onClick, loading, disabled,
   );
 };
 
-export default UploadButton;
+export default LoadingButton;

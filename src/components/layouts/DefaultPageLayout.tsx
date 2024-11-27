@@ -11,7 +11,7 @@ const DefaultPageLayout = ({ children, title }: DefaultPageLayoutProps) => {
   return (
     <Box>
       {title && (
-        <Typography variant="h4" sx={{ mb: 4 }}>
+        <Typography variant="h4" component="h1" sx={{ mb: 4 }}>
           {title}
         </Typography>
       )}

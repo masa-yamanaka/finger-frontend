@@ -10,7 +10,7 @@ interface AccountFormLayoutProps {
 const AccountFormLayout = ({ children, title }: AccountFormLayoutProps) => {
   return (
     <Container>
-      <Typography variant="h4" sx={{ my: 4, textAlign: "center" }}>
+      <Typography variant="h4" component="h1" sx={{ my: 4, textAlign: "center" }}>
         {title}
       </Typography>
       {children}
