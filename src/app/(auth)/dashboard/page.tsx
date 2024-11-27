@@ -2,7 +2,7 @@
 
 import { Container, Typography, Box } from "@mui/material";
 import { dashboardSections } from "@/constants/dashboard";
-import MessageBox from "@/components/messageBox/MessageBox";
+import MessageBox from "@/components/message-box/MessageBox";
 
 export default function DashboardPage() {
   return (

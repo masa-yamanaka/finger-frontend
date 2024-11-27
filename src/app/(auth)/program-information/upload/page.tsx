@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import FileUpload from "@/components/fileUpload/FileUpload";
+import FileUpload from "@/components/file-upload/FileUpload";
 import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
 import { Typography, Box, Button, Alert, Stack } from "@mui/material";
 import { mockApiCall } from "@/utils/mockApiCall";

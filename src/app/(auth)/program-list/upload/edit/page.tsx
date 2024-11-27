@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { styled } from "@mui/material/styles";
 import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
 import { Alert, Box, Paper, Stack, Table, TableCell, TableBody, TableContainer, TableRow, Button } from "@mui/material";
-import FileUpload from "@/components/fileUpload/FileUpload";
+import FileUpload from "@/components/file-upload/FileUpload";
 import StatusDialog from "@/components/modals/Status/StatusDialog";
 import ProgramListUploadEditDataGrid from "@/features/program-list/upload-data-grid/ProgramListUploadEditDataGrid";
 import LoadingButton from "@/components/button/loading-button/LoadingButton";

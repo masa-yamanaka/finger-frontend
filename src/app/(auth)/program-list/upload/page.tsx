@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import DefaultPageLayout from "@/components/layouts/DefaultPageLayout";
 import { Alert, Box, Button, Stack } from "@mui/material";
-import FileUpload from "@/components/fileUpload/FileUpload";
+import FileUpload from "@/components/file-upload/FileUpload";
 import ProgramListUploadDataGrid from "@/features/program-list/upload-data-grid/ProgramListUploadDataGrid";
 import { mockApiCall } from "@/utils/mockApiCall";
 import StatusDialog from "@/components/modals/Status/StatusDialog";
