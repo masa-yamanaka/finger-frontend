@@ -4,11 +4,11 @@ import { ReactNode } from "react";
 import { Box } from "@mui/material";
 import Sidebar from "@/components/sidebar/Sidebar";
 
-type DashboardLayoutProps = {
+type SidebarLayoutProps = {
   children: ReactNode;
 };
 
-const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+const SidebarLayout = ({ children }: SidebarLayoutProps) => {
   return (
     <Box sx={{ display: "flex" }}>
       <Sidebar />
@@ -27,4 +27,4 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   );
 };
 
-export default DashboardLayout;
+export default SidebarLayout;

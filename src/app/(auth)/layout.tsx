@@ -1,6 +1,6 @@
 "use client";
 
-import DashboardLayout from "@/components/layouts/DashboardLayout";
+import DashboardLayout from "@/components/layouts/SidebarLayout";
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
