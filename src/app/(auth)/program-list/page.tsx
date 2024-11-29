@@ -184,13 +184,13 @@ const ProgramListPage = () => {
         : action === "confirm"
         ? {
             title: "確定の確認",
-            description: "Confirm status update",
+            description: "ステータスを確定に変更しますか？",
             color: "primary",
             onConfirm: handleStatusConfirm,
           }
         : {
             title: "作成完了の確認",
-            description: "作成完了する？",
+            description: "ステータスを作成完了に変更しますか？",
             color: "primary",
             onConfirm: handleStatusCompleted,
           };

@@ -147,7 +147,7 @@ const ProgramInformation = () => {
           }
         : {
             title: "確定の確認",
-            description: "Confirm status update",
+            description: "ステータスを確定に変更しますか？",
             color: "primary",
             onConfirm: handleStatusConfirm,
           };
